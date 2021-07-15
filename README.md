@@ -17,6 +17,9 @@ template
 │   └───VR (folder for the top level VR component and all other VR view code)
 ```
 
+Aframe Libraries Used: 
+https://github.com/n5ro/aframe-extras
 
+https://github.com/fernandojsg/aframe-teleport-controls
 
-
+https://github.com/supermedium/superframe/tree/master/components/thumb-controls
