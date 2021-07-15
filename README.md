@@ -8,7 +8,7 @@ template
 └───scripts (only needed if you want to use typescript)
 |
 └───src (this is where the svelte code lives)
-│   │   App.svelte (root code file includes top level components, loads in data on start, listens for data change event, manages page state)
+│   │   App.svelte (top level components, loads in data on start, listens for data change event, manages page state)
 │   │   Scatterplot.svelte (example of a scatter plot component made with svelte)
 │   │   ThreeDScatterplot.svelte (example of scatterplot made with Aframe and Svelte)
 |   |   main.js (need for svelte)
