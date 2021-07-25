@@ -3,7 +3,7 @@ import * as d3 from "d3";
 
 function createStore() {
 
-    const { subscribe, set, update} = writable(null);
+    const { subscribe, set, update } = writable(null);
 
     return {
         subscribe,

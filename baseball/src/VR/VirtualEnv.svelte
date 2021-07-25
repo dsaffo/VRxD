@@ -18,11 +18,11 @@
 
   let pitch = [];
 
-  let index = 0;
+  let index = 68;
 
   if (data != null){
   	pitch = pitch_trajectory(data[index]['release_pos_x'],data[index]['release_pos_y'],data[index]['release_pos_z'],
-	  						data[index]['vx0'], data[index]['vy0'], data[index]['vz0'],data[index]['ax'],data[index]['ay'],data[index]['az'], 0.001)
+	  						data[index]['vx0'], data[index]['vy0'], data[index]['vz0'],data[index]['ax'],data[index]['ay'],data[index]['az'],data[index]['release_spin_rate'],0.001)
   }
 
   $: console.log(pitch);
