@@ -58,13 +58,13 @@ rotation="0 -180 0">
 {#if data != null}
 <a-curve id="track1" type="CatmullRom" position="0 0 0" rotation="" scale="" visible="" curve="">
 	{#each pitch as p}
-		<a-curve-point position="{p.x} {p.z} {p.y}"></a-curve-point>
+		<a-curve-point position="{-p.x} {p.z} {p.y}"></a-curve-point>
 	{/each}
   </a-curve>
 
   <a-draw-curve curveref="#track1" material="shader: line; color: blue;"></a-draw-curve>
 
-  <a-sphere position="{data[index]['plate_x']} {data[index]['plate_z']} 0" radius='0.036'></a-sphere>
+  <a-sphere position="{-data[index]['plate_x']} {data[index]['plate_z']} 0" radius='0.036'></a-sphere>
 {/if}
 
   

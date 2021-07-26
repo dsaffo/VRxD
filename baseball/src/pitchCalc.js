@@ -1,4 +1,5 @@
 export function pitch_trajectory(x,y,z,vx,vy,vz,ax,ay,az,spin,dt) {
+
     let trajectory = [];
 
 
@@ -56,7 +57,7 @@ export function pitch_trajectory(x,y,z,vx,vy,vz,ax,ay,az,spin,dt) {
         let point = trajectory[i];
         
         
-        console.log(point.x, point.y, point.z);
+        console.log(point.x * 3.2808, point.y * 3.2808, point.z * 3.2808);
 
         //velocity
         let V = Math.sqrt(Math.pow(point.vx,2) + Math.pow(point.vy,2) + Math.pow(point.vz,2))
