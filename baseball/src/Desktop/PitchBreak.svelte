@@ -1,0 +1,98 @@
+<script>
+  import { scaleLinear } from 'd3-scale';
+
+  export let pitches = []; 
+
+  let width = 500;
+  let height = 200;
+
+  const yTicks = [0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90];
+  const xTicks = [-30, -24, -18, -12, -6, 0, 6, 12, 18, 24, 30];
+  const padding = { top: 20, right: 15, bottom: 20, left: 25 };
+
+  $: xScale = scaleLinear()
+        .domain([-30, 30])
+        .range([padding.left, width - padding.right]);
+
+  $: yScale = scaleLinear()
+        .domain([90, 0])
+        .range([height - padding.bottom, padding.top]);
+
+	console.log(pitches)
+  
+  </script>
+  
+  
+  <div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
+      <svg>
+          <!-- y axis -->
+          <g class="axis y-axis" transform="translate(0, {padding.top})">
+              {#each yTicks as tick}
+                  <g class="tick tick-{tick}" transform="translate(0, {yScale(tick) - padding.bottom})">
+                      <line x2="100%"></line>
+                      <text y="-4">{tick}</text>
+                  </g>
+              {/each}
+          </g>
+  
+          <!-- x axis -->
+          <g class="axis x-axis">
+              {#each xTicks as tick}
+                  <g class="tick tick-{ tick }" transform="translate({xScale(tick)},{height})">
+                      <line y1="-{height}" y2="-{padding.bottom}" x1="0" x2="0"></line>
+                      <text y="-2">{tick}</text>
+                  </g>
+              {/each}
+          </g>
+  
+      {#each pitches as pitch}
+        <circle cx={xScale(pitch.pfx_x * 12)} cy={yScale(pitch.pfx_z * 12)} r="5" fill="rgba(216, 130, 130, 0.38)"></circle>
+      {/each}
+			
+      </svg>
+  </div>
+  
+  <style>
+      .chart, h2, p {
+          width: 100%;
+      height: 100%;
+      }
+  
+      svg {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          overflow: visible;
+      }
+  
+      .tick {
+          font-size: .725em;
+          font-weight: 200;
+      }
+  
+      .tick line {
+          stroke: #aaa;
+          stroke-dasharray: 2;
+      }
+  
+      .tick text {
+          fill: #666;
+          text-anchor: start;
+      }
+  
+      .tick.tick-0 line {
+          stroke-dasharray: 0;
+      }
+  
+      .x-axis .tick text {
+          text-anchor: middle;
+      }
+  
+      .path-line {
+          fill: none;
+          stroke: rgb(0,100,100);
+          stroke-linejoin: round;
+          stroke-linecap: round;
+          stroke-width: 2;
+      }
+  </style>

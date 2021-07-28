@@ -8,7 +8,7 @@
   let width = 500;
 	let height = 200;
 
-  const yTicks = [-2, -1, 0, 1, 2];
+  const yTicks = [2, 1, 0, -1, -2];
 	const xTicks = [0, 10, 20, 30, 40, 50, 60];
 	const padding = { top: 20, right: 15, bottom: 20, left: 25 };
 
@@ -20,7 +20,7 @@
 
 	$: yScale = scaleLinear()
 		.domain([-2, 2])
-		.range([height - padding.bottom, padding.top]);
+		.range([padding.top, height - padding.bottom, ]);
 
 
 
@@ -31,7 +31,7 @@
                 data['az'],data['release_spin_rate'],0.001);
 
     //convert from meters to feet and flip x position to pitchers persepctive
-    return `M${pitch.map(p => `${xScale(p.y * 3.28084)},${yScale(-p.x * 3.28084)}`).join('L')}`
+    return `M${pitch.map(p => `${xScale(p.y * 3.28084)},${yScale(p.x * 3.28084)}`).join('L')}`
 
   }
 
@@ -64,10 +64,10 @@
 		</g>
 
     <!-- Pitching Mound -->
-    <rect width={xScale(0.1)} height={yScale(0.3)} x={xScale(60)} y={yScale(1)} fill='#ccd5e3'></rect>
+    <rect width={xScale(0.1)} height={yScale(-0.3)} x={xScale(60)} y={yScale(-1)} fill='#ccd5e3'></rect>
 
     <!-- home plate  -->
-    <rect width={xScale(0.01)} height={yScale(0.8636)} x={xScale(0)} y={yScale(0.75)} fill='#ccd5e3'></rect>
+    <rect width={xScale(0.01)} height={yScale(-0.8636)} x={xScale(0)} y={yScale(-0.75)} fill='#ccd5e3'></rect>
 
 		<!-- data -->
     {#each data as pitch}

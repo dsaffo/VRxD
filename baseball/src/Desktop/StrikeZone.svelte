@@ -1,43 +1,26 @@
 <script>
   import { scaleLinear } from 'd3-scale';
-	import { pitch_trajectory }  from '../pitchCalc.js';
 
+  export let pitches = []; 
 
-
-  export let data = []; 
   let width = 500;
 	let height = 200;
 
-  const yTicks = [0, 2, 4, 6];
-	const xTicks = [0, 10, 20, 30, 40, 50, 60];
+  const yTicks = [0, 1, 2, 3, 4];
+	const xTicks = [-1, 0, 1];
 	const padding = { top: 20, right: 15, bottom: 20, left: 25 };
 
-
-
   $: xScale = scaleLinear()
-		.domain([0, 60])
+		.domain([-1.2, 1.2])
 		.range([padding.left, width - padding.right]);
 
 	$: yScale = scaleLinear()
-		.domain([0, 6])
+		.domain([0, 4])
 		.range([height - padding.bottom, padding.top]);
 
 
+  console.log(pitches);
 
-  $: pathGen = function(data){
-
-    var pitch = pitch_trajectory(data['release_pos_x'],data['release_pos_y'],data['release_pos_z'],
-	  						data['vx0'], data['vy0'], data['vz0'],data['ax'],data['ay'],
-                data['az'],data['release_spin_rate'],0.001);
-
-    //convert from meters to feet
-    return `M${pitch.map(p => `${xScale(p.y * 3.28084)},${yScale(p.z * 3.28084)}`).join('L')}`
-
-  }
-
-  function formatMobile (tick) {
-		return "'" + tick.toString().slice(-2);
-  }
 </script>
 
 
@@ -63,18 +46,10 @@
 			{/each}
 		</g>
 
-    <!-- Pitching Mound -->
-    <rect width={xScale(0.1)} height='5' x={xScale(60)} y={yScale(0.1)} fill='#ccd5e3'></rect>
+    <rect width={xScale(-0.2)} height={yScale(2.2)} x={xScale(-0.6)} y={yScale(3.5)} fill='none' stroke='red' ></rect>
 
-    <!-- home plate  -->
-    <rect width={xScale(0.01)} height=5 x={xScale(0)} y={yScale(0.1)} fill='#ccd5e3'></rect>
-
-	<!-- Strike Zone  -->
-    <rect width={xScale(0.01)} height={yScale(4)} x={xScale(0)} y={yScale(3.8)} fill='#ccd5e3'></rect>
-
-	<!-- data -->
-    {#each data as pitch}
-		  <path class="path-line" d={pathGen(pitch)}></path>
+    {#each pitches as pitch}
+      <circle cx={xScale(pitch.plate_x * 3.2808)} cy={yScale(pitch.plate_z * 3.2808)} r="5" fill="rgba(216, 130, 130, 0.38)"></circle>
     {/each}
 	</svg>
 </div>
