@@ -8,10 +8,14 @@
 
   const yTicks = [0, 1, 2, 3, 4];
 	const xTicks = [-1, 0, 1];
-	const padding = { top: 20, right: 15, bottom: 20, left: 25 };
+	const padding = { top: 20, right: 15, bottom: 20, left: 15 };
 
   $: xScale = scaleLinear()
-		.domain([-1.2, 1.2])
+		.domain([-1.8, 1.8])
+		.range([padding.left, width - padding.right]);
+
+	$: xScale2 = scaleLinear()
+		.domain([0, 3.6])
 		.range([padding.left, width - padding.right]);
 
 	$: yScale = scaleLinear()
@@ -19,7 +23,6 @@
 		.range([height - padding.bottom, padding.top]);
 
 
-  console.log(pitches);
 
 </script>
 
@@ -46,7 +49,7 @@
 			{/each}
 		</g>
 
-    <rect width={xScale(-0.2)} height={yScale(2.2)} x={xScale(-0.6)} y={yScale(3.5)} fill='none' stroke='red' ></rect>
+    <rect width={xScale2(1.6) - xScale2(0)} height={yScale(2.15) - yScale(4)} x={xScale2(2 / 2)} y={yScale(3.2)} fill='none' stroke='red' ></rect>
 
     {#each pitches as pitch}
       <circle cx={xScale(pitch.plate_x * 3.2808)} cy={yScale(pitch.plate_z * 3.2808)} r="5" fill="rgba(216, 130, 130, 0.38)"></circle>
@@ -64,7 +67,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		overflow: visible;
+		overflow: hidden;
 	}
 
 	.tick {

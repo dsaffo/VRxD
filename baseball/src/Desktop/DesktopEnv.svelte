@@ -7,6 +7,7 @@
 	import SidePitch from './SidePitch.svelte';
 	import StrikeZone from './StrikeZone.svelte';
   import PitchBreak from './PitchBreak.svelte';
+  import PitchSpeedFreq from './PitchSpeedFreq.svelte';
 	import { pitch_trajectory }  from '../pitchCalc.js';
 
 
@@ -23,13 +24,10 @@
 	let index = 0;
 
 	let start = 0;
-	let end = 50;
+	let end = 100;
 
 
 </script>
-
-
-
 
 {#if data!= null}
 	<Container fluid style="height: 100%;">
@@ -42,7 +40,7 @@
 			</Col>
 		</Row>
 
-		<Row style="height: 30%;">
+		<Row style="height: 35%;">
 			<Col  sm='2'>
 				<StrikeZone pitches={data.slice(start,end)}></StrikeZone>
 			</Col>
@@ -54,9 +52,9 @@
 			</Col>
 		</Row>
 
-		<Row style="height: 40%;">
+		<Row style="height: 35%;">
 			<Col  sm='6'>
-				<OverheadPitch data={data.slice(start,end)}></OverheadPitch>
+				<PitchSpeedFreq data={data.slice(start,end)}></PitchSpeedFreq>
 			</Col>
 			<Col sm='6'>
 				<PitchBreak pitches={data.slice(start,end)}></PitchBreak>

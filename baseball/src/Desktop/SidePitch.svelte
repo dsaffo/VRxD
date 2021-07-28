@@ -19,7 +19,7 @@
 		.range([padding.left, width - padding.right]);
 
 	$: yScale = scaleLinear()
-		.domain([0, 6])
+		.domain([0, 7])
 		.range([height - padding.bottom, padding.top]);
 
 
@@ -89,7 +89,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		overflow: visible;
+		overflow: hidden;
 	}
 
 	.tick {

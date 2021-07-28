@@ -17,8 +17,6 @@
   $: yScale = scaleLinear()
         .domain([90, 0])
         .range([height - padding.bottom, padding.top]);
-
-	console.log(pitches)
   
   </script>
   
@@ -46,7 +44,7 @@
           </g>
   
       {#each pitches as pitch}
-        <circle cx={xScale(pitch.pfx_x * 12)} cy={yScale(pitch.pfx_z * 12)} r="5" fill="rgba(216, 130, 130, 0.38)"></circle>
+        <circle cx={xScale(pitch.pfx_x * 12)} cy={yScale((pitch.release_pos_z * 39.3701) - (pitch.plate_z * 39.3701))} r="5" fill="rgba(216, 130, 130, 0.38)"></circle>
       {/each}
 			
       </svg>
