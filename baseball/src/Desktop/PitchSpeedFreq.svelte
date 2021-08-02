@@ -1,5 +1,6 @@
 <script>
     import { scaleLinear, scaleOrdinal, scaleBand} from 'd3-scale';
+    import {schemeTableau10} from 'd3-scale-chromatic';
   
     export let pitches = []; 
   
@@ -8,32 +9,38 @@
 
 		//get unique pitch types
   
-    const yTicks = ["Four-Seam Fastball", "Split-Finger", "Slider", "Cutter", "Curveball"];
-    const xTicks = [70, 80, 90, 100];
+    const yTicks = [...new Set(pitches.map(item => item.pitch_name))];
+    const xTicks = [60, 70, 80, 90, 100];
     const padding = { top: 20, right: 15, bottom: 20, left: 200 };
   
-    $: xScale = scaleLinear()
-    	.domain([70,100])
-      .range([padding.left, width - padding.right]);
+        $: xScale = scaleLinear()
+            .domain([60,100])
+        .range([padding.left, width - padding.right]);
 
-		$: xScale2 = scaleLinear()
-			.domain([0,100])
-			.range([padding.left, 0]);
-  
-    $: yScale = scaleBand()
-			.domain(yTicks)
-      .range([padding.top, height - padding.bottom]);
+        $: xScale2 = scaleLinear()
+            .domain([0,100])
+            .range([padding.left, 0]);
+    
+        $: yScale = scaleBand()
+                .domain(yTicks)
+        .range([padding.top, height - padding.bottom]);
 
-		let pitchFreq = [];
+        let colorScale = scaleOrdinal(schemeTableau10);
 
-		let pitchSpeed = [];
+		let pitchData = [];
 
-		//calc % of thrown pitch types
-
-
-		//calc average pitch speed per type
-
-
+		//calc total, %, speed of thrown pitch types
+        for (let i = 0; i < yTicks.length; i++){
+            var total = 0; 
+            var speed = 0;
+            for (let j = 0; j < pitches.length; j++){
+                if (pitches[j]['pitch_name'] === yTicks[i]){
+                    total += 1; 
+                    speed += pitches[j]['effective_speed'];
+                }
+            }
+            pitchData.push({pitch: yTicks[i], volume: total, percent: (total/pitches.length) * 100, speed: speed/total})
+        }
 
     </script>
     
@@ -44,7 +51,7 @@
             <g class="axis y-axis" transform="translate(0, {padding.top})">
                 {#each yTicks as tick}
                     <g class="tick tick-{tick}" transform="translate(0, {yScale(tick) - padding.bottom})">
-                        <line x2="100%"></line>
+                        <line y1="10" y2="10" x2="100%"></line>
                         <text y="-4" x="195">{tick}</text>
                     </g>
                 {/each}
@@ -58,10 +65,28 @@
                         <text y="-2">{tick}</text>
                     </g>
                 {/each}
-						</g>
+			</g>
 
-					<rect height="20" width={xScale2(0) - xScale2(100)} x={xScale2(100)} y={yScale('Four-Seam Fastball')} fill='red'></rect>
+            <g class="Freq_Bar">
+                {#each pitchData as pitch}
+                    <rect height="20" width={xScale2(0) - xScale2(pitch.percent)} x={xScale2(pitch.percent)} y={yScale(pitch.pitch)} fill={colorScale(yTicks.indexOf(pitch.pitch))}></rect>
+                {/each}
+            </g>
 
+           
+
+            <g class="Pitch_Speed_Dot">
+                {#each pitches as pitch}
+                    <circle r="5" cx={xScale(pitch.effective_speed)} cy={yScale(pitch.pitch_name) + 10} fill={colorScale(yTicks.indexOf(pitch.pitch_name))}  opacity="0.3"></circle>
+                {/each}
+            </g>
+
+            <g class="Avg_Speed_Bar">
+                {#each pitchData as pitch}
+                    <rect height="20" width="3" x={xScale(pitch.speed)} y={yScale(pitch.pitch)} fill='grey'></rect>
+                {/each}
+            </g>
+            
 
         </svg>
     </div>

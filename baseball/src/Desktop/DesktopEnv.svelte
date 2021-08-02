@@ -19,12 +19,12 @@
   //print its result for testing
   //$: console.log(data);
 
-  let pitch = [];
+  	let pitch = [];
 
 	let index = 0;
 
 	let start = 0;
-	let end = 100;
+	let end = 90;
 
 
 </script>
@@ -54,10 +54,10 @@
 
 		<Row style="height: 35%;">
 			<Col  sm='6'>
-				<PitchSpeedFreq data={data.slice(start,end)}></PitchSpeedFreq>
+				<PitchSpeedFreq pitches={data}></PitchSpeedFreq>
 			</Col>
 			<Col sm='6'>
-				<PitchBreak pitches={data.slice(start,end)}></PitchBreak>
+				<PitchBreak pitches={data}></PitchBreak>
 			</Col>
 		</Row>
 	</Container>

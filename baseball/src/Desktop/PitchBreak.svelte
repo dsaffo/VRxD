@@ -1,11 +1,13 @@
 <script>
-  import { scaleLinear } from 'd3-scale';
+  import { scaleLinear, scaleOrdinal} from 'd3-scale';
+  import {schemeTableau10} from 'd3-scale-chromatic';
 
   export let pitches = []; 
 
   let width = 500;
   let height = 200;
 
+  const pitch_types = [...new Set(pitches.map(item => item.pitch_name))];
   const yTicks = [0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90];
   const xTicks = [-30, -24, -18, -12, -6, 0, 6, 12, 18, 24, 30];
   const padding = { top: 20, right: 15, bottom: 20, left: 25 };
@@ -17,6 +19,8 @@
   $: yScale = scaleLinear()
         .domain([90, 0])
         .range([height - padding.bottom, padding.top]);
+
+    let colorScale = scaleOrdinal(schemeTableau10);
   
   </script>
   
@@ -44,7 +48,7 @@
           </g>
   
       {#each pitches as pitch}
-        <circle cx={xScale(pitch.pfx_x * 12)} cy={yScale((pitch.release_pos_z * 39.3701) - (pitch.plate_z * 39.3701))} r="5" fill="rgba(216, 130, 130, 0.38)"></circle>
+        <circle cx={xScale(pitch.pfx_x * 12)} cy={yScale((pitch.release_pos_z * 39.3701) - (pitch.plate_z * 39.3701))} r="5" fill={colorScale(pitch_types.indexOf(pitch.pitch_name))}></circle>
       {/each}
 			
       </svg>

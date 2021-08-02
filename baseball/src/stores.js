@@ -7,7 +7,7 @@ function createStore() {
 
     return {
         subscribe,
-        loadData: async() => set(await d3.csv("./shohei_test.csv", function(d){
+        loadData: async() => set(await d3.csv("./OhtaniOneGame.csv", function(d){
 
             return {
                 ax: parseFloat(d.ax) / 3.2808,
