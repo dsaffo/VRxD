@@ -1,25 +1,23 @@
 <script>
 	import { Col, Container, Row } from 'sveltestrap';
-  import { page, stored_data } from '../stores.js';
-	import { onMount } from 'svelte';
-	import { scaleLinear } from 'd3-scale';
+  	import { page, stored_data } from '../stores.js';
 	import OverheadPitch from './OverheadPitch.svelte';
 	import SidePitch from './SidePitch.svelte';
 	import StrikeZone from './StrikeZone.svelte';
-  import PitchBreak from './PitchBreak.svelte';
-  import PitchSpeedFreq from './PitchSpeedFreq.svelte';
-	import { pitch_trajectory }  from '../pitchCalc.js';
+  	import PitchBreak from './PitchBreak.svelte';
+  	import PitchSpeedFreq from './PitchSpeedFreq.svelte';
+	import PitcherCard from './PitcherCard.svelte';
 
 
-  //subscribe to stored_data and assign its value to data
-  let data;
-  const unsubscribe = stored_data.subscribe(value => {
-		data = value;
-	});
-  //print its result for testing
-  //$: console.log(data);
+	//subscribe to stored_data and assign its value to data
+	let data;
+	const unsubscribe = stored_data.subscribe(value => {
+			data = value;
+		});
+	//print its result for testing
+	//$: console.log(data);
 
-  	let pitch = [];
+	let pitch = [];
 
 	let index = 0;
 
@@ -33,7 +31,7 @@
 	<Container fluid style="height: 100%;">
 		<Row style="height: 30%;">
 			<Col sm='4'>
-				<button on:click="{() => page.update(n => n = 1)}">switch</button>
+				<PitcherCard></PitcherCard>
 			</Col>
 			<Col sm='8'>
 				<OverheadPitch data={data.slice(start,end)}></OverheadPitch>
@@ -61,6 +59,8 @@
 			</Col>
 		</Row>
 	</Container>
+
+	<button on:click="{() => page.update(n => n = 1)}">switch</button>
 {/if}
 
 
