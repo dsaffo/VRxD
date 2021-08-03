@@ -77,7 +77,7 @@
 
             <g class="Pitch_Speed_Dot">
                 {#each pitches as pitch}
-                    <circle r="5" cx={xScale(pitch.effective_speed)} cy={yScale(pitch.pitch_name) + 10} fill={colorScale(yTicks.indexOf(pitch.pitch_name))}  opacity="0.3"></circle>
+                    <circle r="5" cx={xScale(pitch.effective_speed)} cy={yScale(pitch.pitch_name) + 10} fill={pitch.color}  opacity="0.6"></circle>
                 {/each}
             </g>
 
@@ -110,14 +110,14 @@
         }
     
         .tick line {
-            stroke: #aaa;
-            stroke-dasharray: 2;
-        }
-    
-        .tick text {
-            fill: #666;
-            text-anchor: end;
-        }
+		stroke:  rgb(255, 255, 255);
+		stroke-dasharray: 2;
+	}
+
+	.tick text {
+		fill: rgb(255, 255, 255);
+		text-anchor: end;
+	}
     
         .tick.tick-0 line {
             stroke-dasharray: 0;

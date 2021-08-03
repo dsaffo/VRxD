@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import * as d3 from "d3";
+import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from './colorScales.js';
 
 function createStore() {
 
@@ -52,15 +53,31 @@ function createStore() {
                 vx0: parseFloat(d.vx0) / 3.2808,
                 vy0: parseFloat(d.vy0) / 3.2808,
                 vz0: parseFloat(d.vz0) / 3.2808,
-                zone: parseInt(d.zone)
+                zone: parseInt(d.zone),
+                color: pitchTypeColorScale(d.pitch_name)
             }
         })),
+
         updateData: (index) => update(store => {
             store[index]['selected'] = !store[index]['selected'];
             const myEvent = new CustomEvent ('myEvent', { detail: store });
             console.log("dispatching event")
             document.body.dispatchEvent(myEvent);
             console.log("event dispatched")
+            return store;
+        }),
+
+        updateColor: (scale) => update(store => {
+            if (scale === "type"){
+                store.forEach((pitch, index) => store[index]['color'] = pitchTypeColorScale(pitch.pitch_name));
+            } 
+            else if (scale === "speed"){
+                store.forEach((pitch, index) => store[index]['color'] = speedColorScale(speedScale(pitch.effective_speed)));
+            } 
+            else if (scale === "outcome"){
+                store.forEach((pitch, index) => store[index]['color'] = pitchOutcomeColorScale(pitch.description));
+            } 
+
             return store;
         }),
         updateStore: (received_store) => {console.log("stored", received_store); set(received_store)}
@@ -71,5 +88,7 @@ function createStore() {
 export const stored_data = createStore();
 
 export let page = writable(0);
+
+export let colorScale = writable("pitchType");
 
 

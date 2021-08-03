@@ -48,7 +48,7 @@
           </g>
   
       {#each pitches as pitch}
-        <circle cx={xScale(pitch.pfx_x * 12)} cy={yScale((pitch.release_pos_z * 39.3701) - (pitch.plate_z * 39.3701))} r="5" fill={colorScale(pitch_types.indexOf(pitch.pitch_name))}></circle>
+        <circle cx={xScale(pitch.pfx_x * 12)} cy={yScale((pitch.release_pos_z * 39.3701) - (pitch.plate_z * 39.3701))} r="5" fill={pitch.color} opacity='0.8'></circle>
       {/each}
 			
       </svg>
@@ -73,14 +73,14 @@
       }
   
       .tick line {
-          stroke: #aaa;
-          stroke-dasharray: 2;
-      }
-  
-      .tick text {
-          fill: #666;
-          text-anchor: start;
-      }
+		stroke:  rgb(255, 255, 255);
+		stroke-dasharray: 2;
+	}
+
+	.tick text {
+		fill: rgb(255, 255, 255);
+		text-anchor: start;
+	}
   
       .tick.tick-0 line {
           stroke-dasharray: 0;
@@ -88,13 +88,5 @@
   
       .x-axis .tick text {
           text-anchor: middle;
-      }
-  
-      .path-line {
-          fill: none;
-          stroke: rgb(0,100,100);
-          stroke-linejoin: round;
-          stroke-linecap: round;
-          stroke-width: 2;
       }
   </style>

@@ -49,7 +49,11 @@
 
 {/if}
 
-
+<style>
+	body {
+		background-color: black;
+	}
+</style>
 
 
 

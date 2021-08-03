@@ -71,7 +71,7 @@
 
 		<!-- data -->
     {#each data as pitch}
-		  <path class="path-line" d={pathGen(pitch)}></path>
+		  <path class="path-line" d={pathGen(pitch)} stroke={pitch.color} opacity='0.6'></path>
     {/each}
 	</svg>
 </div>
@@ -95,12 +95,12 @@
 	}
 
 	.tick line {
-		stroke: #aaa;
+		stroke:  rgb(255, 255, 255);
 		stroke-dasharray: 2;
 	}
 
 	.tick text {
-		fill: #666;
+		fill: rgb(255, 255, 255);
 		text-anchor: start;
 	}
 
@@ -114,7 +114,6 @@
 
 	.path-line {
 		fill: none;
-		stroke: rgb(0,100,100);
 		stroke-linejoin: round;
 		stroke-linecap: round;
 		stroke-width: 2;

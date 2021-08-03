@@ -52,7 +52,7 @@
     <rect width={xScale2(1.6) - xScale2(0)} height={yScale(2.15) - yScale(4)} x={xScale2(2 / 2)} y={yScale(3.2)} fill='none' stroke='red' ></rect>
 
     {#each pitches as pitch}
-      <circle cx={xScale(pitch.plate_x * 3.2808)} cy={yScale(pitch.plate_z * 3.2808)} r="5" fill="rgba(216, 130, 130, 0.38)"></circle>
+      <circle cx={xScale(pitch.plate_x * 3.2808)} cy={yScale(pitch.plate_z * 3.2808)} r="5" fill={pitch.color} opacity='0.8'></circle>
     {/each}
 	</svg>
 </div>
@@ -76,12 +76,12 @@
 	}
 
 	.tick line {
-		stroke: #aaa;
+		stroke:  rgb(255, 255, 255);
 		stroke-dasharray: 2;
 	}
 
 	.tick text {
-		fill: #666;
+		fill: rgb(255, 255, 255);
 		text-anchor: start;
 	}
 
