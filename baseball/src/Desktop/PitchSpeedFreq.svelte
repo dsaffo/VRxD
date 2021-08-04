@@ -3,13 +3,14 @@
     import {schemeTableau10} from 'd3-scale-chromatic';
   
     export let pitches = []; 
+    export let data = [];
   
     let width = 500;
     let height = 200;
 
 		//get unique pitch types
   
-    const yTicks = [...new Set(pitches.map(item => item.pitch_name))];
+    const yTicks = [...new Set(data.map(item => item.pitch_name))];
     const xTicks = [60, 70, 80, 90, 100];
     const padding = { top: 20, right: 15, bottom: 20, left: 200 };
   
@@ -33,13 +34,13 @@
         for (let i = 0; i < yTicks.length; i++){
             var total = 0; 
             var speed = 0;
-            for (let j = 0; j < pitches.length; j++){
-                if (pitches[j]['pitch_name'] === yTicks[i]){
+            for (let j = 0; j < data.length; j++){
+                if (data[j]['pitch_name'] === yTicks[i]){
                     total += 1; 
-                    speed += pitches[j]['effective_speed'];
+                    speed += data[j]['effective_speed'];
                 }
             }
-            pitchData.push({pitch: yTicks[i], volume: total, percent: (total/pitches.length) * 100, speed: speed/total})
+            pitchData.push({pitch: yTicks[i], volume: total, percent: (total/data.length) * 100, speed: speed/total})
         }
 
     </script>

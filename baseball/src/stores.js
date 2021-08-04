@@ -75,7 +75,7 @@ function percentileStore() {
 
 function pitchesStore() {
 
-    const { subscribe, set, update } = writable(null);
+    const { subscribe, set, update } = writable([]);
 
     return {
         subscribe,
@@ -161,6 +161,7 @@ export const stored_data = pitchesStore();
 
 
 export let page = writable(0);
+export let filter_store = writable([]);
 
 
 

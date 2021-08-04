@@ -1,7 +1,7 @@
 <script>
     import { Col,  Row, Table} from 'sveltestrap';
     import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from '../colorScales.js';
-    import {stored_data } from '../stores.js';
+    import {stored_data, filter_store} from '../stores.js';
 
     export let pitches = [];
     export let stats = {};
@@ -19,7 +19,11 @@
     let pitchSpeeds = ["65-75", "75-85", "85-95", "95-105"];
     let pitchSpeedValues = [70,80,90,100];
 
-    console.log(pitchTypes);
+    let filters = [];
+
+    filters =filters.concat(pitchTypes,pitchOutcomes,pitchSpeeds);
+
+    $: filter_store.set(filters)
 
 </script>
 
@@ -59,7 +63,10 @@
                             <div style="height: 1.5vh; width: 100%; background-color: {pitchTypeColorScale(pitch)}"></div>
                         </Col>
                         <Col>
-                            <p style="margin-left: 5px;">{pitch}</p>
+                            <label>
+                                <input type=checkbox name="filters" value={pitch} bind:group={filters}>
+                                {pitch}
+                            </label>
                         </Col>
                     </Row>   
                     {/each}
@@ -74,7 +81,10 @@
                             <div style="height: 1.5vh; width: 100%; background-color: {pitchOutcomeColorScale(pitch)}"></div>
                         </Col>
                         <Col>
-                            <p style="margin-left: 5px;">{pitch}</p>
+                            <label>
+                                <input type=checkbox name="filters" value={pitch} bind:group={filters}>
+                                {pitch}
+                            </label>
                         </Col>
                     </Row>   
                     {/each}
@@ -89,7 +99,10 @@
                             <div style="height: 1.5vh; width: 100%; background-color: {speedColorScale(speedScale(pitchSpeedValues[i]))}"></div>
                         </Col>
                         <Col>
-                            <p style="margin-left: 5px;">{pitch}</p>
+                            <label>
+                                <input type=checkbox name="filters" value={pitch} bind:group={filters}>
+                                {pitch}
+                            </label>
                         </Col>
                     </Row>   
                     {/each}

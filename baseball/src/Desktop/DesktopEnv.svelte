@@ -1,6 +1,6 @@
 <script>
 	import { Col, Container, Row } from 'sveltestrap';
-  	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store} from '../stores.js';
+  	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, filter_store} from '../stores.js';
 	import OverheadPitch from './OverheadPitch.svelte';
 	import SidePitch from './SidePitch.svelte';
 	import StrikeZone from './StrikeZone.svelte';
@@ -14,24 +14,27 @@
 	let data;
 	let ohtaniStats;
 	let ohtaniPercentile;
+	let filters;
 
-	const sdasd = ohtani_stats_store.subscribe(value => {
+	const stats_unsub = ohtani_stats_store.subscribe(value => {
 		ohtaniStats = value[0];
 	});
 
-	const addasasda = ohtani_percentile_store.subscribe(value => {
+	const percentile_unsub = ohtani_percentile_store.subscribe(value => {
 		ohtaniPercentile = value[0];
 	});
 
-	const unsubscribe = stored_data.subscribe(value => {
+	const pitches_unsub = stored_data.subscribe(value => {
 		data = value;
 	});
 
-
+	const filters_unsub = filter_store.subscribe(value => {
+		filters = value;
+	});
 
 	
 	//print its result for testing
-	$: console.log("hello", ohtaniPercentile)
+	$: console.log("hello", filters);
 
 	let pitch = [];
 
@@ -40,9 +43,28 @@
 	let start = 0;
 	let end = 90;
 
+	function checkSpeed(speed) {
+		if (speed >= 65 && speed <= 75){
+			return "65-75"
+		} 
+		else if (speed >= 75 && speed <= 85) {
+			return "75-85"
+		} 
+		else if (speed >= 85 && speed <= 95) {
+			return "85-95"
+		} 
+		else if (speed >= 95 && speed <= 105) {
+			return "95-105"
+		} else {
+			return "0"
+		}
+	}
+
+	$: filtered_pitches = data.filter(data => filters.includes(data.pitch_name) && filters.includes(data.description) && filters.includes(checkSpeed(data.effective_speed)));
+
 </script>
 
-{#if data!= null}
+{#if data.length != 0}
 	<Container fluid style="height: 100%; margin: 5px;">
 		<Row style="height: 30%;">
 			<Col sm='4' style='padding: 20px;'>
@@ -55,22 +77,22 @@
 
 		<Row style="height: 35%;">
 			<Col  sm='2' style='padding: 20px;'>
-				<StrikeZone pitches={data.slice(start,end)}></StrikeZone>
+				<StrikeZone pitches={filtered_pitches}></StrikeZone>
 			</Col>
 			<Col style='padding: 20px;'>
-				<OverheadPitch data={data.slice(start,end)}></OverheadPitch>
+				<OverheadPitch data={filtered_pitches}></OverheadPitch>
 			</Col>
 			<Col style='padding: 20px;'>
-				<SidePitch data={data.slice(start,end)}></SidePitch>
+				<SidePitch data={filtered_pitches}></SidePitch>
 			</Col>
 		</Row>
 
 		<Row style="height: 35%;">
 			<Col  sm='6' style='padding: 20px;'>
-				<PitchSpeedFreq pitches={data}></PitchSpeedFreq>
+				<PitchSpeedFreq pitches={filtered_pitches} data={data}></PitchSpeedFreq>
 			</Col>
 			<Col sm='6' style='padding: 20px;'>
-				<PitchBreak pitches={data}></PitchBreak>
+				<PitchBreak pitches={filtered_pitches}></PitchBreak>
 			</Col>
 		</Row>
 
