@@ -2,14 +2,84 @@ import { writable } from 'svelte/store';
 import * as d3 from "d3";
 import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from './colorScales.js';
 
-function createStore() {
+function statsStore() {
 
-    const { subscribe, set, update} = writable(null);
+    const {subscribe, set} = writable([]);
+
+    return {
+        subscribe,
+        loadData: async() => set(await d3.csv("./OhtaniStats.csv", function(d){
+            return {
+                wins: parseInt(d.W),
+                loss: parseInt(d.L),
+                games: parseInt(d.G),
+                ERA: parseFloat(d.ERA),
+                IP: parseFloat(d.IP),
+                SO: parseFloat(d.SO),
+                WHIP: parseFloat(d.WHIP),
+                pitches: parseInt(d.Pitches),
+                BB: parseInt(d.Batted_Balls),
+                barrel: parseInt(d.Barrel),
+                barrelPer: parseFloat(d.Barrel_Perc),
+                EV: parseFloat(d.Exit_Velocity),
+                maxEV: parseFloat(d.Max_EV),
+                LA: parseFloat(d.Launch_Angle),
+                SSP: parseFloat(d.Sweet_Spot_Perc),
+                XBA: parseFloat(d.XBA),
+                XSLG: parseFloat(d.XSLG),
+                WOBA: parseFloat(d.WOBA),
+                XWOBA: parseFloat(d.XWOBA),
+                XWOBACON: parseFloat(d.XWOBACON),
+                HHP: parseFloat(d.Hard_Hit_Perc),
+                KP: parseFloat(d.K_Perc),
+                BBP: parseFloat(d.BB_Perc),
+                XERA: parseFloat(d.xERA),
+                hand: d.Hand,
+                age: parseInt(d.Age),
+                team: d.Team,
+                name: d.Name,
+                country: d.Country
+            }
+        }))
+    }
+}
+
+function percentileStore() {
+
+    const {subscribe, set} = writable([]);
+
+    return {
+        subscribe,
+        loadData: async() => set(await d3.csv("./OhtaniPercentiles.csv", function(d){
+            return {
+                xwOBA: parseFloat(d.xwOBA),
+                xBA: parseFloat(d.xBA),
+                xSLG: parseFloat(d.xSLG),
+                xISO: parseFloat(d.xISO),
+                xOBP: parseFloat(d.xOBP),
+                Brl: parseFloat(d.Brl),
+                BrlP: parseFloat(d.Brl_Perc),
+                EV: parseFloat(d.EV),
+                HHP: parseFloat(d.HardHit_Perc),
+                KP: parseFloat(d.K_Perc),
+                BBP: parseFloat(d.BB_Perc),
+                WP: parseFloat(d.Whiff_Perc),
+                xERA: parseFloat(d.xERA),
+                FB_V: parseFloat(d.FB_V),
+                FB_Spin: parseFloat(d.FB_Spin),
+                CB_Spin: parseFloat(d.CB_Spin),
+            }
+        }))
+    }
+}
+
+function pitchesStore() {
+
+    const { subscribe, set, update } = writable(null);
 
     return {
         subscribe,
         loadData: async() => set(await d3.csv("./OhtaniOneGame.csv", function(d){
-
             return {
                 ax: parseFloat(d.ax) / 3.2808,
                 ay: parseFloat(d.ay) / 3.2808,
@@ -57,7 +127,6 @@ function createStore() {
                 color: pitchTypeColorScale(d.pitch_name)
             }
         })),
-
         updateData: (index) => update(store => {
             store[index]['selected'] = !store[index]['selected'];
             const myEvent = new CustomEvent ('myEvent', { detail: store });
@@ -85,10 +154,13 @@ function createStore() {
 
 }
 
-export const stored_data = createStore();
+
+export const ohtani_stats_store = statsStore();
+export const ohtani_percentile_store = percentileStore();
+export const stored_data = pitchesStore();
+
 
 export let page = writable(0);
 
-export let colorScale = writable("pitchType");
 
 

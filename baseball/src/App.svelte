@@ -1,5 +1,5 @@
 <script>
-	import { page, stored_data } from './stores.js';
+	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data} from './stores.js';
 	import { onMount } from 'svelte';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
@@ -9,6 +9,8 @@
 	
 	onMount(async () => {
 		stored_data.loadData();
+		ohtani_stats_store.loadData();
+		ohtani_percentile_store.loadData();
 	})
 
 

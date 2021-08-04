@@ -1,17 +1,10 @@
 <script>
-    import { Col,  Row } from 'sveltestrap';
+    import { Col,  Row, Table} from 'sveltestrap';
     import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from '../colorScales.js';
     import {stored_data } from '../stores.js';
 
     export let pitches = [];
-    export let name = "Panda";
-    export let image = "https://cdn.vox-cdn.com/thumbor/0kp4viyQjwMYvOMpDMFyegO4TEw=/12x0:4907x3263/920x613/filters:focal(12x0:4907x3263):format(webp)/cdn.vox-cdn.com/uploads/chorus_image/image/49388585/16071828377_85109fdee4_o.0.0.jpg";
-    export let age = 5;
-    export let team = "Cool Cats";
-    export let hand = "Paws";
-    export let games = 100;
-    export let wins = 100;
-    export let losses = 0;
+    export let stats = {};
 
     let selected = "type";
 
@@ -36,32 +29,22 @@
 			
 			</Col>
 			<Col sm='10'>
-				<Row style="height: 50%;">
-                    <Col>
-                        <h5>Name: {name}</h5>
-                    </Col>
-                    <Col>
-                        <h5>Age: {age}</h5>
-                    </Col>
-                    <Col>
-                        <h5>Team: {team}</h5>
-                    </Col>
-                    
-                </Row>
-                <Row style="height: 50%;">
-                    <Col>
-                        <h5>Hand: {hand}</h5>
-                    </Col>
-                    <Col>
-                        <h5>Games: {games}</h5>
-                    </Col>
-                    <Col>
-                        <h5>Wins: {wins}</h5>
-                    </Col>
-                    <Col>
-                        <h5>Losses: {losses}</h5>
-                    </Col>
-                </Row>
+				<Table borderless>
+                    <tbody>
+                      <tr>
+                        <td>Name: {stats.name}</td>
+                        <td>Age: {stats.age}</td>
+                        <td>Team: {stats.team}</td>
+                        <td>Country: {stats.country}</td>
+                      </tr>
+                      <tr>
+                        <td>Throws: {stats.hand}</td>
+                        <td>Games: {stats.games}</td>
+                        <td>Wins: {stats.wins}</td>
+                        <td>Losses: {stats.loss}</td>
+                      </tr>
+                    </tbody>
+                  </Table>
 			</Col>
         </Row>
 
@@ -128,5 +111,10 @@
     h4 {
         font-size: 1.2vh;
         
+    }
+
+    tbody{
+        color: white;
+        font-size: 0.7vw;
     }
 </style>
