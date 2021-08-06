@@ -8,7 +8,7 @@ function statsStore() {
 
     return {
         subscribe,
-        loadData: async() => set(await d3.csv("./OhtaniStats.csv", function(d){
+        loadData: async(file) => set(await d3.csv(file, function(d){
             return {
                 wins: parseInt(d.W),
                 loss: parseInt(d.L),
@@ -50,7 +50,7 @@ function percentileStore() {
 
     return {
         subscribe,
-        loadData: async() => set(await d3.csv("./OhtaniPercentiles.csv", function(d){
+        loadData: async(file) => set(await d3.csv(file, function(d){
             return {
                 xwOBA: parseFloat(d.xwOBA),
                 xBA: parseFloat(d.xBA),
@@ -79,7 +79,7 @@ function pitchesStore() {
 
     return {
         subscribe,
-        loadData: async() => set(await d3.csv("./OhtaniOneGame.csv", function(d){
+        loadData: async(file) => set(await d3.csv(file, function(d){
             return {
                 ax: parseFloat(d.ax) / 3.2808,
                 ay: parseFloat(d.ay) / 3.2808,
@@ -124,7 +124,6 @@ function pitchesStore() {
                 vy0: parseFloat(d.vy0) / 3.2808,
                 vz0: parseFloat(d.vz0) / 3.2808,
                 zone: parseInt(d.zone),
-                color: pitchTypeColorScale(d.pitch_name)
             }
         })),
         updateData: (index) => update(store => {
@@ -136,32 +135,76 @@ function pitchesStore() {
             return store;
         }),
 
-        updateColor: (scale) => update(store => {
-            if (scale === "type"){
-                store.forEach((pitch, index) => store[index]['color'] = pitchTypeColorScale(pitch.pitch_name));
-            } 
-            else if (scale === "speed"){
-                store.forEach((pitch, index) => store[index]['color'] = speedColorScale(speedScale(pitch.effective_speed)));
-            } 
-            else if (scale === "outcome"){
-                store.forEach((pitch, index) => store[index]['color'] = pitchOutcomeColorScale(pitch.description));
-            } 
-
-            return store;
-        }),
         updateStore: (received_store) => {console.log("stored", received_store); set(received_store)}
     };
 
 }
 
+function interactionStore (){
+    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: [0]});
+    let peekInterval = null;
+
+  
+
+    return{
+        subscribe,
+
+        updateLocalColor: (color) => update(store => {
+            store.color_store = color;
+            return store
+        }),
+
+        updateLocalFilter: (filters) => update(store => {
+            store.filter_store = filters;
+            return store
+        }),
+
+        updateLocalHover: (hovers) => update(store => {
+            store.hover_store = hovers;
+            return store
+        }),
+
+        updateLocalPitcher: (pitcher) => update(store => {
+            store.pitcher_store = pitcher;
+            return store
+        }),
+
+        peekStart: (peerInteraction) => update(store => {
+            tempLocalInteractionStore = store;
+            store = peerInteraction;
+            peekInterval = setInterval(() => {update(store => peerInteraction)}, 0.05);
+            return store
+        }),
+
+        peekEnd: () => update(store => {
+            clearInterval(peekInterval);
+            return  tempLocalInteractionStore
+        }),
+
+        copy: (peerInteraction) =>  update(store => {
+            store = peerInteraction;
+            return store
+        }),
+    }
+}
+
+
+
+let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: [0]};
+
+
+
 
 export const ohtani_stats_store = statsStore();
 export const ohtani_percentile_store = percentileStore();
 export const stored_data = pitchesStore();
+export const interaction_store = interactionStore();
 
 
 export let page = writable(0);
-export let filter_store = writable([]);
+
+
+
 
 
 

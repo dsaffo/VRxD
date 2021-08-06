@@ -1,20 +1,21 @@
 <script>
 	import { Col, Container, Row } from 'sveltestrap';
-  	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, filter_store} from '../stores.js';
+  import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
 	import OverheadPitch from './OverheadPitch.svelte';
 	import SidePitch from './SidePitch.svelte';
 	import StrikeZone from './StrikeZone.svelte';
-  	import PitchBreak from './PitchBreak.svelte';
-  	import PitchSpeedFreq from './PitchSpeedFreq.svelte';
+  import PitchBreak from './PitchBreak.svelte';
+  import PitchSpeedFreq from './PitchSpeedFreq.svelte';
 	import PitcherCard from './PitcherCard.svelte';
 	import StatCard from './StatCard.svelte';
 
+	export let peerInteractions = null;
 
 	//subscribe to stored_data and assign its value to data
 	let data;
 	let ohtaniStats;
 	let ohtaniPercentile;
-	let filters;
+	let interactions;
 
 	const stats_unsub = ohtani_stats_store.subscribe(value => {
 		ohtaniStats = value[0];
@@ -28,13 +29,12 @@
 		data = value;
 	});
 
-	const filters_unsub = filter_store.subscribe(value => {
-		filters = value;
+	const interaction_unsub = interaction_store.subscribe(value => {
+		interactions = value;
 	});
 
+
 	
-	//print its result for testing
-	$: console.log("hello", filters);
 
 	let pitch = [];
 
@@ -44,6 +44,9 @@
 	let end = 90;
 
 	function checkSpeed(speed) {
+
+		console.log("checked");
+
 		if (speed >= 65 && speed <= 75){
 			return "65-75"
 		} 
@@ -60,7 +63,7 @@
 		}
 	}
 
-	$: filtered_pitches = data.filter(data => filters.includes(data.pitch_name) && filters.includes(data.description) && filters.includes(checkSpeed(data.effective_speed)));
+	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
 
 </script>
 
@@ -97,6 +100,10 @@
 		</Row>
 
 		<button on:click="{() => page.update(n => n = 1)}">switch</button>
+
+		<button on:mousedown="{() => interaction_store.peekStart(peerInteractions)}" on:mouseup="{() => interaction_store.peekEnd()}">Peek Test</button>
+
+		<button on:click="{() => interaction_store.copy(peerInteractions)}">Copy Test</button>
 	</Container>
 
 

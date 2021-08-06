@@ -8,9 +8,9 @@
 
 	
 	onMount(async () => {
-		stored_data.loadData();
-		ohtani_stats_store.loadData();
-		ohtani_percentile_store.loadData();
+		stored_data.loadData("./OhtaniOneGame.csv");
+		ohtani_stats_store.loadData("./OhtaniStats.csv");
+		ohtani_percentile_store.loadData("./OhtaniPercentiles.csv");
 	})
 
 
@@ -29,6 +29,10 @@
 		page_value = value;
 	});
 
+	let peer = {pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'hit_into_play', '95-105'], color_store: "speed", hover_store: [0]};
+
+	$: console.log(peer);
+
 	//when data is loaded print to console 
 	//$: console.log($stored_data);
 
@@ -40,7 +44,7 @@
 
 {#if page_value == 0}
 
-	<DesktopEnv></DesktopEnv>
+	<DesktopEnv peerInteractions={peer}></DesktopEnv>
 
 {/if}
 

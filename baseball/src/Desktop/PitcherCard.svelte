@@ -1,29 +1,44 @@
 <script>
     import { Col,  Row, Table} from 'sveltestrap';
     import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from '../colorScales.js';
-    import {stored_data, filter_store} from '../stores.js';
+    import { interaction_store } from '../stores.js';
 
     export let pitches = [];
     export let stats = {};
 
-    let selected = "type";
+    let interactions;
+
+    const unsubscribe = interaction_store.subscribe(value => {
+        interactions = value;
+    })
 
     function onChange(event) {
-		selected = event.currentTarget.value;
-        stored_data.updateColor(selected);
+        console.log("changed");
+		let selected = event.currentTarget.value;
+        interaction_store.updateLocalColor(selected);
 	}
-
 
     let pitchTypes = [...new Set(pitches.map(item => item.pitch_name))];
     let pitchOutcomes = [...new Set(pitches.map(item => item.description))];
     let pitchSpeeds = ["65-75", "75-85", "85-95", "95-105"];
     let pitchSpeedValues = [70,80,90,100];
 
-    let filters = [];
+    
 
-    filters =filters.concat(pitchTypes,pitchOutcomes,pitchSpeeds);
+    interaction_store.updateLocalFilter([].concat(pitchTypes,pitchOutcomes,pitchSpeeds));
 
-    $: filter_store.set(filters)
+    function onFilterChange(event) {
+		var changed = event.currentTarget.value;
+        let filters = $interaction_store.filter_store;
+        console.log(filters);
+        if(!filters.includes(changed)){          //checking weather filtersay contain the id
+            filters.push(changed);               //adding to filtersay because value doesnt exists
+        }else{
+            filters.splice(filters.indexOf(changed), 1);  //deleting
+        }
+
+        interaction_store.updateLocalFilter(filters);
+	}
 
 </script>
 
@@ -55,7 +70,7 @@
         <Row  style="height: 60%; border: 2px solid grey;"> 
                 <Col>
                     <label style="display: inline-flex;">
-                        <h4>Pitch Type</h4>  <input checked={selected==="type"} on:change={onChange} type="radio" name="legend" value="type" /> 
+                        <h4>Pitch Type</h4>  <input checked={$interaction_store.color_store=="type"} on:change={onChange} type="radio" name="legend" value="type" /> 
                     </label>
                     {#each pitchTypes as pitch}
                     <Row style="margin-bottom: -1.8vh;">
@@ -64,7 +79,7 @@
                         </Col>
                         <Col>
                             <label>
-                                <input type=checkbox name="filters" value={pitch} bind:group={filters}>
+                                <input type=checkbox name="filters" value={pitch} on:change={onFilterChange} checked={$interaction_store.filter_store.includes(pitch)}>
                                 {pitch}
                             </label>
                         </Col>
@@ -73,7 +88,7 @@
                 </Col>
                 <Col>
                     <label style="display: inline-flex;">
-                        <h4>Pitch Outcome</h4>  <input checked={selected==="outcome"} on:change={onChange} type="radio" name="legend" value="outcome" /> 
+                        <h4>Pitch Outcome</h4>  <input checked={$interaction_store.color_store=="outcome"} on:change={onChange} type="radio" name="legend" value="outcome" /> 
                     </label>
                     {#each pitchOutcomes as pitch}
                     <Row style="margin-bottom: -1.8vh;">
@@ -82,7 +97,7 @@
                         </Col>
                         <Col>
                             <label>
-                                <input type=checkbox name="filters" value={pitch} bind:group={filters}>
+                                <input type=checkbox name="filters" value={pitch} on:change={onFilterChange} checked={$interaction_store.filter_store.includes(pitch)}>
                                 {pitch}
                             </label>
                         </Col>
@@ -91,7 +106,7 @@
                 </Col>
                 <Col>
                     <label style="display: inline-flex;">
-                        <h4>Pitch Speed (mph)</h4>  <input checked={selected==="speed"} on:change={onChange} type="radio" name="legend" value="speed" /> 
+                        <h4>Pitch Speed (mph)</h4>  <input checked={$interaction_store.color_store=="speed"} on:change={onChange} type="radio" name="legend" value="speed" /> 
                     </label>
                     {#each pitchSpeeds as pitch , i}
                     <Row style="margin-bottom: -1.8vh;">
@@ -100,7 +115,7 @@
                         </Col>
                         <Col>
                             <label>
-                                <input type=checkbox name="filters" value={pitch} bind:group={filters}>
+                                <input type=checkbox name="filters" value={pitch} on:change={onFilterChange} checked={$interaction_store.filter_store.includes(pitch)}>
                                 {pitch}
                             </label>
                         </Col>
