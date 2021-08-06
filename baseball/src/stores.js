@@ -1,4 +1,4 @@
-import { writable } from 'svelte/store';
+import { writable, readable } from 'svelte/store';
 import * as d3 from "d3";
 import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from './colorScales.js';
 
@@ -142,9 +142,7 @@ function pitchesStore() {
 
 function interactionStore (){
     const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: [0]});
-    let peekInterval = null;
-
-  
+    let peerInterval = null;
 
     return{
         subscribe,
@@ -156,6 +154,8 @@ function interactionStore (){
 
         updateLocalFilter: (filters) => update(store => {
             store.filter_store = filters;
+            console.log(filters);
+            console.log(peerInteraction.filter_store);
             return store
         }),
 
@@ -169,32 +169,48 @@ function interactionStore (){
             return store
         }),
 
-        peekStart: (peerInteraction) => update(store => {
+        peekStart: () => update(store => {
+
+            let peer_store;
+            let unsub = peerInteraction.subscribe(value => peer_store = value);
+
             tempLocalInteractionStore = store;
-            store = peerInteraction;
-            peekInterval = setInterval(() => {update(store => peerInteraction)}, 0.05);
+            store = peer_store;
+            peerInterval = setInterval(() => {update(store => peer_store)}, 0.05);
+            unsub();
             return store
         }),
 
         peekEnd: () => update(store => {
-            clearInterval(peekInterval);
+            clearInterval(peerInterval);
             return  tempLocalInteractionStore
         }),
 
-        copy: (peerInteraction) =>  update(store => {
-            store = peerInteraction;
+        copyStart: () => update(store => {
+            let peer_store;
+            let unsub = peerInteraction.subscribe(value => peer_store = value);
+            
+            store = peer_store;
+            unsub();
             return store
+        }),
+
+        copyEnd: () => update(store => {
+            return  tempLocalInteractionStore
         }),
     }
 }
 
 
+export const peerInteraction = readable({}, function start(set) {
+    set({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'hit_into_play', '95-105'], color_store: "speed", hover_store: [0]});
+
+    return function stop(){};
+});
 
 let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: [0]};
 
-
-
-
+//export let peerInteraction = {pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'hit_into_play', '95-105'], color_store: "speed", hover_store: [0]};
 export const ohtani_stats_store = statsStore();
 export const ohtani_percentile_store = percentileStore();
 export const stored_data = pitchesStore();

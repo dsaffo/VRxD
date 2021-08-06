@@ -30,7 +30,6 @@
     function onFilterChange(event) {
 		var changed = event.currentTarget.value;
         let filters = $interaction_store.filter_store;
-        console.log(filters);
         if(!filters.includes(changed)){          //checking weather filtersay contain the id
             filters.push(changed);               //adding to filtersay because value doesnt exists
         }else{

@@ -29,10 +29,6 @@
 		page_value = value;
 	});
 
-	let peer = {pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'hit_into_play', '95-105'], color_store: "speed", hover_store: [0]};
-
-	$: console.log(peer);
-
 	//when data is loaded print to console 
 	//$: console.log($stored_data);
 
@@ -44,7 +40,7 @@
 
 {#if page_value == 0}
 
-	<DesktopEnv peerInteractions={peer}></DesktopEnv>
+	<DesktopEnv></DesktopEnv>
 
 {/if}
 

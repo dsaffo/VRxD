@@ -9,7 +9,6 @@
 	import PitcherCard from './PitcherCard.svelte';
 	import StatCard from './StatCard.svelte';
 
-	export let peerInteractions = null;
 
 	//subscribe to stored_data and assign its value to data
 	let data;
@@ -33,7 +32,8 @@
 		interactions = value;
 	});
 
-
+	const filters = ['4-Seam Fastball', 'hit_into_play', '95-105'];
+	const color = "outcome"
 	
 
 	let pitch = [];
@@ -101,9 +101,9 @@
 
 		<button on:click="{() => page.update(n => n = 1)}">switch</button>
 
-		<button on:mousedown="{() => interaction_store.peekStart(peerInteractions)}" on:mouseup="{() => interaction_store.peekEnd()}">Peek Test</button>
+		<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek Test</button>
 
-		<button on:click="{() => interaction_store.copy(peerInteractions)}">Copy Test</button>
+		<button on:click="{() => interaction_store.copyStart()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy Test</button>
 	</Container>
 
 
