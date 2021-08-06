@@ -76,7 +76,7 @@ function percentileStore() {
 function pitchesStore() {
 
     const { subscribe, set, update } = writable([]);
-
+    let id = -1;
     return {
         subscribe,
         loadData: async(file) => set(await d3.csv(file, function(d){
@@ -124,6 +124,7 @@ function pitchesStore() {
                 vy0: parseFloat(d.vy0) / 3.2808,
                 vz0: parseFloat(d.vz0) / 3.2808,
                 zone: parseInt(d.zone),
+                id: id += 1
             }
         })),
         updateData: (index) => update(store => {
@@ -141,7 +142,7 @@ function pitchesStore() {
 }
 
 function interactionStore (){
-    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: [0]});
+    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
     let peerInterval = null;
 
     return{
@@ -159,8 +160,8 @@ function interactionStore (){
             return store
         }),
 
-        updateLocalHover: (hovers) => update(store => {
-            store.hover_store = hovers;
+        updateLocalHover: (hover) => update(store => {
+            store.hover_store = hover;
             return store
         }),
 
@@ -189,7 +190,6 @@ function interactionStore (){
         copyStart: () => update(store => {
             let peer_store;
             let unsub = peerInteraction.subscribe(value => peer_store = value);
-            
             store = peer_store;
             unsub();
             return store
@@ -201,22 +201,18 @@ function interactionStore (){
     }
 }
 
-
 export const peerInteraction = readable({}, function start(set) {
-    set({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'hit_into_play', '95-105'], color_store: "speed", hover_store: [0]});
+    set({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'hit_into_play', '95-105'], color_store: "speed", hover_store: 0});
 
     return function stop(){};
 });
 
-let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: [0]};
+let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null};
 
-//export let peerInteraction = {pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'hit_into_play', '95-105'], color_store: "speed", hover_store: [0]};
 export const ohtani_stats_store = statsStore();
 export const ohtani_percentile_store = percentileStore();
 export const stored_data = pitchesStore();
 export const interaction_store = interactionStore();
-
-
 export let page = writable(0);
 
 

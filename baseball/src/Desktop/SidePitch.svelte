@@ -1,7 +1,7 @@
 <script>
   import { scaleLinear } from "d3-scale";
   import { pitch_trajectory } from "../pitchCalc.js";
-  import { interaction_store } from "../stores";
+  import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
 
   export let data = [];
@@ -48,11 +48,36 @@
       .join("L")}`;
   };
 
-  function formatMobile(tick) {
-    return "'" + tick.toString().slice(-2);
+  $: stroke = (id) => {
+    let peer_store;
+    let unsub = peerInteraction.subscribe(value => peer_store = value);
+
+    if (interactions.hover_store == id || peer_store.hover_store == id){
+      unsub();
+      return "8"
+    } 
+    unsub();
+    return "2"
   }
 
-  console.log(data);
+  $: opacity = (id) => {
+    if (interactions.hover_store == id){
+      return "1"
+    } 
+    else if (interactions.hover_store == null){
+      return "0.8"
+    }
+
+    return "0.1"
+  }
+
+  function mouseOver(id){
+    interaction_store.updateLocalHover(id);
+  }
+
+  function mouseOut(){
+    interaction_store.updateLocalHover(null);
+  }
 </script>
 
 <div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
@@ -112,11 +137,15 @@
 
     <!-- data -->
     {#each data as pitch}
+      <!-- svelte-ignore a11y-mouse-events-have-key-events -->
       <path
         class="path-line"
         d={pathGen(pitch)}
         stroke={colorScale(interactions.color_store, pitch)}
-        opacity="0.6"
+        opacity={opacity(pitch.id)}
+        stroke-width={stroke(pitch.id)}
+        on:mouseover={() => mouseOver(pitch.id)}
+        on:mouseout={() => mouseOut()}
       />
     {/each}
   </svg>
@@ -164,6 +193,5 @@
     fill: none;
     stroke-linejoin: round;
     stroke-linecap: round;
-    stroke-width: 2;
   }
 </style>

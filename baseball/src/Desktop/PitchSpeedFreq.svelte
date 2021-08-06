@@ -1,7 +1,7 @@
 <script>
   import { scaleLinear, scaleOrdinal, scaleBand } from "d3-scale";
   import { schemeTableau10 } from "d3-scale-chromatic";
-  import { interaction_store } from "../stores";
+  import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
 
   export let pitches = [];
@@ -53,6 +53,37 @@
       speed: speed / total,
     });
   }
+
+  $: radius = (id) => {
+    let peer_store;
+    let unsub = peerInteraction.subscribe(value => peer_store = value);
+
+    if (interactions.hover_store == id || peer_store.hover_store == id){
+      unsub();
+      return "10"
+    } 
+    unsub();
+    return "5"
+  }
+
+  $: opacity = (id) => {
+    if (interactions.hover_store == id){
+      return "1"
+    } 
+    else if (interactions.hover_store == null){
+      return "0.8"
+    }
+
+    return "0.1"
+  }
+
+  function mouseOver(index){
+    interaction_store.updateLocalHover(index);
+  }
+
+  function mouseOut(){
+    interaction_store.updateLocalHover(null);
+  }
 </script>
 
 <div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
@@ -97,12 +128,15 @@
 
     <g class="Pitch_Speed_Dot">
       {#each pitches as pitch}
+        <!-- svelte-ignore a11y-mouse-events-have-key-events -->
         <circle
-          r="5"
           cx={xScale(pitch.effective_speed)}
           cy={yScale(pitch.pitch_name) + 10}
           fill={colorScale(interactions.color_store, pitch)}
-          opacity="0.6"
+          r={radius(pitch.id)}
+          opacity={opacity(pitch.id)}
+          on:mouseover={() => mouseOver(pitch.id)}
+          on:mouseout={() => mouseOut()}
         />
       {/each}
     </g>
