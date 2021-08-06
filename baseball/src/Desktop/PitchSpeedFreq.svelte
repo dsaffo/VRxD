@@ -4,6 +4,7 @@
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
 
+
   export let pitches = [];
   export let data = [];
 
@@ -126,7 +127,7 @@
       {/each}
     </g>
 
-    <g class="Pitch_Speed_Dot">
+    <g class="Pitch_Speed_Dot"> 
       {#each pitches as pitch}
         <!-- svelte-ignore a11y-mouse-events-have-key-events -->
         <circle
@@ -137,6 +138,7 @@
           opacity={opacity(pitch.id)}
           on:mouseover={() => mouseOver(pitch.id)}
           on:mouseout={() => mouseOut()}
+         
         />
       {/each}
     </g>

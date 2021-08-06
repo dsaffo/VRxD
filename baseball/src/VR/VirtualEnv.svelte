@@ -3,30 +3,53 @@
 	import "aframe-teleport-controls";
 	import "aframe-thumb-controls-component";
 	import "aframe-extras";
-	import "aframe-curve-component";
-	import { pitch_trajectory }  from '../pitchCalc.js';
-	import { page, stored_data } from '../stores.js';
+	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
 	import Field from './Field.svelte';
+	import ThreeDPitches from './ThreeDpitches.svelte';
 
 	//subscribe to stored_data and assign its value to data
+	//subscribe to stored_data and assign its value to data
 	let data;
-	const unsubscribe = stored_data.subscribe(value => {
+	let ohtaniStats;
+	let ohtaniPercentile;
+	let interactions;
+
+	const stats_unsub = ohtani_stats_store.subscribe(value => {
+		ohtaniStats = value[0];
+	});
+
+	const percentile_unsub = ohtani_percentile_store.subscribe(value => {
+		ohtaniPercentile = value[0];
+	});
+
+	const pitches_unsub = stored_data.subscribe(value => {
 		data = value;
 	});
-  //print its result for testing
-  $: console.log(data);
 
-  let pitch = [];
+	const interaction_unsub = interaction_store.subscribe(value => {
+		interactions = value;
+	});
 
-  let index = 68;
 
-  if (data != null){
-  	pitch = pitch_trajectory(data[index]['release_pos_x'],data[index]['release_pos_y'],data[index]['release_pos_z'],
-	  						data[index]['vx0'], data[index]['vy0'], data[index]['vz0'],data[index]['ax'],data[index]['ay'],data[index]['az'],data[index]['release_spin_rate'],0.001)
-  }
+	function checkSpeed(speed) {
 
-  $: console.log(pitch);
+		if (speed >= 65 && speed <= 75){
+			return "65-75"
+		} 
+		else if (speed >= 75 && speed <= 85) {
+			return "75-85"
+		} 
+		else if (speed >= 85 && speed <= 95) {
+			return "85-95"
+		} 
+		else if (speed >= 95 && speed <= 105) {
+			return "95-105"
+		} else {
+			return "0"
+		}
+	}
 
+	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
 
 
 </script>
@@ -55,16 +78,8 @@ rotation="0 -180 0">
 
 <Field></Field>  
 
-{#if data != null}
-<a-curve id="track1" type="CatmullRom" position="0 0 0" rotation="" scale="" visible="" curve="">
-	{#each pitch as p}
-		<a-curve-point position="{-p.x} {p.z} {p.y}"></a-curve-point>
-	{/each}
-  </a-curve>
-
-  <a-draw-curve curveref="#track1" material="shader: line; color: blue;"></a-draw-curve>
-
-  <a-sphere position="{-data[index]['plate_x']} {data[index]['plate_z']} 0" radius='0.036'></a-sphere>
+{#if data.length != 0}
+	<ThreeDPitches pitches={filtered_pitches}></ThreeDPitches>
 {/if}
 
   

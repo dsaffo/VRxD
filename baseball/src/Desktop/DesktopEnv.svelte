@@ -1,11 +1,11 @@
 <script>
 	import { Col, Container, Row } from 'sveltestrap';
-  import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
+  	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
 	import OverheadPitch from './OverheadPitch.svelte';
 	import SidePitch from './SidePitch.svelte';
 	import StrikeZone from './StrikeZone.svelte';
-  import PitchBreak from './PitchBreak.svelte';
-  import PitchSpeedFreq from './PitchSpeedFreq.svelte';
+  	import PitchBreak from './PitchBreak.svelte';
+  	import PitchSpeedFreq from './PitchSpeedFreq.svelte';
 	import PitcherCard from './PitcherCard.svelte';
 	import StatCard from './StatCard.svelte';
 
@@ -31,17 +31,6 @@
 	const interaction_unsub = interaction_store.subscribe(value => {
 		interactions = value;
 	});
-
-	const filters = ['4-Seam Fastball', 'hit_into_play', '95-105'];
-	const color = "outcome"
-	
-
-	let pitch = [];
-
-	let index = 0;
-
-	let start = 0;
-	let end = 90;
 
 	function checkSpeed(speed) {
 
