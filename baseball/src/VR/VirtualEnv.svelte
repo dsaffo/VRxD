@@ -1,11 +1,13 @@
 <script>
 	import "aframe";
+	import "aframe-htmlembed-component";
 	import "aframe-teleport-controls";
 	import "aframe-thumb-controls-component";
 	import "aframe-extras";
 	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
 	import Field from './Field.svelte';
 	import ThreeDPitches from './ThreeDpitches.svelte';
+	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
 
 	//subscribe to stored_data and assign its value to data
 	//subscribe to stored_data and assign its value to data
@@ -80,6 +82,10 @@ rotation="0 -180 0">
 
 {#if data.length != 0}
 	<ThreeDPitches pitches={filtered_pitches}></ThreeDPitches>
+	<a-entity htmlembed position="-1.02 1.34 -0.2" scale="0.2 0.2 0.2" rotation="0 140 0" style="height: 1080px; width: 1930px;">
+		<DesktopEnv></DesktopEnv>
+	</a-entity>
+
 {/if}
 
   

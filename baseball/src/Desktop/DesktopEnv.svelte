@@ -80,19 +80,25 @@
 		</Row>
 
 		<Row style="height: 35%;">
-			<Col  sm='6' style='padding: 20px;'>
+			
+			<Col sm='6' style='padding: 20px;'>
+				
 				<PitchSpeedFreq pitches={filtered_pitches} data={data}></PitchSpeedFreq>
+				
 			</Col>
+			
 			<Col sm='6' style='padding: 20px;'>
 				<PitchBreak pitches={filtered_pitches}></PitchBreak>
 			</Col>
 		</Row>
 
-		<button on:click="{() => page.update(n => n = 1)}">switch</button>
+		<Row>
+			<button on:click="{() => page.update(n => n = 1)}">switch</button>
 
-		<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek Test</button>
+			<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek Test</button>
 
-		<button on:click="{() => interaction_store.copyStart()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy Test</button>
+			<button on:click="{() => interaction_store.copyStart()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy Test</button>
+		</Row>
 	</Container>
 
 

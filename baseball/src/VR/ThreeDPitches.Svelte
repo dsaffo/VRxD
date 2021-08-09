@@ -33,15 +33,19 @@
 
 </script>
 
+<a-entity id="pitch-paths">
 {#each pitches as pitch, i}
-<a-curve id="track{i}" type="CatmullRom" position="0 0 0" rotation="" scale="" visible="" curve="">
+<a-entity>
+    <a-curve id="track{i}" type="CatmullRom" position="0 0 0" rotation="" scale="" visible="" curve="">
         {#each pathGen(pitch) as p}
-		    <a-curve-point position="{-p.x} {p.z} {p.y}"></a-curve-point>
+            <a-curve-point position="{-p.x} {p.z} {p.y}"></a-curve-point>
         {/each}
-  </a-curve>
-  <a-draw-curve curveref="#track{i}" material="shader: line; color: {colorScale(interactions.color_store, pitch)};"></a-draw-curve>
+    </a-curve>
+    <a-draw-curve curveref="#track{i}" material="shader: line; color: {colorScale(interactions.color_store, pitch)};"></a-draw-curve>
 
-  <a-sphere position="{-pitch['plate_x']} {pitch['plate_z']} 0" radius='0.036' color={colorScale(interactions.color_store, pitch)}></a-sphere>
+    <a-sphere position="{-pitch['plate_x']} {pitch['plate_z']} 0" radius='0.036' color={colorScale(interactions.color_store, pitch)}></a-sphere>
+</a-entity>
 {/each}
+</a-entity>
 
   <!--<a-sphere position="{-data[index]['plate_x']} {data[index]['plate_z']} 0" radius='0.036'></a-sphere>-->

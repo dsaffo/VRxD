@@ -12,8 +12,11 @@
     interactions = value;
   });
 
-  let width = 500;
-  let height = 200;
+  let innerWidth = 500;
+  let innerHeight = 200;
+
+  $: width = innerWidth * 0.40 - 40;
+  $: height = innerHeight * 0.35 - 60;
 
   const yTicks = [0, 2, 4, 6];
   const xTicks = [0, 10, 20, 30, 40, 50, 60];
@@ -80,7 +83,9 @@
   }
 </script>
 
-<div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
+<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
+
+<div class="chart">
   <svg>
     <!-- y axis -->
     <g class="axis y-axis" transform="translate(0, {padding.top})">
@@ -152,9 +157,7 @@
 </div>
 
 <style>
-  .chart,
-  h2,
-  p {
+  .chart {
     width: 100%;
     height: 100%;
   }

@@ -12,8 +12,12 @@
   export let pitches = [];
 
 
-  let width = 500;
-  let height = 200;
+  
+  let innerWidth = 500;
+  let innerHeight = 200;
+
+  $: width = innerWidth * 0.50 - 40;
+  $: height = innerHeight * 0.35 - 40;
 
   const pitch_types = [...new Set(pitches.map((item) => item.pitch_name))];
   const yTicks = [0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90];
@@ -60,7 +64,9 @@
   }
 </script>
 
-<div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
+<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
+
+<div class="chart">
   <svg>
     <!-- y axis -->
     <g class="axis y-axis" transform="translate(0, {padding.top})">
@@ -104,9 +110,7 @@
 </div>
 
 <style>
-  .chart,
-  h2,
-  p {
+  .chart{
     width: 100%;
     height: 100%;
   }
