@@ -2,6 +2,19 @@ import { writable, readable } from 'svelte/store';
 import * as d3 from "d3";
 import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from './colorScales.js';
 
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
+
+export let clientId = makeid(10);
+
 function statsStore() {
 
     const {subscribe, set} = writable([]);
@@ -141,6 +154,13 @@ function pitchesStore() {
 
 }
 
+function updatePeer(store){
+    const updateEvent = new CustomEvent ('interaction_update', {detail: {interactions:store, id:clientId}});
+    console.log("dispatching event", store)
+    document.body.dispatchEvent(updateEvent);
+    console.log("event dispatched")
+}
+
 function interactionStore (){
     const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
     let peerInterval = null;
@@ -150,23 +170,25 @@ function interactionStore (){
 
         updateLocalColor: (color) => update(store => {
             store.color_store = color;
+            updatePeer(store);
             return store
         }),
 
         updateLocalFilter: (filters) => update(store => {
             store.filter_store = filters;
-            console.log(filters);
-            console.log(peerInteraction.filter_store);
+            updatePeer(store);
             return store
         }),
 
         updateLocalHover: (hover) => update(store => {
             store.hover_store = hover;
+            updatePeer(store);
             return store
         }),
 
         updateLocalPitcher: (pitcher) => update(store => {
             store.pitcher_store = pitcher;
+            updatePeer(store);
             return store
         }),
 
@@ -201,11 +223,28 @@ function interactionStore (){
     }
 }
 
-export const peerInteraction = readable({}, function start(set) {
-    set({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'hit_into_play', '95-105'], color_store: "speed", hover_store: 0});
 
-    return function stop(){};
-});
+function peerInteractionStore (){
+    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
+
+    return {
+    subscribe,
+    updateData: (detail) => update(store => {
+        console.log("recieved");
+        if (detail.id != clientId){
+            console.log("accepted");
+            store = detail.interactions;
+            return store;
+        } else {
+            console.log("rejected");
+            return store;
+        }
+    })
+}
+}
+
+
+export const peerInteraction = peerInteractionStore();
 
 let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null};
 

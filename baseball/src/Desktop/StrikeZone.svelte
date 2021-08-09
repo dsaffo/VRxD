@@ -35,14 +35,13 @@
 
 
   $: radius = (id) => {
-    let peer_store;
-    let unsub = peerInteraction.subscribe(value => peer_store = value);
+    
 
-    if (interactions.hover_store == id || peer_store.hover_store == id){
-      unsub();
+    if (interactions.hover_store == id || $peerInteraction.hover_store == id){
+      
       return "10"
     } 
-    unsub();
+    
     return "5"
   }
 

@@ -1,5 +1,5 @@
 <script>
-	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data} from './stores.js';
+	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction} from './stores.js';
 	import { onMount } from 'svelte';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
@@ -22,6 +22,8 @@
 	/* Example of event listener that updates the data when UpdateData is called from store.js
 	document.body.addEventListener('myEvent', (e) => { stored_data.updateStore(e.detail) });
 	*/
+
+	document.body.addEventListener('interaction_update', (e) => { peerInteraction.updateData(e.detail) });
 
 	let page_value;
 
