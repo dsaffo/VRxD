@@ -4,6 +4,7 @@
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
 	import { pitch_trajectory }  from './pitchCalc.js';
+	
 
 
 	
@@ -52,12 +53,6 @@
 	<VirtualEnv></VirtualEnv>
 
 {/if}
-
-<style>
-	body {
-		background-color: black;
-	}
-</style>
 
 
 

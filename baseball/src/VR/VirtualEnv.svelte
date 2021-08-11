@@ -8,6 +8,8 @@
 	import Field from './Field.svelte';
 	import ThreeDPitches from './ThreeDpitches.svelte';
 	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
+	import PitcherCard from '../Desktop/PitcherCard.svelte';
+	import PitchSpeedFreq from '../Desktop/PitchSpeedFreq.svelte';
 
 	//subscribe to stored_data and assign its value to data
 	//subscribe to stored_data and assign its value to data
@@ -63,29 +65,35 @@ movement-controls="constrainToNavMesh: false;"
 navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" 
 position="0.212 0 -1.321" 
 rotation="0 -180 0">
-	<!-- camera -->
+	
 	<a-entity id="head" camera="active: true" position="0 1.6 0" look-controls="pointerLockEnabled: true; reverseMouseDrag: true" ></a-entity>
-				<!-- Left Controller -->
+				
 				<a-entity id="leftHand" 
 				hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF" 
 				teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger; curveShootingSpeed: 18; landingMaxAngle: 60"
 				visible="true"></a-entity>
-				<!-- Right Controller -->
+				
 				<a-entity id="rightHand" 
 				hand-controls="hand: right; handModelStyle: lowPoly; color: #15ACCF" 
-				laser-controls raycaster="showLine: true; far: 10; interval: 0; objects: .clickable, a-link;" 
+				laser-controls raycaster="showLine: true; far: 10; interval: 0;" 
 				line="color: #7cfc00; opacity: 0.5" 
 				visible="true"></a-entity>
+
+				<!--
+				<a-entity id="embed" htmlembed position="1.029  1.5 -1.2" scale="0.2 0.2 0.2" rotation="0 -30.000 0" style="width: 1920px; height: 1080px">
+					<DesktopEnv></DesktopEnv>
+				</a-entity>
+				-->
 </a-entity>
+
+
+<!--<a-entity id="camera" camera="userHeight: 1.6" look-controls cursor="rayOrigin: mouse" position="0.000 0.9 -1.4" rotation="0 180 0"></a-entity>-->
 
 <Field></Field>  
 
 {#if data.length != 0}
 	<ThreeDPitches pitches={filtered_pitches}></ThreeDPitches>
-	<a-entity htmlembed position="-1.02 1.34 -0.2" scale="0.2 0.2 0.2" rotation="0 140 0" style="height: 1080px; width: 1930px;">
-		<DesktopEnv></DesktopEnv>
-	</a-entity>
-
+	
 {/if}
 
   
