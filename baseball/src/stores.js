@@ -209,23 +209,18 @@ function interactionStore (){
             return  tempLocalInteractionStore
         }),
 
-        copyStart: () => update(store => {
+        copy: () => {
             let peer_store;
             let unsub = peerInteraction.subscribe(value => peer_store = value);
-            store = peer_store;
+            set(JSON.parse(JSON.stringify(peer_store)));
             unsub();
-            return store
-        }),
-
-        copyEnd: () => update(store => {
-            return  tempLocalInteractionStore
-        }),
+        },
     }
 }
 
 
 function peerInteractionStore (){
-    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
+    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null});
 
     return {
     subscribe,

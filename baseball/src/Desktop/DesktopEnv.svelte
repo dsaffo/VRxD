@@ -59,10 +59,24 @@
 {#if data.length != 0}
 	<Container fluid style="height: 100%; margin: 5px;">
 		<Row style="height: 30%;">
+			<Col sm='1' style='padding: 20px;'>
+				<Row>
+					<button on:click="{() => page.update(n => n = 1)}">switch</button>
+				</Row>
+			
+				<Row>
+					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+				</Row>
+
+				<Row>
+					<button on:click="{() => interaction_store.copy()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy</button>
+				</Row>
+
+			</Col>
 			<Col sm='4' style='padding: 20px;'>
 				<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
 			</Col>
-			<Col sm='8' style='padding: 20px;'>
+			<Col sm='7' style='padding: 20px;'>
 				<StatCard stats={ohtaniStats} percentiles={ohtaniPercentile}></StatCard>
 			</Col>
 		</Row>
@@ -91,15 +105,16 @@
 				<PitchBreak pitches={filtered_pitches}></PitchBreak>
 			</Col>
 		</Row>
-
-		<Row>
-			<button on:click="{() => page.update(n => n = 1)}">switch</button>
-
-			<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek Test</button>
-
-			<button on:click="{() => interaction_store.copyStart()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy Test</button>
-		</Row>
 	</Container>
 
 
 {/if}
+
+<style>
+	button {
+		height: 50px;
+		width: 100%;
+		font-size: 1vw;
+	}
+
+</style>

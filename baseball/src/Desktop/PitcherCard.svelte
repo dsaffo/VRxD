@@ -134,22 +134,23 @@
         
     }
 
-    input{
-        width: 12px;
-        height: 12px;
-        font-size: 0.1vw;
-        margin-top: 5px;
+    h4 {
+        font-size: 1.2vh;
+        
     }
+
+    input{
+	width: 12px;
+	height: 12px;
+	font-size: 0.1vw;
+	margin-top: 5px;
+}
 
     input:checked {
         border-color:  rgba(0, 195, 255, 0.795);
         background-color: rgba(0, 195, 255, 0.795);
     }
 
-    h4 {
-        font-size: 1.2vh;
-        
-    }
 
     tbody{
         color: white;

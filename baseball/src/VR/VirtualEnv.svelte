@@ -9,7 +9,11 @@
 	import ThreeDPitches from './ThreeDpitches.svelte';
 	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
 	import PitcherCard from '../Desktop/PitcherCard.svelte';
-	import PitchSpeedFreq from '../Desktop/PitchSpeedFreq.svelte';
+	import { Col,  Row, Container} from 'sveltestrap';
+
+
+	let innerWidth = 500;
+  let innerHeight = 200;
 
 	//subscribe to stored_data and assign its value to data
 	//subscribe to stored_data and assign its value to data
@@ -57,6 +61,10 @@
 
 
 </script>
+
+
+<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
+
 <a-scene>
 
 <!-- Basic movement and teleportation  -->
@@ -66,7 +74,7 @@ navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collisi
 position="0.212 0 -1.321" 
 rotation="0 -180 0">
 	
-	<a-entity id="head" camera="active: true" position="0 1.6 0" look-controls="pointerLockEnabled: true; reverseMouseDrag: true" ></a-entity>
+	<a-entity id="head" camera="active: true" position="0 1.6 0" look-controls="pointerLockEnabled: true; reverseMouseDrag: true" cursor="rayOrigin: mouse;"></a-entity>
 				
 				<a-entity id="leftHand" 
 				hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF" 
@@ -79,11 +87,29 @@ rotation="0 -180 0">
 				line="color: #7cfc00; opacity: 0.5" 
 				visible="true"></a-entity>
 
-				<!--
-				<a-entity id="embed" htmlembed position="1.029  1.5 -1.2" scale="0.2 0.2 0.2" rotation="0 -30.000 0" style="width: 1920px; height: 1080px">
-					<DesktopEnv></DesktopEnv>
+				
+				<a-entity id="embed" htmlembed position="1.029  1.5 -1" scale="1 1 1" rotation="0 -30.000 0">
+					<Container fluid style="height: 100%; margin: 5px;">
+						<Row style="height: 30%;">
+							<Col sm='1' style='padding: 20px;'>
+								<Row>
+									<button on:click="{() => page.update(n => n = 1)}">switch</button>
+								</Row>
+							
+								<Row>
+									<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+								</Row>
+				
+								<Row>
+									<button on:click="{() => interaction_store.copy()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy</button>
+								</Row>
+							</Col>
+							</Row>
+					</Container>
 				</a-entity>
-				-->
+
+				
+				
 </a-entity>
 
 
@@ -93,7 +119,6 @@ rotation="0 -180 0">
 
 {#if data.length != 0}
 	<ThreeDPitches pitches={filtered_pitches}></ThreeDPitches>
-	
 {/if}
 
   
