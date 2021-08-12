@@ -9,11 +9,8 @@
 	import ThreeDPitches from './ThreeDpitches.svelte';
 	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
 	import PitcherCard from '../Desktop/PitcherCard.svelte';
-	import { Col,  Row, Container} from 'sveltestrap';
-
-
-	let innerWidth = 500;
-  let innerHeight = 200;
+	import PitchSpeedFreq from '../Desktop/PitchSpeedFreq.svelte';
+	import FilterLegend from '../FilterLegend.svelte';
 
 	//subscribe to stored_data and assign its value to data
 	//subscribe to stored_data and assign its value to data
@@ -38,6 +35,11 @@
 		interactions = value;
 	});
 
+	let pitchTypes = [...new Set(data.map(item => item.pitch_name))];
+    let pitchOutcomes = [...new Set(data.map(item => item.description))];
+    let pitchSpeeds = ["65-75", "75-85", "85-95", "95-105"];
+    let pitchSpeedValues = [70,80,90,100];
+
 
 	function checkSpeed(speed) {
 
@@ -61,13 +63,9 @@
 
 
 </script>
-
-
-<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
-
 <a-scene>
 
-<!-- Basic movement and teleportation  -->
+<!-- Basic movement and teleportation   -->
 <a-entity id="cameraRig" 
 movement-controls="constrainToNavMesh: false;" 
 navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" 
@@ -88,31 +86,13 @@ rotation="0 -180 0">
 				visible="true"></a-entity>
 
 				
-				<a-entity id="embed" htmlembed position="1.029  1.5 -1" scale="1 1 1" rotation="0 -30.000 0">
-					<Container fluid style="height: 100%; margin: 5px;">
-						<Row style="height: 30%;">
-							<Col sm='1' style='padding: 20px;'>
-								<Row>
-									<button on:click="{() => page.update(n => n = 1)}">switch</button>
-								</Row>
-							
-								<Row>
-									<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
-								</Row>
-				
-								<Row>
-									<button on:click="{() => interaction_store.copy()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy</button>
-								</Row>
-							</Col>
-							</Row>
-					</Container>
+				<a-entity id="embed" htmlembed position="1.029  1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+					
+					<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
+					
 				</a-entity>
-
-				
-				
+			
 </a-entity>
-
-
 <!--<a-entity id="camera" camera="userHeight: 1.6" look-controls cursor="rayOrigin: mouse" position="0.000 0.9 -1.4" rotation="0 180 0"></a-entity>-->
 
 <Field></Field>  

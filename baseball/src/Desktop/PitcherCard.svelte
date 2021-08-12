@@ -2,6 +2,7 @@
     import { Col,  Row, Table} from 'sveltestrap';
     import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from '../colorScales.js';
     import { interaction_store } from '../stores.js';
+    import FilterLegend from '../FilterLegend.svelte';
 
     export let pitches = [];
     export let stats = {};
@@ -25,7 +26,7 @@
 
     
 
-    interaction_store.updateLocalFilter([].concat(pitchTypes,pitchOutcomes,pitchSpeeds));
+    interaction_store.setFilterStore([].concat(pitchTypes,pitchOutcomes,pitchSpeeds));
 
     function onFilterChange(event) {
 		var changed = event.currentTarget.value;
@@ -42,12 +43,12 @@
 </script>
 
 <div class="chart">
-        <Row  style="height: 40%; border: 2px solid grey; border-bottom: none;"> 
+        <Row  style="height: 30%; border: 2px solid grey; border-bottom: none;"> 
             <Col sm='2' style="border-right: 2px solid grey;">
 			
 			</Col>
-			<Col sm='10'>
-				<Table borderless>
+			<Col sm='10' style='padding-top: 5px;'>
+				<Table borderless style="margin: -15px;">
                     <tbody>
                       <tr>
                         <td>Name: {stats.name}</td>
@@ -66,61 +67,18 @@
 			</Col>
         </Row>
 
-        <Row  style="height: 60%; border: 2px solid grey;"> 
-                <Col>
-                    <label style="display: inline-flex;">
-                        <h4>Pitch Type</h4>  <input checked={$interaction_store.color_store=="type"} on:change={onChange} type="radio" name="legend" value="type" /> 
-                    </label>
-                    {#each pitchTypes as pitch}
-                    <Row style="margin-bottom: -1.8vh;">
-                        <Col sm=4>
-                            <div style="height: 1.5vh; width: 100%; background-color: {pitchTypeColorScale(pitch)}"></div>
-                        </Col>
-                        <Col>
-                            <label>
-                                <input type=checkbox name="filters" value={pitch} on:change={onFilterChange} checked={$interaction_store.filter_store.includes(pitch)}>
-                                {pitch}
-                            </label>
-                        </Col>
-                    </Row>   
-                    {/each}
-                </Col>
-                <Col>
-                    <label style="display: inline-flex;">
-                        <h4>Pitch Outcome</h4>  <input checked={$interaction_store.color_store=="outcome"} on:change={onChange} type="radio" name="legend" value="outcome" /> 
-                    </label>
-                    {#each pitchOutcomes as pitch}
-                    <Row style="margin-bottom: -1.8vh;">
-                        <Col sm=4>
-                            <div style="height: 1.5vh; width: 100%; background-color: {pitchOutcomeColorScale(pitch)}"></div>
-                        </Col>
-                        <Col>
-                            <label>
-                                <input type=checkbox name="filters" value={pitch} on:change={onFilterChange} checked={$interaction_store.filter_store.includes(pitch)}>
-                                {pitch}
-                            </label>
-                        </Col>
-                    </Row>   
-                    {/each}
-                </Col>
-                <Col>
-                    <label style="display: inline-flex;">
-                        <h4>Pitch Speed (mph)</h4>  <input checked={$interaction_store.color_store=="speed"} on:change={onChange} type="radio" name="legend" value="speed" /> 
-                    </label>
-                    {#each pitchSpeeds as pitch , i}
-                    <Row style="margin-bottom: -1.8vh;">
-                        <Col sm=4>
-                            <div style="height: 1.5vh; width: 100%; background-color: {speedColorScale(speedScale(pitchSpeedValues[i]))}"></div>
-                        </Col>
-                        <Col>
-                            <label>
-                                <input type=checkbox name="filters" value={pitch} on:change={onFilterChange} checked={$interaction_store.filter_store.includes(pitch)}>
-                                {pitch}
-                            </label>
-                        </Col>
-                    </Row>   
-                    {/each}
-                </Col>
+        <Row  style="height: 70%; border: 2px solid grey;"> 
+            <Col>
+                <FilterLegend name="Pitch Type" value="type" keys={pitchTypes} ></FilterLegend>
+            </Col>
+
+            <Col>
+                <FilterLegend name="Outcome" value="outcome"  keys={pitchOutcomes}></FilterLegend>
+            </Col>
+
+            <Col>
+                <FilterLegend name="Pitch Speed" value="speed"  keys={pitchSpeeds}></FilterLegend>
+            </Col>
         </Row>
    
 </div>
@@ -154,6 +112,6 @@
 
     tbody{
         color: white;
-        font-size: 0.7vw;
+        font-size: 12px;
     }
 </style>

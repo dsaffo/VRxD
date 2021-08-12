@@ -171,25 +171,35 @@ function interactionStore (){
         updateLocalColor: (color) => update(store => {
             store.color_store = color;
             updatePeer(store);
-            return store
+            return store;
         }),
 
-        updateLocalFilter: (filters) => update(store => {
-            store.filter_store = filters;
+        updateLocalFilter: (filter) => update(store => {
+
+            if(!store.filter_store.includes(filter)){          //checking weather filtersay contain the id
+                store.filter_store.push(filter);               //adding to filtersay because value doesnt exists
+            }else{
+                store.filter_store.splice(store.filter_store.indexOf(filter), 1);  //deleting
+            }
             updatePeer(store);
-            return store
+            return store;
+        }),
+
+        setFilterStore: (filters) => update(store => {
+            store.filter_store = filters;
+            return store;
         }),
 
         updateLocalHover: (hover) => update(store => {
             store.hover_store = hover;
             updatePeer(store);
-            return store
+            return store;
         }),
 
         updateLocalPitcher: (pitcher) => update(store => {
             store.pitcher_store = pitcher;
             updatePeer(store);
-            return store
+            return store;
         }),
 
         peekStart: () => update(store => {
@@ -201,7 +211,7 @@ function interactionStore (){
             store = peer_store;
             peerInterval = setInterval(() => {update(store => peer_store)}, 0.05);
             unsub();
-            return store
+            return store;
         }),
 
         peekEnd: () => update(store => {
