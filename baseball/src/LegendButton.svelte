@@ -30,7 +30,7 @@
         padding: 0px;
         margin: 0px;
         border: none;
-       opacity: 50%;
+       opacity: 20%;
        color: white;
        width: 30px;
        height: 15px;

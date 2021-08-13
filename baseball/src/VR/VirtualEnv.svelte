@@ -11,6 +11,10 @@
 	import PitcherCard from '../Desktop/PitcherCard.svelte';
 	import PitchSpeedFreq from '../Desktop/PitchSpeedFreq.svelte';
 	import FilterLegend from '../FilterLegend.svelte';
+	import StatCard from '../Desktop/StatCard.svelte';
+	import {Row, Col} from 'sveltestrap';
+	import PitchBreakVR from './PitchBreakVR.svelte';
+import PitchBreakVr from "./PitchBreakVR.svelte";
 
 	//subscribe to stored_data and assign its value to data
 	//subscribe to stored_data and assign its value to data
@@ -86,11 +90,45 @@ rotation="0 -180 0">
 				visible="true"></a-entity>
 
 				
-				<a-entity id="embed" htmlembed position="1.029  1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
-					
-					<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
-					
+				<a-entity id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+				
+						<div>
+							<button on:click="{() => interaction_store.copy()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy</button>
+							<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+						</div>
+						<div>
+							<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
+						<div>
+				
 				</a-entity>
+
+				<a-entity id="scouting-report" htmlembed position="2.698 1.5 0.140" scale="1 1 1" rotation="0 -91 0">
+					<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
+				</a-entity>
+
+
+				<a-entity id="stat-card" htmlembed position="0  3.2 -2" scale="1 1 1" rotation="30 0 0">
+					<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats}></StatCard>
+				</a-entity>
+
+				
+				<a-entity id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 30.000 0">
+				
+					<PitchBreakVR pitches={filtered_pitches}></PitchBreakVR>
+
+				</a-entity>
+				<!--
+				<a-entity id="pitch-speed-freq" htmlembed position="-2.698 1.5 0.140" scale="1 1 1" rotation="0 91 0">
+				
+					<div>
+						<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
+					<div>
+
+				</a-entity>-->
+
+
+
+				
 			
 </a-entity>
 <!--<a-entity id="camera" camera="userHeight: 1.6" look-controls cursor="rayOrigin: mouse" position="0.000 0.9 -1.4" rotation="0 180 0"></a-entity>-->
