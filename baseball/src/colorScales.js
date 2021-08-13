@@ -27,7 +27,6 @@ export function colorScale(scale, pitch){
 
 export function colorScaleKey(scale, key){
     if (scale === "type"){
-        console.log(pitchTypeColorScale(key))
         return pitchTypeColorScale(key);
     } 
     else if (scale === "speed"){

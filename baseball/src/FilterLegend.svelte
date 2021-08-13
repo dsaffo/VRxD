@@ -8,7 +8,7 @@
     export let value = "undefined";
 </script>
 
-<div class="legend-header">
+<div class="lengend-header">
     <button class:selected="{$interaction_store.color_store === value}" on:click="{() => interaction_store.updateLocalColor(value)}">{name}</button>
     {#each keys as key}
         <LegendButton value={key} color={colorScaleKey(value,key)}></LegendButton>
@@ -19,9 +19,8 @@
 <style>
  .lengend-header {
      display: inline-block;
-     text-align: center;
-     vertical-align: middle;
-     align-items: center;
+     width: 100%;
+     height: 100%;
  }
 
  button {

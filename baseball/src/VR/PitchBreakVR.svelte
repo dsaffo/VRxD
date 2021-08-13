@@ -2,7 +2,7 @@
   import { scaleLinear } from "d3-scale";
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
-import { entity, positions } from "aframe";
+
 
   let interactions;
 
@@ -109,7 +109,7 @@ import { entity, positions } from "aframe";
         color='{colorScale(interactions.color_store, pitch)}' 
         opacity='{opacity(pitch.id)}'
         radius='{radius(pitch.id)}'
-        position="{xScale(pitch.pfx_x * 12)  - (width / 2)} {(yScale(pitch.release_pos_z * 39.3701 - pitch.plate_z * 39.3701) - (height / 2))} 0.0{i + 2}"
+        position="{xScale(pitch.pfx_x * 12)  - (width / 2)} {(yScale(pitch.release_pos_z * 39.3701 - pitch.plate_z * 39.3701) - (height / 2))} 0.001{i + 1}"
         on:mouseenter={() => mouseOver(pitch.id)}
         on:mouseleave={() => mouseOut()}>
       </a-circle>

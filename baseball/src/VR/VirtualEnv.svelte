@@ -4,6 +4,7 @@
 	import "aframe-teleport-controls";
 	import "aframe-thumb-controls-component";
 	import "aframe-extras";
+	import "aframe-auto-detect-controllers-component";
 	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
 	import Field from './Field.svelte';
 	import ThreeDPitches from './ThreeDpitches.svelte';
@@ -14,7 +15,9 @@
 	import StatCard from '../Desktop/StatCard.svelte';
 	import {Row, Col} from 'sveltestrap';
 	import PitchBreakVR from './PitchBreakVR.svelte';
-import PitchBreakVr from "./PitchBreakVR.svelte";
+import PitchSpeedFreqVR from "./PitchSpeedFreqVR.svelte";
+
+
 
 	//subscribe to stored_data and assign its value to data
 	//subscribe to stored_data and assign its value to data
@@ -83,27 +86,32 @@ rotation="0 -180 0">
 				teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger; curveShootingSpeed: 18; landingMaxAngle: 60"
 				visible="true"></a-entity>
 				
-				<a-entity id="rightHand" 
+				<!--<a-entity id="rightHand" 
 				hand-controls="hand: right; handModelStyle: lowPoly; color: #15ACCF" 
 				laser-controls raycaster="showLine: true; far: 10; interval: 0;" 
 				line="color: #7cfc00; opacity: 0.5" 
-				visible="true"></a-entity>
+				visible="true"></a-entity>-->
+
+				<a-entity  id="rightHand" auto-detect-controllers="hand: right" laser-controls raycaster="showLine: true; far: 10; interval: 0;" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
 
 				
-				<a-entity id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+				<a-entity  id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
 				
 						<div>
 							<button on:click="{() => interaction_store.copy()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy</button>
 							<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
 						</div>
-						<div>
+						<div style="height: 300px; width: 650px;">
 							<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
 						<div>
 				
 				</a-entity>
 
 				<a-entity id="scouting-report" htmlembed position="2.698 1.5 0.140" scale="1 1 1" rotation="0 -91 0">
-					<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
+					<!--<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>-->
+					<div>
+						<FilterLegend name="Pitch Type" value="type" keys={pitchTypes} ></FilterLegend>
+				</div>
 				</a-entity>
 
 
@@ -117,14 +125,10 @@ rotation="0 -180 0">
 					<PitchBreakVR pitches={filtered_pitches}></PitchBreakVR>
 
 				</a-entity>
-				<!--
-				<a-entity id="pitch-speed-freq" htmlembed position="-2.698 1.5 0.140" scale="1 1 1" rotation="0 91 0">
-				
-					<div>
-						<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
-					<div>
-
-				</a-entity>-->
+	
+				<a-entity id="pitch-speed-freq" htmlembed position="-2.85 1.5 0.311" scale="1 1 1" rotation="0 91 0">
+					<PitchSpeedFreqVR pitches={filtered_pitches} data={data}></PitchSpeedFreqVR>
+				</a-entity>
 
 
 
