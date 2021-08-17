@@ -92,10 +92,10 @@ rotation="0 -180 0">
 				line="color: #7cfc00; opacity: 0.5" 
 				visible="true"></a-entity>-->
 
-				<a-entity  id="rightHand" auto-detect-controllers="hand: right" laser-controls raycaster="showLine: true; far: 10; interval: 0;" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
+				<a-entity  id="rightHand" auto-detect-controllers="hand: right" laser-controls raycaster="showLine: true; far: 10; interval: 0; objects: .collidable" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
 
 				
-				<a-entity  id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+				<a-entity class="collidable" id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
 				
 						<div>
 							<button on:click="{() => interaction_store.copy()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy</button>
@@ -107,7 +107,7 @@ rotation="0 -180 0">
 				
 				</a-entity>
 
-				<a-entity id="scouting-report" htmlembed position="2.698 1.5 0.140" scale="1 1 1" rotation="0 -91 0">
+				<a-entity class="collidable" id="scouting-report" htmlembed position="2.698 1.5 0.140" scale="1 1 1" rotation="0 -91 0">
 					<!--<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>-->
 					<div>
 						<FilterLegend name="Pitch Type" value="type" keys={pitchTypes} ></FilterLegend>
@@ -115,18 +115,18 @@ rotation="0 -180 0">
 				</a-entity>
 
 
-				<a-entity id="stat-card" htmlembed position="0  3.2 -2" scale="1 1 1" rotation="30 0 0">
+				<a-entity class="collidable" id="stat-card" htmlembed position="0  3.2 -2" scale="1 1 1" rotation="30 0 0">
 					<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats}></StatCard>
 				</a-entity>
 
 				
-				<a-entity id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 30.000 0">
+				<a-entity class="collidable" id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 30.000 0">
 				
 					<PitchBreakVR pitches={filtered_pitches}></PitchBreakVR>
 
 				</a-entity>
 	
-				<a-entity id="pitch-speed-freq" htmlembed position="-2.85 1.5 0.311" scale="1 1 1" rotation="0 91 0">
+				<a-entity class="collidable" id="pitch-speed-freq" htmlembed position="-2.85 1.5 0.311" scale="1 1 1" rotation="0 91 0">
 					<PitchSpeedFreqVR pitches={filtered_pitches} data={data}></PitchSpeedFreqVR>
 				</a-entity>
 
