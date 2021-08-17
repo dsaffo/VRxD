@@ -17,7 +17,7 @@
   let innerHeight = 200;
 
   $: width = innerWidth * 0.50 - 40;
-  $: height = innerHeight * 0.35 - 40;
+  $: height = innerHeight * 0.35 - 60;
 
   const pitch_types = [...new Set(pitches.map((item) => item.pitch_name))];
   const yTicks = [0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90];
@@ -46,7 +46,6 @@
     else if (interactions.hover_store == null){
       return "0.8"
     }
-
     return "0.1"
   }
 
@@ -71,7 +70,7 @@
           transform="translate(0, {yScale(tick) - padding.bottom})"
         >
           <line x2="100%" />
-          <text y="-4">{tick}</text>
+          <text y="-4">{tick}in</text>
         </g>
       {/each}
     </g>
@@ -84,7 +83,7 @@
           transform="translate({xScale(tick)},{height})"
         >
           <line y1="-{height}" y2="-{padding.bottom}" x1="0" x2="0" />
-          <text y="-2">{tick}</text>
+          <text y="-2">{tick}in</text>
         </g>
       {/each}
     </g>

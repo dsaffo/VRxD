@@ -140,25 +140,15 @@ function pitchesStore() {
                 id: id += 1
             }
         })),
-        updateData: (index) => update(store => {
-            store[index]['selected'] = !store[index]['selected'];
-            const myEvent = new CustomEvent ('myEvent', { detail: store });
-            console.log("dispatching event")
-            document.body.dispatchEvent(myEvent);
-            console.log("event dispatched")
-            return store;
-        }),
-
-        updateStore: (received_store) => {console.log("stored", received_store); set(received_store)}
     };
 
 }
 
 function updatePeer(store){
     const updateEvent = new CustomEvent ('interaction_update', {detail: {interactions:store, id:clientId}});
-    console.log("dispatching event", store)
+   //console.log("dispatching event", store)
     document.body.dispatchEvent(updateEvent);
-    console.log("event dispatched")
+   // console.log("event dispatched")
 }
 
 function interactionStore (){
@@ -235,13 +225,13 @@ function peerInteractionStore (){
     return {
     subscribe,
     updateData: (detail) => update(store => {
-        console.log("recieved");
+        //console.log("recieved");
         if (detail.id != clientId){
-            console.log("accepted");
+            //console.log("accepted");
             store = detail.interactions;
             return store;
         } else {
-            console.log("rejected");
+            //console.log("rejected");
             return store;
         }
     })

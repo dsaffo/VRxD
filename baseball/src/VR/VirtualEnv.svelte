@@ -13,9 +13,8 @@
 	import PitchSpeedFreq from '../Desktop/PitchSpeedFreq.svelte';
 	import FilterLegend from '../FilterLegend.svelte';
 	import StatCard from '../Desktop/StatCard.svelte';
-	import {Row, Col} from 'sveltestrap';
 	import PitchBreakVR from './PitchBreakVR.svelte';
-import PitchSpeedFreqVR from "./PitchSpeedFreqVR.svelte";
+	import PitchSpeedFreqVR from "./PitchSpeedFreqVR.svelte";
 
 
 

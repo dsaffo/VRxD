@@ -33,9 +33,6 @@
 	});
 
 	function checkSpeed(speed) {
-
-		console.log("checked");
-
 		if (speed >= 65 && speed <= 75){
 			return "65-75"
 		} 
@@ -59,7 +56,7 @@
 {#if data.length != 0}
 	<Container fluid style="height: 100%; margin: 5px;">
 		<Row style="height: 30%;">
-			<Col sm='1' style='padding: 20px;'>
+			<Col sm='1' style='padding: 20px; max-width: 5%;'>
 				<Row>
 					<button on:click="{() => page.update(n => n = 1)}">switch</button>
 				</Row>
@@ -73,35 +70,39 @@
 				</Row>
 
 			</Col>
-			<Col sm='4' style='padding: 20px;'>
+			<Col sm='4' style='padding: 20px; min-width: 35%;'>
 				<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
 			</Col>
-			<Col sm='7' style='padding: 20px;'>
+			<Col sm='7' style='padding: 20px; min-width: 60%;'>
 				<StatCard stats={ohtaniStats} percentiles={ohtaniPercentile}></StatCard>
 			</Col>
 		</Row>
 
-		<Row style="height: 35%;">
+		<Row style="height: 35%; text-align: center;">
 			<Col  sm='2' style='padding: 20px;'>
+				<span>Strike Zone</span>
 				<StrikeZone pitches={filtered_pitches}></StrikeZone>
 			</Col>
 			<Col style='padding: 20px;'>
+				<span>Overhead View</span>
 				<OverheadPitch data={filtered_pitches}></OverheadPitch>
 			</Col>
 			<Col style='padding: 20px;'>
+				<span>Side View</span>
 				<SidePitch data={filtered_pitches}></SidePitch>
 			</Col>
 		</Row>
 
-		<Row style="height: 35%;">
+		<Row style="height: 35%; text-align: center;">
 			
 			<Col sm='6' style='padding: 20px;'>
-				
+				<span>Pitch Frequency and Speed</span>
 				<PitchSpeedFreq pitches={filtered_pitches} data={data}></PitchSpeedFreq>
 				
 			</Col>
 			
 			<Col sm='6' style='padding: 20px;'>
+				<span>Vertical and Horizontal Break</span>
 				<PitchBreak pitches={filtered_pitches}></PitchBreak>
 			</Col>
 		</Row>
@@ -115,6 +116,10 @@
 		height: 50px;
 		width: 100%;
 		font-size: 1vw;
+	}
+
+	span {
+		font-size: 15px;
 	}
 
 </style>

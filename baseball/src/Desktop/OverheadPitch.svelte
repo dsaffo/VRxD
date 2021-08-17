@@ -97,7 +97,7 @@
           transform="translate(0, {yScale(tick) - padding.bottom})"
         >
           <line x2="100%" />
-          <text y="-4">{tick}</text>
+          <text y="-4">{tick}ft</text>
         </g>
       {/each}
     </g>
@@ -110,7 +110,7 @@
           transform="translate({xScale(tick)},{height})"
         >
           <line y1="-{height}" y2="-{padding.bottom}" x1="0" x2="0" />
-          <text y="-2">{tick}</text>
+          <text y="-2">{tick}ft</text>
         </g>
       {/each}
     </g>

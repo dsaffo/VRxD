@@ -18,7 +18,7 @@
   let innerHeight = 200;
 
   $: width = innerWidth * 0.5 - 40;
-  $: height = innerHeight * 0.35 - 40;
+  $: height = innerHeight * 0.35 - 60;
 
 
   //get unique pitch types
@@ -113,7 +113,7 @@
           transform="translate({xScale(tick)},{height})"
         >
           <line y1="-{height}" y2="-{padding.bottom}" x1="0" x2="0" />
-          <text y="-2">{tick}</text>
+          <text y="-2">{tick}mph</text>
         </g>
       {/each}
     </g>
@@ -127,6 +127,14 @@
           y={yScale(pitch.pitch)}
           fill={barColors(yTicks.indexOf(pitch.pitch))}
         />
+
+        <text 
+        x={xScale2(pitch.percent)}
+        y={yScale(pitch.pitch) + 15}
+        fill="white"
+        font-size="12px"
+        >
+        {parseInt(pitch.percent)}%</text>
       {/each}
     </g>
 
