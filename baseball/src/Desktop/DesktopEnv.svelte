@@ -66,7 +66,7 @@
 				</Row>
 
 				<Row>
-					<button on:click="{() => interaction_store.copy()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy</button>
+					<button on:click="{() => interaction_store.copy()}">Copy</button>
 				</Row>
 
 			</Col>

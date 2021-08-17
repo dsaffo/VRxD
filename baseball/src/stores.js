@@ -60,7 +60,6 @@ function statsStore() {
 function percentileStore() {
 
     const {subscribe, set} = writable([]);
-
     return {
         subscribe,
         loadData: async(file) => set(await d3.csv(file, function(d){
@@ -141,7 +140,6 @@ function pitchesStore() {
             }
         })),
     };
-
 }
 
 function updatePeer(store){
@@ -154,6 +152,8 @@ function updatePeer(store){
 function interactionStore (){
     const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
     let peerInterval = null;
+    let peer_store;
+    let unsub = peerInteraction.subscribe(value => peer_store = value);
 
     return{
         subscribe,
@@ -193,15 +193,9 @@ function interactionStore (){
         }),
 
         peekStart: () => update(store => {
-
-            let peer_store;
-            let unsub = peerInteraction.subscribe(value => peer_store = value);
-
             tempLocalInteractionStore = store;
-            store = peer_store;
-            peerInterval = setInterval(() => {update(store => peer_store)}, 0.05);
-            unsub();
-            return store;
+            peerInterval = setInterval(() => {set(JSON.parse(JSON.stringify(peer_store)));}, 0.05);
+            return JSON.parse(JSON.stringify(peer_store));
         }),
 
         peekEnd: () => update(store => {
@@ -210,10 +204,7 @@ function interactionStore (){
         }),
 
         copy: () => {
-            let peer_store;
-            let unsub = peerInteraction.subscribe(value => peer_store = value);
             set(JSON.parse(JSON.stringify(peer_store)));
-            unsub();
         },
     }
 }

@@ -1,9 +1,10 @@
 <script>
-	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction} from './stores.js';
+	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store} from './stores.js';
 	import { onMount } from 'svelte';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
 	import { pitch_trajectory }  from './pitchCalc.js';
+import { validate_component } from 'svelte/internal';
 	
 
 
@@ -27,10 +28,19 @@
 	document.body.addEventListener('interaction_update', (e) => { peerInteraction.updateData(e.detail) });
 
 	let page_value;
+	let interactionStore;
 
-	const unsubscribe = page.subscribe(value => {
+	const unsubscribe_interaction = interaction_store.subscribe(value => {
+		interactionStore = value;
+	});
+
+	const unsubscribe_page = page.subscribe(value => {
 		page_value = value;
 	});
+
+	if(interactionStore.pitcher_store == "pitcher1"){
+		
+	}
 
 	//when data is loaded print to console 
 	//$: console.log($stored_data);
