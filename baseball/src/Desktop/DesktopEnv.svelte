@@ -79,15 +79,15 @@
 		<Row style="height: 35%; text-align: center;">
 			<Col  sm='2' style='padding: 20px;'>
 				<span>Strike Zone</span>
-				<StrikeZone pitches={filtered_pitches} interactions={interactions}></StrikeZone>
+				<StrikeZone pitches={filtered_pitches} interactions={interactions} vrMode={vrMode}></StrikeZone>
 			</Col>
 			<Col style='padding: 20px;'>
 				<span>Overhead View</span>
-				<OverheadPitch data={filtered_pitches} interactions={interactions}></OverheadPitch>
+				<OverheadPitch data={filtered_pitches} interactions={interactions} vrMode={vrMode}></OverheadPitch>
 			</Col>
 			<Col style='padding: 20px;'>
 				<span>Side View</span>
-				<SidePitch data={filtered_pitches} interactions={interactions}></SidePitch>
+				<SidePitch data={filtered_pitches} interactions={interactions} vrMode={vrMode}></SidePitch>
 			</Col>
 		</Row>
 
@@ -95,13 +95,13 @@
 			
 			<Col sm='6' style='padding: 20px;'>
 				<span>Pitch Frequency and Speed</span>
-				<PitchSpeedFreq pitches={filtered_pitches} data={data} interactions={interactions}></PitchSpeedFreq>
+				<PitchSpeedFreq pitches={filtered_pitches} data={data} interactions={interactions} vrMode={vrMode}></PitchSpeedFreq>
 				
 			</Col>
 			
 			<Col sm='6' style='padding: 20px;'>
 				<span>Vertical and Horizontal Break</span>
-				<PitchBreak pitches={filtered_pitches} interactions={interactions}></PitchBreak>
+				<PitchBreak pitches={filtered_pitches} interactions={interactions} vrMode={vrMode}></PitchBreak>
 			</Col>
 		</Row>
 	</Container>

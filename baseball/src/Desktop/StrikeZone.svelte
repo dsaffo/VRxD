@@ -11,8 +11,20 @@
   let innerWidth = 500;
   let innerHeight = 200;
 
-  $: width = innerWidth * 0.165 - 40;
-  $: height = innerHeight * 0.35 - 60;
+  let width;
+  let height;
+
+  export let vrMode = false;
+
+  $: {if (vrMode == false){
+    width = innerWidth * 0.165 - 40;
+    height = innerHeight * 0.35 - 60;
+  } else {
+    width = 1920 * 0.165 - 40;
+    height = 1080 * 0.35 - 60;
+  }
+}
+
 
   const yTicks = [0, 1, 2, 3, 4];
   const xTicks = [-1, 0, 1];

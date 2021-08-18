@@ -7,11 +7,22 @@
   export let data = [];
 	export let interactions;
  
+ 
   let innerWidth = 500;
   let innerHeight = 200;
+  let width;
+  let height;
 
-  $: width = innerWidth * 0.40 - 40;
-  $: height = innerHeight * 0.35 - 60;
+  export let vrMode = false;
+
+  $: {if (vrMode == false){
+    width = innerWidth * 0.40 - 40;
+    height = innerHeight * 0.35 - 60;
+  } else {
+    width = 1920 * 0.50 - 40;
+    height = 1080 * 0.35 - 60;
+  }
+}
 
   const yTicks = [2, 1, 0, -1, -2];
   const xTicks = [0, 10, 20, 30, 40, 50, 60];

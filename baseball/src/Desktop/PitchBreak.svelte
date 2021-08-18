@@ -13,9 +13,19 @@
   
   let innerWidth = 500;
   let innerHeight = 200;
+  let width;
+  let height;
 
-  $: width = innerWidth * 0.50 - 40;
-  $: height = innerHeight * 0.35 - 60;
+  export let vrMode = false;
+
+  $: {if (vrMode == false){
+    width = innerWidth * 0.50 - 40;
+    height = innerHeight * 0.35 - 60;
+  } else {
+    width = 1920 * 0.40 - 40;
+    height = 1080 * 0.35 - 60;
+  }
+}
 
   const pitch_types = [...new Set(pitches.map((item) => item.pitch_name))];
   const yTicks = [0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90];

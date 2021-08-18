@@ -127,7 +127,7 @@ for (let i = 0; i < yTicks.length; i++) {
 
   <a-entity position="0 -0.02 0">
     {#each pitches as pitch, i}
-      <a-circle 
+      <a-circle class="collidable"
         color='{colorScale(interactions.color_store, pitch)}' 
         opacity='{opacity(pitch.id)}'
         radius='{radius(pitch.id)}'
