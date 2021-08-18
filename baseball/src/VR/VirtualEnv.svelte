@@ -5,7 +5,7 @@
 	import "aframe-thumb-controls-component";
 	import "aframe-extras";
 	import "aframe-auto-detect-controllers-component";
-	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction} from '../stores.js';
+	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction, updateCameraPos} from '../stores.js';
 	import Field from './Field.svelte';
 	import ThreeDPitches from './ThreeDpitches.svelte';
 	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
@@ -46,10 +46,21 @@
 		peerInteractions = value;
 	});
 
-	let pitchTypes = [...new Set(data.map(item => item.pitch_name))];
-    let pitchOutcomes = [...new Set(data.map(item => item.description))];
-    let pitchSpeeds = ["65-75", "75-85", "85-95", "95-105"];
-    let pitchSpeedValues = [70,80,90,100];
+	AFRAME.registerComponent('rotation-reader', {
+		tick: function (time, timeDelta) {
+			// `this.el` is the element.
+			// `object3D` is the three.js object.
+
+			// `rotation` is a three.js Euler using radians. `quaternion` also available.
+			//console.log(this.el.object3D.rotation);
+
+			// `position` is a three.js Vector3.
+			//console.log(this.el.object3D.position);
+			updateCameraPos({pos:{x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
+							 rot: {x: this.el.object3D.rotation.x * 57.2958, y: this.el.object3D.rotation.y * 57.2958, z: this.el.object3D.rotation.z * 57.2958}
+							})
+		}
+		});
 
 
 	function checkSpeed(speed) {
@@ -81,7 +92,8 @@
 movement-controls="constrainToNavMesh: false;" 
 navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" 
 position="0.212 0 -1.321" 
-rotation="0 -180 0">
+rotation="0 -180 0"
+>
 	
 	<a-entity id="head" camera="active: true" position="0 1.6 0" look-controls="pointerLockEnabled: true; reverseMouseDrag: true" cursor="rayOrigin: mouse;"></a-entity>
 				
@@ -110,21 +122,22 @@ rotation="0 -180 0">
 				
 				</a-entity>
 
+				<!--
 				<a-entity class="collidable" id="stat-card" htmlembed position="0  3.2 -2" scale="1 1 1" rotation="30 0 0">
-					<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats}></StatCard>
+					<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={interactions}></StatCard>
 				</a-entity>
 
 				
 				<a-entity class="collidable" id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 30.000 0">
 				
-					<PitchBreakVR pitches={filtered_pitches}></PitchBreakVR>
+					<PitchBreakVR pitches={filtered_pitches} interactions={interactions}></PitchBreakVR>
 
 				</a-entity>
 	
 				<a-entity class="collidable" id="pitch-speed-freq" htmlembed position="-2.85 1.5 0.311" scale="1 1 1" rotation="0 91 0">
-					<PitchSpeedFreqVR pitches={filtered_pitches} data={data}></PitchSpeedFreqVR>
+					<PitchSpeedFreqVR pitches={filtered_pitches} data={data} interactions={interactions}></PitchSpeedFreqVR>
 				</a-entity>
-
+				-->
 
 
 				
@@ -135,13 +148,13 @@ rotation="0 -180 0">
 <Field></Field>  
 
 {#if data.length != 0}
-	<ThreeDPitches pitches={filtered_pitches}></ThreeDPitches>
+	<ThreeDPitches pitches={filtered_pitches} interactions={interactions}></ThreeDPitches>
 {/if}
 
-
+<!--
 <a-entity class="collidable" id="desktopview" htmlembed position="0 1.5 -3" scale="0.5 0.5 0.5" rotation="0 0 0" style="height: {1080}px; width: {1920}px;">
 		<DesktopEnv interactions={peerInteractions} vrMode={true}></DesktopEnv>
-</a-entity>
+</a-entity>-->
 
   
 </a-scene>

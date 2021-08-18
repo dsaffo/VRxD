@@ -1,5 +1,5 @@
 <script>
-	import { Col, Container, Row } from 'sveltestrap';
+	import { Col, Container, Row, Modal, ModalBody} from 'sveltestrap';
   	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, mousePosition} from '../stores.js';
 	import OverheadPitch from './OverheadPitch.svelte';
 	import SidePitch from './SidePitch.svelte';
@@ -8,7 +8,10 @@
   	import PitchSpeedFreq from './PitchSpeedFreq.svelte';
 	import PitcherCard from './PitcherCard.svelte';
 	import StatCard from './StatCard.svelte';
+	import VirtualEnvEmbed from '../VR/VirtualEnvEmbed.svelte';
 
+	let open = false;
+  	const toggle = () => (open = !open);
 
 	//subscribe to stored_data and assign its value to data
 	let data;
@@ -47,8 +50,9 @@
 		}
 	}
 
+	//this is really slow gets called every time there is an interaction but only needs to happen when the filter gets changed
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
-
+	//$: filtered_pitches = data;
 </script>
 
 {#if data.length != 0}
@@ -58,14 +62,16 @@
 				<Row>
 					<button on:click="{() => page.update(n => n = 1)}" disabled={vrMode}>switch</button>
 				</Row>
-			
+				<Row>
+					<button on:click={toggle} disabled={vrMode}>Watch</button>
+				</Row>
 				<Row>
 					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" disabled={vrMode}>Peek</button>
 				</Row>
-
 				<Row>
 					<button on:click="{() => interaction_store.copy()}" disabled={vrMode}>Copy</button>
 				</Row>
+			
 
 			</Col>
 			<Col sm='4' style='padding: 20px; min-width: 35%;'>
@@ -105,6 +111,11 @@
 			</Col>
 		</Row>
 	</Container>
+
+
+	{#if open}
+		<VirtualEnvEmbed></VirtualEnvEmbed>
+	{/if}
 
 	
 	<!--<div id="circle" style="left: {$mousePosition[0]}px; top:{$mousePosition[1]}px"></div>-->

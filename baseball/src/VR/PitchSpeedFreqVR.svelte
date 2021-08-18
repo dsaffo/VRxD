@@ -6,13 +6,8 @@
 import { pitch_trajectory } from "../pitchCalc";
 
 
-  let interactions;
-
-  const unsubscribe = interaction_store.subscribe((value) => {
-    interactions = value;
-  });
- 
-
+  export let interactions;
+  
   export let pitches = [];
   export let data = [];
 

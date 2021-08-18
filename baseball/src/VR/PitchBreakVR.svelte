@@ -4,11 +4,7 @@
   import { colorScale } from "../colorScales";
 
 
-  let interactions;
-
-  const unsubscribe = interaction_store.subscribe((value) => {
-    interactions = value;
-  });
+  export let interactions;
   // position="{xScale(pitch.pfx_x * 12) - width} {yScale(pitch.release_pos_z * 39.3701 - pitch.plate_z * 39.3701) - height} 0.001"
   export let pitches = [];
 

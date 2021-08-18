@@ -7,11 +7,7 @@
 
     export let pitches = [];
 
-    let interactions;
-
-    const unsubscribe = interaction_store.subscribe((value) => {
-        interactions = value;
-    });
+    export let interactions;
 
     /*function pathGen(data) {
         console.log("pathGen")

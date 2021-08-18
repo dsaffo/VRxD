@@ -154,6 +154,11 @@ export function updateMousePos(pos){
     document.body.dispatchEvent(updateEvent);
 }
 
+export function updateCameraPos(pos){
+    const updateEvent = new CustomEvent ('camera_update', {detail: {camera:pos, id:clientId}});
+    document.body.dispatchEvent(updateEvent);
+}
+
 function interactionStore (){
     const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null, windowSize: [0,0]});
     let peerInterval = null;
@@ -259,9 +264,31 @@ function peerMousePosition (){
     }
 }
 
+function peerCameraPosition (){
+    const {subscribe, update, set} = writable({pos: {x: 0, y: 1.6, z: 0}, rot: {x: 0, y: 0, z: 0}});
+
+    return {
+    subscribe,
+    updateData: (detail) => update(store => {
+     console.log("recieved");
+        if (detail.id != clientId){
+             console.log("accepted");
+            store = detail.camera;
+            return store;
+        } else {
+         
+            return store;
+        }
+    })
+    }
+}
+
+
+
 
 export const peerInteraction = peerInteractionStore();
 export const mousePosition = peerMousePosition();
+export const cameraPosition = peerCameraPosition();
 
 let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null};
 

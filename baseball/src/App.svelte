@@ -1,5 +1,5 @@
 <script>
-	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store, mousePosition, updateMousePos} from './stores.js';
+	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store, mousePosition, updateMousePos, cameraPosition} from './stores.js';
 	import { onMount } from 'svelte';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
@@ -26,6 +26,7 @@ import { validate_component } from 'svelte/internal';
 
 	document.body.addEventListener('interaction_update', (e) => { peerInteraction.updateData(e.detail) });
 	//document.body.addEventListener('mouse_update', (e) => { mousePosition.updateData(e.detail) });
+	document.body.addEventListener('camera_update', (e) => { cameraPosition.updateData(e.detail) });
 
 
 	let page_value;
