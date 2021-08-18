@@ -8,11 +8,7 @@
   export let pitches = [];
   export let data = [];
 
-  let interactions;
-
-  const unsubscribe = interaction_store.subscribe((value) => {
-    interactions = value;
-  });
+  export let interactions;
 
   let innerWidth = 500;
   let innerHeight = 200;

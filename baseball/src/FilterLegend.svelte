@@ -6,12 +6,15 @@
     export let name = "undefined";
     export let keys = [];
     export let value = "undefined";
+    export let vrMode = false;
+    export let interactions;
+
 </script>
 
 <div class="lengend-header">
-    <button class:selected="{$interaction_store.color_store === value}" on:click="{() => interaction_store.updateLocalColor(value)}">{name}</button>
+    <button class:selected="{interactions.color_store === value}" on:click="{() => interaction_store.updateLocalColor(value)}" disabled={vrMode}>{name}</button>
     {#each keys as key}
-        <LegendButton value={key} color={colorScaleKey(value,key)}></LegendButton>
+        <LegendButton value={key} color={colorScaleKey(value,key)} interactions={interactions}></LegendButton>
     {/each}
 </div>
 

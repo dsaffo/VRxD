@@ -1,5 +1,5 @@
 <script>
-	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store} from './stores.js';
+	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store, mousePosition, updateMousePos} from './stores.js';
 	import { onMount } from 'svelte';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
@@ -15,20 +15,23 @@ import { validate_component } from 'svelte/internal';
 		ohtani_percentile_store.loadData("./OhtaniPercentiles.csv");
 	})
 
-
-	
-
-
-	
+	function handleMousemove(event) {
+		updateMousePos([event.clientX, event.clientY]);
+	}
 
 	/* Example of event listener that updates the data when UpdateData is called from store.js
 	document.body.addEventListener('myEvent', (e) => { stored_data.updateStore(e.detail) });
 	*/
 
+
 	document.body.addEventListener('interaction_update', (e) => { peerInteraction.updateData(e.detail) });
+	//document.body.addEventListener('mouse_update', (e) => { mousePosition.updateData(e.detail) });
+
 
 	let page_value;
 	let interactionStore;
+	let innerWidth;
+	let innerHeight;
 
 	const unsubscribe_interaction = interaction_store.subscribe(value => {
 		interactionStore = value;
@@ -42,6 +45,8 @@ import { validate_component } from 'svelte/internal';
 		
 	}
 
+	interaction_store.updateWindowSize([window.innerWidth, window.innerHeight]);
+	
 	//when data is loaded print to console 
 	//$: console.log($stored_data);
 
@@ -51,11 +56,9 @@ import { validate_component } from 'svelte/internal';
 </script>
 
 
-{#if page_value == 0}
-
-	<DesktopEnv></DesktopEnv>
-
-{/if}
+	{#if page_value == 0}
+		<DesktopEnv interactions={interactionStore} vrMode={false}></DesktopEnv>
+	{/if}
 
 
 {#if page_value == 1}
@@ -63,6 +66,5 @@ import { validate_component } from 'svelte/internal';
 	<VirtualEnv></VirtualEnv>
 
 {/if}
-
 
 

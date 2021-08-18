@@ -6,12 +6,9 @@
 
     export let pitches = [];
     export let stats = {};
+    export let vrMode = false;
+    export let interactions;
 
-    let interactions;
-
-    const unsubscribe = interaction_store.subscribe(value => {
-        interactions = value;
-    })
 
     function onChange(event) {
         console.log("changed");
@@ -69,15 +66,15 @@
 
         <Row  style="height: 70%; border: 2px solid grey;"> 
             <Col>
-                <FilterLegend name="Pitch Type" value="type" keys={pitchTypes} ></FilterLegend>
+                <FilterLegend name="Pitch Type" value="type" keys={pitchTypes} vrMode={vrMode} interactions={interactions}></FilterLegend>
             </Col>
 
             <Col>
-                <FilterLegend name="Outcome" value="outcome"  keys={pitchOutcomes}></FilterLegend>
+                <FilterLegend name="Outcome" value="outcome"  keys={pitchOutcomes} vrMode={vrMode} interactions={interactions}></FilterLegend>
             </Col>
 
             <Col>
-                <FilterLegend name="Pitch Speed" value="speed"  keys={pitchSpeeds}></FilterLegend>
+                <FilterLegend name="Pitch Speed" value="speed"  keys={pitchSpeeds} vrMode={vrMode} interactions={interactions}></FilterLegend>
             </Col>
         </Row>
    

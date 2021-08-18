@@ -5,11 +5,8 @@
 
   export let pitches = [];
 
-  let interactions;
+  export let interactions;
 
-  const unsubscribe = interaction_store.subscribe((value) => {
-    interactions = value;
-  });
 
   let innerWidth = 500;
   let innerHeight = 200;

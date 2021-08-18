@@ -3,11 +3,9 @@
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
 
-  let interactions;
+ export let interactions;
 
-  const unsubscribe = interaction_store.subscribe((value) => {
-    interactions = value;
-  });
+
 
   export let pitches = [];
 

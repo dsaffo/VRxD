@@ -1,6 +1,6 @@
 <script>
 	import { Col, Container, Row } from 'sveltestrap';
-  	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
+  	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, mousePosition} from '../stores.js';
 	import OverheadPitch from './OverheadPitch.svelte';
 	import SidePitch from './SidePitch.svelte';
 	import StrikeZone from './StrikeZone.svelte';
@@ -14,7 +14,8 @@
 	let data;
 	let ohtaniStats;
 	let ohtaniPercentile;
-	let interactions;
+	export let interactions;
+	export let vrMode = false;
 
 	const stats_unsub = ohtani_stats_store.subscribe(value => {
 		ohtaniStats = value[0];
@@ -28,9 +29,6 @@
 		data = value;
 	});
 
-	const interaction_unsub = interaction_store.subscribe(value => {
-		interactions = value;
-	});
 
 	function checkSpeed(speed) {
 		if (speed >= 65 && speed <= 75){
@@ -58,20 +56,20 @@
 		<Row style="height: 30%;">
 			<Col sm='1' style='padding: 20px; max-width: 5%;'>
 				<Row>
-					<button on:click="{() => page.update(n => n = 1)}">switch</button>
+					<button on:click="{() => page.update(n => n = 1)}" disabled={vrMode}>switch</button>
 				</Row>
 			
 				<Row>
-					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" disabled={vrMode}>Peek</button>
 				</Row>
 
 				<Row>
-					<button on:click="{() => interaction_store.copy()}">Copy</button>
+					<button on:click="{() => interaction_store.copy()}" disabled={vrMode}>Copy</button>
 				</Row>
 
 			</Col>
 			<Col sm='4' style='padding: 20px; min-width: 35%;'>
-				<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
+				<PitcherCard pitches={data} stats={ohtaniStats} vrMode={vrMode} interactions={interactions}></PitcherCard>
 			</Col>
 			<Col sm='7' style='padding: 20px; min-width: 60%;'>
 				<StatCard stats={ohtaniStats} percentiles={ohtaniPercentile}></StatCard>
@@ -81,15 +79,15 @@
 		<Row style="height: 35%; text-align: center;">
 			<Col  sm='2' style='padding: 20px;'>
 				<span>Strike Zone</span>
-				<StrikeZone pitches={filtered_pitches}></StrikeZone>
+				<StrikeZone pitches={filtered_pitches} interactions={interactions}></StrikeZone>
 			</Col>
 			<Col style='padding: 20px;'>
 				<span>Overhead View</span>
-				<OverheadPitch data={filtered_pitches}></OverheadPitch>
+				<OverheadPitch data={filtered_pitches} interactions={interactions}></OverheadPitch>
 			</Col>
 			<Col style='padding: 20px;'>
 				<span>Side View</span>
-				<SidePitch data={filtered_pitches}></SidePitch>
+				<SidePitch data={filtered_pitches} interactions={interactions}></SidePitch>
 			</Col>
 		</Row>
 
@@ -97,17 +95,19 @@
 			
 			<Col sm='6' style='padding: 20px;'>
 				<span>Pitch Frequency and Speed</span>
-				<PitchSpeedFreq pitches={filtered_pitches} data={data}></PitchSpeedFreq>
+				<PitchSpeedFreq pitches={filtered_pitches} data={data} interactions={interactions}></PitchSpeedFreq>
 				
 			</Col>
 			
 			<Col sm='6' style='padding: 20px;'>
 				<span>Vertical and Horizontal Break</span>
-				<PitchBreak pitches={filtered_pitches}></PitchBreak>
+				<PitchBreak pitches={filtered_pitches} interactions={interactions}></PitchBreak>
 			</Col>
 		</Row>
 	</Container>
 
+	
+	<!--<div id="circle" style="left: {$mousePosition[0]}px; top:{$mousePosition[1]}px"></div>-->
 
 {/if}
 
@@ -121,5 +121,14 @@
 	span {
 		font-size: 15px;
 	}
+
+	#circle{
+		position:absolute;
+		transform:translate(-50%,-50%);
+		height:35px;
+		width:35px;
+		border-radius:50%;
+		border:2px solid rgb(184, 12, 12);
+		}
 
 </style>

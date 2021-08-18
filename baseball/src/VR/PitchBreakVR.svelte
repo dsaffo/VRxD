@@ -105,7 +105,7 @@
 
   <a-entity>
     {#each pitches as pitch, i}
-      <a-circle 
+      <a-circle class="collidable"
         color='{colorScale(interactions.color_store, pitch)}' 
         opacity='{opacity(pitch.id)}'
         radius='{radius(pitch.id)}'

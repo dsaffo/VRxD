@@ -5,14 +5,7 @@
   import { colorScale } from "../colorScales";
 
   export let data = [];
-  export let pitches = [];
-
-	let interactions;
-
-	const unsubscribe = interaction_store.subscribe((value) => {
-		interactions = value;
-	});
-
+	export let interactions;
  
   let innerWidth = 500;
   let innerHeight = 200;

@@ -5,7 +5,7 @@
 	import "aframe-thumb-controls-component";
 	import "aframe-extras";
 	import "aframe-auto-detect-controllers-component";
-	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
+	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction} from '../stores.js';
 	import Field from './Field.svelte';
 	import ThreeDPitches from './ThreeDpitches.svelte';
 	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
@@ -24,6 +24,7 @@
 	let ohtaniStats;
 	let ohtaniPercentile;
 	let interactions;
+	let peerInteractions;
 
 	const stats_unsub = ohtani_stats_store.subscribe(value => {
 		ohtaniStats = value[0];
@@ -39,6 +40,10 @@
 
 	const interaction_unsub = interaction_store.subscribe(value => {
 		interactions = value;
+	});
+
+	const peer_unsub = peerInteraction.subscribe(value => {
+		peerInteractions = value;
 	});
 
 	let pitchTypes = [...new Set(data.map(item => item.pitch_name))];
@@ -100,18 +105,10 @@ rotation="0 -180 0">
 							<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
 						</div>
 						<div style="height: 300px; width: 650px;">
-							<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>
+							<PitcherCard pitches={data} stats={ohtaniStats} interactions={interactions}></PitcherCard>
 						<div>
 				
 				</a-entity>
-
-				<a-entity class="collidable" id="scouting-report" htmlembed position="2.698 1.5 0.140" scale="1 1 1" rotation="0 -91 0">
-					<!--<PitcherCard pitches={data} stats={ohtaniStats}></PitcherCard>-->
-					<div>
-						<FilterLegend name="Pitch Type" value="type" keys={pitchTypes} ></FilterLegend>
-				</div>
-				</a-entity>
-
 
 				<a-entity class="collidable" id="stat-card" htmlembed position="0  3.2 -2" scale="1 1 1" rotation="30 0 0">
 					<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats}></StatCard>
@@ -140,6 +137,11 @@ rotation="0 -180 0">
 {#if data.length != 0}
 	<ThreeDPitches pitches={filtered_pitches}></ThreeDPitches>
 {/if}
+
+
+<a-entity class="collidable" id="desktopview" htmlembed position="0 1.5 -3" scale="0.5 0.5 0.5" rotation="0 0 0" style="height: {1080}px; width: {1920}px;">
+		<DesktopEnv interactions={peerInteractions} vrMode={true}></DesktopEnv>
+</a-entity>
 
   
 </a-scene>

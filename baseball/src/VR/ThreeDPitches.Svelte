@@ -1,5 +1,5 @@
 <script>
-    import "aframe-curve-component";
+    //import "aframe-curve-component";
     import "aframe-meshline-component";
     import { pitch_trajectory }  from "../pitchCalc.js";
     import { interaction_store, peerInteraction} from "../stores";
@@ -113,7 +113,7 @@
         <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 
         <a-entity meshline="lineWidth: {stroke(pitch.id)}; path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; color: {colorScale(interactions.color_store, pitch)};"></a-entity>
-
+ 
         <a-sphere 
             class="collidable"
             position="{-pitch['plate_x']} {pitch['plate_z']} 0" 

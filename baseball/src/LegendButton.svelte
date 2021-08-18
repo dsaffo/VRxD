@@ -3,6 +3,8 @@
 
     export let value = 'undefiend';
     export let color = 'red';
+    export let vrMode = false;
+    export let interactions;
 
  
     
@@ -11,9 +13,10 @@
 
 <div class="legend-header">
     <button 
-        class:selected="{$interaction_store.filter_store.includes(value)}" 
+        class:selected="{interactions.filter_store.includes(value)}" 
         on:click="{() => interaction_store.updateLocalFilter(value)}" 
-        style="background-color: {color};">
+        style="background-color: {color};"
+        disabled={vrMode}>
     </button>
     <span>{value}</span>
 </div>

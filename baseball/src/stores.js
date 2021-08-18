@@ -149,14 +149,25 @@ function updatePeer(store){
    // console.log("event dispatched")
 }
 
+export function updateMousePos(pos){
+    const updateEvent = new CustomEvent ('mouse_update', {detail: {mousePos:pos, id:clientId}});
+    document.body.dispatchEvent(updateEvent);
+}
+
 function interactionStore (){
-    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
+    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null, windowSize: [0,0]});
     let peerInterval = null;
     let peer_store;
     let unsub = peerInteraction.subscribe(value => peer_store = value);
 
     return{
         subscribe,
+
+        updateWindowSize: (window) => update(store => {
+            store.windowSize = window;
+            updatePeer(store);
+            return store;
+        }),
 
         updateLocalColor: (color) => update(store => {
             store.color_store = color;
@@ -211,7 +222,7 @@ function interactionStore (){
 
 
 function peerInteractionStore (){
-    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null});
+    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null, windowSize: [0,0]});
 
     return {
     subscribe,
@@ -229,8 +240,28 @@ function peerInteractionStore (){
 }
 }
 
+function peerMousePosition (){
+    const {subscribe, update, set} = writable([0,0]);
+
+    return {
+    subscribe,
+    updateData: (detail) => update(store => {
+     
+        if (detail.id != clientId){
+       
+            store = detail.mousePos;
+            return store;
+        } else {
+         
+            return store;
+        }
+    })
+    }
+}
+
 
 export const peerInteraction = peerInteractionStore();
+export const mousePosition = peerMousePosition();
 
 let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null};
 
