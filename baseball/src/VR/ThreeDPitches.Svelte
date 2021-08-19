@@ -4,12 +4,13 @@
     import { pitch_trajectory }  from "../pitchCalc.js";
     import { interaction_store, peerInteraction} from "../stores";
     import { colorScale } from "../colorScales";
+    import simplify from "simplify-3d";
 
     export let pitches = [];
 
     export let interactions;
 
-    /*function pathGen(data) {
+    /*function pathGen2(data) {
         console.log("pathGen")
         var pitch = pitch_trajectory(
         data["release_pos_x"],
@@ -28,21 +29,23 @@
         return pitch.slice(1,-1);
     };*/
 
-
     function pathGen (data) {
-    var pitch = pitch_trajectory(
-      data["release_pos_x"],
-      data["release_pos_y"],
-      data["release_pos_z"],
-      data["vx0"],
-      data["vy0"],
-      data["vz0"],
-      data["ax"],
-      data["ay"],
-      data["az"],
-      data["release_spin_rate"],
-      0.001
-    );
+        var pitch = pitch_trajectory(
+        data["release_pos_x"],
+        data["release_pos_y"],
+        data["release_pos_z"],
+        data["vx0"],
+        data["vy0"],
+        data["vz0"],
+        data["ax"],
+        data["ay"],
+        data["az"],
+        data["release_spin_rate"],
+        0.001
+        );
+
+        pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
+        pitch = simplify(pitch, 0.001);
 
     return `${pitch
       .map((p) => `${-p.x} ${p.z} ${p.y}`)}`;
@@ -55,6 +58,7 @@
         pitchPaths.push(pathGen(pitches[i]));
         pitchIDs.push(pitches[i]['id']);
     }
+
   
 
     $: radius = (id) => {
@@ -109,7 +113,7 @@
         <!-- svelte-ignore a11y-mouse-events-have-key-events -->
 
         <a-entity meshline="lineWidth: {stroke(pitch.id)}; path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; color: {colorScale(interactions.color_store, pitch)};"></a-entity>
- 
+  
         <a-sphere 
             class="collidable"
             position="{-pitch['plate_x']} {pitch['plate_z']} 0" 
