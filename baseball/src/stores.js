@@ -1,6 +1,21 @@
 import { writable, readable } from 'svelte/store';
 import * as d3 from "d3";
 import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from './colorScales.js';
+import { db } from "./firestore.js";
+
+export let page = writable(0);
+const urlParams = new URLSearchParams(window.location.search);
+const isVR = urlParams.has('vr');
+let doc;
+let peerDoc;
+if (!isVR){
+    doc = "desktop";
+    peerDoc = "vr";
+} else {
+    doc = "vr";
+    peerDoc = "desktop";
+}
+
 
 function makeid(length) {
     var result           = '';
@@ -143,10 +158,22 @@ function pitchesStore() {
 }
 
 function updatePeer(store){
-    const updateEvent = new CustomEvent ('interaction_update', {detail: {interactions:store, id:clientId}});
-   //console.log("dispatching event", store)
-    document.body.dispatchEvent(updateEvent);
+    //const updateEvent = new CustomEvent ('interaction_update', {detail: {interactions:store, id:clientId}});
+    //console.log("dispatching event", store)
+    //document.body.dispatchEvent(updateEvent);
    // console.log("event dispatched")
+
+
+    
+   db.collection("interactions").doc(doc).set(store)
+        .then(() => {
+            console.log("Document successfully written!");
+           
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+    
+        });
 }
 
 export function updateMousePos(pos){
@@ -225,25 +252,48 @@ function interactionStore (){
     }
 }
 
-
+/*
 function peerInteractionStore (){
     const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null, windowSize: [0,0]});
 
+    db
+    .collection("interactions")
+    .doc("0")
+    .onSnapshot((doc) => {
+        console.log("Current data: ", doc.data());
+       // updateData(doc.data());
+    });
+
     return {
     subscribe,
-    updateData: (detail) => update(store => {
-        //console.log("recieved");
-        if (detail.id != clientId){
-            //console.log("accepted");
-            store = detail.interactions;
+    updateData: (peer_store) => update(store => {
+       // console.log("recieved");
+       
+            store = peer_store;
             return store;
-        } else {
-            //console.log("rejected");
-            return store;
-        }
+      
     })
 }
 }
+*/
+
+export const peerInteraction = readable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null, windowSize: [0,0]}, function start(set) {
+
+ 
+
+    const unsub = db
+    .collection("interactions")
+    .doc(peerDoc)
+    .onSnapshot((doc) => {
+        console.log("Current data: ", doc.data());
+        set(doc.data());
+    });
+
+
+    return function stop() {
+        unsub();
+    }
+});
 
 function peerMousePosition (){
     const {subscribe, update, set} = writable([0,0]);
@@ -286,7 +336,7 @@ function peerCameraPosition (){
 
 
 
-export const peerInteraction = peerInteractionStore();
+//export const peerInteraction = peerInteractionStore();
 export const mousePosition = peerMousePosition();
 export const cameraPosition = peerCameraPosition();
 
@@ -296,7 +346,7 @@ export const ohtani_stats_store = statsStore();
 export const ohtani_percentile_store = percentileStore();
 export const stored_data = pitchesStore();
 export const interaction_store = interactionStore();
-export let page = writable(0);
+
 
 
 

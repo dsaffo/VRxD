@@ -12345,10 +12345,6 @@ var PeerjsNetwork = /** @class */ (function () {
     PeerjsNetwork.prototype.init = function (id, onOpen, onConnection, onDisconnection) {
         this.onOpen = onOpen;
         this.peer = new Peer(id, {
-            host: 'michaschwab.de',
-            port: 9099,
-            secure: true,
-            path: '/visconnect',
             config: {
                 iceServers: [
                     { urls: 'stun:stun.l.google.com:19302' },

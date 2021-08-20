@@ -18,6 +18,7 @@
 
 
 
+
 	//subscribe to stored_data and assign its value to data
 	//subscribe to stored_data and assign its value to data
 	let data;
@@ -82,9 +83,10 @@
 	}
 
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
-	
 
 </script>
+
+{#if data.length != 0}
 <a-scene>
 
 <!-- Basic movement and teleportation   -->
@@ -113,8 +115,8 @@ rotation="0 -180 0"
 				
 				<a-entity class="collidable" id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
 						<div>
-							<button on:click="{() => interaction_store.copy()}" on:mouseup="{() => interaction_store.copyEnd()}">Copy</button>
-							<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+							<button on:click="{() => interaction_store.copy()}">Copy</button>
+							<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" on:mouseleave="{() => interaction_store.peekEnd()}">Peek</button>
 						</div>
 						<div style="height: 300px; width: 650px;">
 							<PitcherCard pitches={data} stats={ohtaniStats} interactions={interactions}></PitcherCard>
@@ -147,9 +149,9 @@ rotation="0 -180 0"
 
 <Field></Field>  
 
-{#if data.length != 0}
-	<ThreeDPitches pitches={filtered_pitches} interactions={interactions}></ThreeDPitches>
-{/if}
+	{#if filtered_pitches !=0}
+		<ThreeDPitches pitches={filtered_pitches} interactions={interactions}></ThreeDPitches>
+	{/if}
 
 <!--
 <a-entity class="collidable" id="desktopview" htmlembed position="0 1.5 -3" scale="0.5 0.5 0.5" rotation="0 0 0" style="height: {1080}px; width: {1920}px;">
@@ -158,3 +160,4 @@ rotation="0 -180 0"
 
   
 </a-scene>
+{/if}

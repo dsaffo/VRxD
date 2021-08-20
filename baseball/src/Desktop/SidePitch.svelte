@@ -3,6 +3,7 @@
   import { pitch_trajectory } from "../pitchCalc.js";
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
+  import simplify from "simplify-3d";
 
   export let data = [];
 
@@ -50,6 +51,9 @@
       data["release_spin_rate"],
       0.001
     );
+
+    pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
+        pitch = simplify(pitch, 0.001);
 
     //convert from meters to feet
     return `M${pitch

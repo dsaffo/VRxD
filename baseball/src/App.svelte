@@ -3,12 +3,26 @@
 	import { onMount } from 'svelte';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
-	import { pitch_trajectory }  from './pitchCalc.js';
-import { validate_component } from 'svelte/internal';
+	import { db } from './firestore.js';
+	
+	/*
+		db.collection("cities").doc("LA").set({
+		name: "Los Angeles",
+		state: "CA",
+		country: "poop"
+	})
+	.then(() => {
+		console.log("Document successfully written!");
+	})
+	.catch((error) => {
+		console.error("Error writing document: ", error);
+	});
+*/
 	
 
+	const urlParams = new URLSearchParams(window.location.search);
+    const isVR = urlParams.has('vr');
 
-	
 	onMount(async () => {
 		stored_data.loadData("./OhtaniOneGame.csv");
 		ohtani_stats_store.loadData("./OhtaniStats.csv");
@@ -57,15 +71,13 @@ import { validate_component } from 'svelte/internal';
 </script>
 
 
-	{#if page_value == 0}
+	{#if !isVR}
 		<DesktopEnv interactions={interactionStore} vrMode={false}></DesktopEnv>
 	{/if}
 
 
-{#if page_value == 1}
-
-	<VirtualEnv></VirtualEnv>
-
-{/if}
+	{#if isVR}
+		<VirtualEnv></VirtualEnv>
+	{/if}
 
 

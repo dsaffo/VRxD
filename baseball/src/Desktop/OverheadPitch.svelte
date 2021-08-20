@@ -3,7 +3,8 @@
   import { pitch_trajectory } from "../pitchCalc.js";
 	import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
-
+  import simplify from "simplify-3d";
+  
   export let data = [];
 	export let interactions;
  
@@ -51,6 +52,9 @@
       0.001
     );
 
+
+    pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
+    pitch = simplify(pitch, 0.001);
     //convert from meters to feet and flip x position to pitchers persepctive
     return `M${pitch
       .map((p) => `${xScale(p.y * 3.28084)},${yScale(p.x * 3.28084)}`)

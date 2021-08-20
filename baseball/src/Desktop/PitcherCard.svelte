@@ -3,25 +3,21 @@
     import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from '../colorScales.js';
     import { interaction_store } from '../stores.js';
     import FilterLegend from '../FilterLegend.svelte';
+import { index } from 'aframe';
 
     export let pitches = [];
     export let stats = {};
     export let vrMode = false;
     export let interactions;
 
+    const distinct = (value, index, self) => {
+        return self.indexOf(value) === index;
+    }
 
-    function onChange(event) {
-        console.log("changed");
-		let selected = event.currentTarget.value;
-        interaction_store.updateLocalColor(selected);
-	}
-
-    let pitchTypes = [...new Set(pitches.map(item => item.pitch_name))];
-    let pitchOutcomes = [...new Set(pitches.map(item => item.description))];
+    let pitchTypes = pitches.map(item => item.pitch_name).filter(distinct);
+    let pitchOutcomes = pitches.map(item => item.description).filter(distinct);
     let pitchSpeeds = ["65-75", "75-85", "85-95", "95-105"];
     let pitchSpeedValues = [70,80,90,100];
-
-    
 
     interaction_store.setFilterStore([].concat(pitchTypes,pitchOutcomes,pitchSpeeds));
 

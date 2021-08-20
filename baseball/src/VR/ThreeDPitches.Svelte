@@ -6,8 +6,9 @@
     import { colorScale } from "../colorScales";
     import simplify from "simplify-3d";
 
-    export let pitches = [];
 
+    export let pitches = [];
+    $: console.log(pitches.length);
     export let interactions;
 
     /*function pathGen2(data) {
@@ -59,7 +60,9 @@
         pitchIDs.push(pitches[i]['id']);
     }
 
-  
+
+
+   
 
     $: radius = (id) => {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
@@ -98,6 +101,7 @@
 
 </script>
 
+{#if pitchPaths.length !=0}
 <a-entity id="pitch-paths">
 {#each pitches as pitch, i}
     <a-entity>
@@ -126,5 +130,5 @@
     </a-entity>
 {/each}
 </a-entity>
-
+{/if}
   <!--<a-sphere position="{-data[index]['plate_x']} {data[index]['plate_z']} 0" radius='0.036'></a-sphere>-->
