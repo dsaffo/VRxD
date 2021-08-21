@@ -3,6 +3,12 @@ import * as d3 from "d3";
 import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from './colorScales.js';
 import { db } from "./firestore.js";
 
+
+const { DeepstreamClient } = window.DeepstreamClient
+const client = new DeepstreamClient('localhost:6020')
+client.login()
+
+
 export let page = writable(0);
 const urlParams = new URLSearchParams(window.location.search);
 const isVR = urlParams.has('vr');
@@ -15,6 +21,9 @@ if (!isVR){
     doc = "vr";
     peerDoc = "desktop";
 }
+
+const peer = client.record.getRecord("interactions");
+
 
 
 function makeid(length) {
@@ -164,7 +173,7 @@ function updatePeer(store){
    // console.log("event dispatched")
 
 
-    
+    /*
    db.collection("interactions").doc(doc).set(store)
         .then(() => {
             console.log("Document successfully written!");
@@ -174,6 +183,10 @@ function updatePeer(store){
             console.error("Error writing document: ", error);
     
         });
+        */
+
+    peer.set(doc, store);
+    
 }
 
 export function updateMousePos(pos){
@@ -279,14 +292,16 @@ function peerInteractionStore (){
 
 export const peerInteraction = readable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null, windowSize: [0,0]}, function start(set) {
 
- 
-
-    const unsub = db
+   /* const unsub = db
     .collection("interactions")
     .doc(peerDoc)
     .onSnapshot((doc) => {
         console.log("Current data: ", doc.data());
         set(doc.data());
+    });*/
+
+    const unsub = peer.subscribe(peerDoc, function(value) {
+        set(JSON.parse(JSON.stringify(value)));
     });
 
 

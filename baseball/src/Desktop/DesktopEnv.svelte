@@ -60,9 +60,6 @@
 		<Row style="height: 30%;">
 			<Col sm='1' style='padding: 20px; max-width: 5%;'>
 				<Row>
-					<button on:click="{() => page.update(n => n = 1)}" disabled={vrMode}>switch</button>
-				</Row>
-				<Row>
 					<button on:click={toggle} disabled={vrMode}>Watch</button>
 				</Row>
 				<Row>

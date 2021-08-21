@@ -61,9 +61,6 @@
     }
 
 
-
-   
-
     $: radius = (id) => {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
         return "0.05"
