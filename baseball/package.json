@@ -26,6 +26,7 @@
     "aframe-curve-component": "github:kotavy/aframe-curve-component",
     "aframe-event-set-component": "^5.0.0",
     "aframe-extras": "^6.1.1",
+    "aframe-geometry-merger-component": "^2.0.0",
     "aframe-htmlembed-component": "^1.0.0",
     "aframe-meshline-component": "^0.4.0",
     "aframe-teleport-controls": "^0.3.1",
@@ -37,6 +38,9 @@
     "sirv-cli": "^1.0.0",
     "sveltefire": "^0.1.5",
     "sveltestrap": "^5.5.1",
+    "three": "^0.131.3",
+    "three.meshline": "^1.3.0",
+    "threejs-meshline": "^2.0.12",
     "visconnect": "^1.2.2"
   }
 }

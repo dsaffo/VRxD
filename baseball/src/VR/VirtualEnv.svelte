@@ -15,6 +15,7 @@
 	import StatCard from '../Desktop/StatCard.svelte';
 	import PitchBreakVR from './PitchBreakVR.svelte';
 	import PitchSpeedFreqVR from "./PitchSpeedFreqVR.svelte";
+	import ThreeDPitches2 from './ThreeDpitches2.svelte';
 
 
 
@@ -87,7 +88,7 @@
 </script>
 
 {#if data.length != 0}
-<a-scene>
+<a-scene webxr="optionalFeatures: light-estimation;" background="color: #ECECEC" stats>
 
 <!-- Basic movement and teleportation   -->
 <a-entity id="cameraRig" 
@@ -124,7 +125,7 @@ rotation="0 -180 0"
 				
 				</a-entity>
 
-				<!--
+				
 				<a-entity class="collidable" id="stat-card" htmlembed position="0  3.2 -2" scale="1 1 1" rotation="30 0 0">
 					<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={interactions}></StatCard>
 				</a-entity>
@@ -139,7 +140,8 @@ rotation="0 -180 0"
 				<a-entity class="collidable" id="pitch-speed-freq" htmlembed position="-2.85 1.5 0.311" scale="1 1 1" rotation="0 91 0">
 					<PitchSpeedFreqVR pitches={filtered_pitches} data={data} interactions={interactions}></PitchSpeedFreqVR>
 				</a-entity>
-				-->
+			
+				
 
 
 				
@@ -150,7 +152,10 @@ rotation="0 -180 0"
 <Field></Field>  
 
 	{#if filtered_pitches !=0}
-		<ThreeDPitches pitches={filtered_pitches} interactions={interactions}></ThreeDPitches>
+		<!--<ThreeDPitches pitches={filtered_pitches} interactions={interactions}></ThreeDPitches>-->
+
+		<ThreeDPitches2 pitches={filtered_pitches} interactions={interactions}></ThreeDPitches2>
+
 	{/if}
 
 <!--

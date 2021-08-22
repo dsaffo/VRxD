@@ -5,7 +5,7 @@ import { db } from "./firestore.js";
 
 
 const { DeepstreamClient } = window.DeepstreamClient
-const client = new DeepstreamClient('localhost:6020')
+const client = new DeepstreamClient('wss://nasty-crab-9.loca.lt')
 client.login()
 
 
@@ -23,8 +23,6 @@ if (!isVR){
 }
 
 const peer = client.record.getRecord("interactions");
-
-
 
 function makeid(length) {
     var result           = '';

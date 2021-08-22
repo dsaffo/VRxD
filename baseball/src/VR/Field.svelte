@@ -8,4 +8,3 @@
 
 <!--Field and Sky-->
 <a-plane class="collidable" position="0 0 19" rotation="-90 -45 0" width="27.432" height="27.432" color="#7BC8A4"></a-plane>
-<a-sky color="#ECECEC"></a-sky>
