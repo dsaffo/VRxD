@@ -3,21 +3,7 @@
 	import { onMount } from 'svelte';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
-	import { db } from './firestore.js';
-	
-	/*
-		db.collection("cities").doc("LA").set({
-		name: "Los Angeles",
-		state: "CA",
-		country: "poop"
-	})
-	.then(() => {
-		console.log("Document successfully written!");
-	})
-	.catch((error) => {
-		console.error("Error writing document: ", error);
-	});
-*/
+
 	
 
 	const urlParams = new URLSearchParams(window.location.search);

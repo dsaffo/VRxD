@@ -3,7 +3,7 @@
   import { schemeTableau10 } from "d3-scale-chromatic";
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
-import { pitch_trajectory } from "../pitchCalc";
+  import "./chartpoint";
 
 
   export let interactions;
@@ -79,7 +79,7 @@ for (let i = 0; i < yTicks.length; i++) {
   }
 </script>
 
-<a-plane color="#333333" height={height} width={width}>
+<a-plane class="collidable" color="#333333" height={height} width={width}>
 
   <!-- y axis -->
   <a-entity position="0 {0 - (height / 2) + padding.top - 0.02} 0.001">
@@ -122,14 +122,15 @@ for (let i = 0; i < yTicks.length; i++) {
 
   <a-entity position="0 -0.02 0">
     {#each pitches as pitch, i}
-      <a-circle class="collidable"
-        color='{colorScale(interactions.color_store, pitch)}' 
-        opacity='{opacity(pitch.id)}'
-        radius='{radius(pitch.id)}'
-        position="{xScale(pitch.effective_speed)  - (width / 2)} {(yScale(pitch.pitch_name) + (padding.bottom + padding.top /2) - (height / 2))} 0.002{i + 2}"
-        on:mouseenter={() => mouseOver(pitch.id)}
-        on:mouseleave={() => mouseOut()}>
-      </a-circle>
+      <a-entity 
+      class="collidable"
+      chartpoint="color: {colorScale(interactions.color_store, pitch)};
+                  opacity: {opacity(pitch.id)};
+                  radius: {radius(pitch.id)};"
+      position="{xScale(pitch.effective_speed)  - (width / 2)} {(yScale(pitch.pitch_name) + (padding.bottom + padding.top /2) - (height / 2))} 0.002{i + 2}"
+      on:mouseenter={() => mouseOver(pitch.id)}
+      on:mouseleave={() => mouseOut()}>
+    </a-entity>
     {/each}
   </a-entity>
 

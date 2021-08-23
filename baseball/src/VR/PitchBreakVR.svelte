@@ -2,6 +2,7 @@
   import { scaleLinear } from "d3-scale";
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
+  import "./chartpoint";
 
 
   export let interactions;
@@ -51,7 +52,7 @@
   }
 </script>
 
-<a-plane color="#333333" height={height} width={width}>
+<a-plane class="collidable" color="#333333" height={height} width={width}>
 
   <!-- y axis -->
   <a-entity position="0 {0 - (height / 2) + padding.top} 0.001">
@@ -101,6 +102,7 @@
 
   <a-entity>
     {#each pitches as pitch, i}
+    <!--
       <a-circle class="collidable"
         color='{colorScale(interactions.color_store, pitch)}' 
         opacity='{opacity(pitch.id)}'
@@ -109,6 +111,17 @@
         on:mouseenter={() => mouseOver(pitch.id)}
         on:mouseleave={() => mouseOut()}>
       </a-circle>
+    -->
+    <a-entity 
+      class="collidable"
+      chartpoint="color: {colorScale(interactions.color_store, pitch)};
+                  opacity: {opacity(pitch.id)};
+                  radius: {radius(pitch.id)};"
+      position="{xScale(pitch.pfx_x * 12)  - (width / 2)} {(yScale(pitch.release_pos_z * 39.3701 - pitch.plate_z * 39.3701) - (height / 2))} 0.001{i + 1}"
+      on:mouseenter={() => mouseOver(pitch.id)}
+      on:mouseleave={() => mouseOut()}>
+    </a-entity>
+
     {/each}
   </a-entity>
 

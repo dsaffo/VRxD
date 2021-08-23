@@ -1,7 +1,6 @@
 import { writable, readable } from 'svelte/store';
 import * as d3 from "d3";
-import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from './colorScales.js';
-import { db } from "./firestore.js";
+
 
 
 const { DeepstreamClient } = window.DeepstreamClient
