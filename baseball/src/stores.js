@@ -1,11 +1,9 @@
 import { writable, readable } from 'svelte/store';
 import * as d3 from "d3";
+import { client } from './deepstream.js';
 
 
 
-const { DeepstreamClient } = window.DeepstreamClient
-const client = new DeepstreamClient('wss://nasty-crab-9.loca.lt')
-client.login()
 
 
 export let page = writable(0);

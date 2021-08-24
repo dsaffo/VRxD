@@ -1,5 +1,6 @@
 <script>
 	import "aframe";
+	import "aframe-websurfaces"
 	import "aframe-htmlembed-component";
 	import "aframe-teleport-controls";
 	import "aframe-thumb-controls-component";
@@ -10,13 +11,11 @@
 	import ThreeDPitches from './ThreeDpitches.svelte';
 	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
 	import PitcherCard from '../Desktop/PitcherCard.svelte';
-	import PitchSpeedFreq from '../Desktop/PitchSpeedFreq.svelte';
-	import FilterLegend from '../FilterLegend.svelte';
-	import StatCard from '../Desktop/StatCard.svelte';
 	import PitchBreakVR from './PitchBreakVR.svelte';
 	import PitchSpeedFreqVR from "./PitchSpeedFreqVR.svelte";
 	import ThreeDPitches2 from './ThreeDpitches2.svelte';
-
+	import PitcherReport from '../Desktop/PitcherReport.svelte';
+	import StatCard from '../Desktop/StatCard.svelte';
 
 
 
@@ -85,6 +84,9 @@
 
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
 
+	let formH = 1.5;
+
+
 </script>
 
 {#if data.length != 0}
@@ -123,21 +125,50 @@ rotation="0 -180 0"
 						<div style="height: 300px; width: 650px;">
 							<PitcherCard pitches={data} stats={ohtaniStats} interactions={interactions}></PitcherCard>
 						<div>
-						
-				
 				</a-entity>
 
-				<!--
-				<a-entity class="collidable" id="stat-card" htmlembed position="0  3.2 -2" scale="1 1 1" rotation="30 0 0">
-					<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={interactions}></StatCard>
-				</a-entity>-->
+				<!--<a-plane class="collidable" id="pitcher-report" position="2 1.5 1" scale="1 1 1" rotation="0 -90.000 0">
+					<a-text value="{$form_store.testQ}"></a-text>
+				</a-plane>-->
 
 				
-				<a-entity  id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 30.000 0">
+				
+
+				<!--
+				<a-entity
+					position="2 1.5 1"
+					rotation="0 -90.000 0"
+					geometry="primitive: plane; width: auto; height: {textH / 2}"
+					material="color: #333"
+					text="width: 1; value: {$form_store.stats.replaceAll(';', '')};">
+				</a-entity>
+				-->
+
+				<a-entity htmlembed position="2.5 {formH} 1" rotation="0 -90.000 0">
+					<div style="width: 500px; height:100%">
+						<PitcherReport vr={true}></PitcherReport>
+					</div>
+				</a-entity>
+
+				<a-triangle class="collidable" position="2.5 1.5 2.3" scale=".5 .5 .5"rotation="0 -90.000 0" 
+					on:mousedown="{() => {formH += 0.1}}"
+				></a-triangle>
+				<a-triangle class="collidable" position="2.5 .8 2.3" scale=".5 .5 .5"rotation="0 -90.000 180"
+					on:mousedown="{() => {formH -= 0.1}}"
+				></a-triangle>
+				
+
+				<a-entity class="collidable" id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0">
+					<div style="width: 1000px; height: 300px">
+						<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={interactions}></StatCard>
+					</div>
+				</a-entity>
+
+				<a-entity id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 80 0">
 					<PitchBreakVR pitches={filtered_pitches} interactions={interactions}></PitchBreakVR>
 				</a-entity>
 	
-				<a-entity id="pitch-speed-freq" htmlembed position="-2.85 1.5 0.311" scale="1 1 1" rotation="0 91 0">
+				<a-entity id="pitch-speed-freq" position="-2 1.5 0.9" scale="1 1 1" rotation="0 100 0">
 					<PitchSpeedFreqVR pitches={filtered_pitches} data={data} interactions={interactions}></PitchSpeedFreqVR>
 				</a-entity>
 							
@@ -147,10 +178,7 @@ rotation="0 -180 0"
 <Field></Field>  
 
 	{#if filtered_pitches !=0}
-		<!--<ThreeDPitches pitches={filtered_pitches} interactions={interactions}></ThreeDPitches>-->
-
 		<ThreeDPitches2 pitches={filtered_pitches} interactions={interactions}></ThreeDPitches2>
-
 	{/if}
 
 <!--
@@ -158,6 +186,5 @@ rotation="0 -180 0"
 		<DesktopEnv interactions={peerInteractions} vrMode={true}></DesktopEnv>
 </a-entity>-->
 
-  
 </a-scene>
 {/if}

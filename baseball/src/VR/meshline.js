@@ -11,7 +11,7 @@ AFRAME.registerComponent('meshline', {
       lineWidth: { default: 10 },
       lineWidthStyler: { default: '' },
       sizeAttenuation: { default: 0 },
-        opacity: { default: 1},
+      opacity: { default: 1},
       path: {
         default: [
           { x: -0.5, y: 0, z: 0 },
@@ -42,7 +42,7 @@ AFRAME.registerComponent('meshline', {
         lineWidth: this.data.lineWidth,
         transparent: true,
         opacity: this.data.opacity, 
-        depthTest: false,
+        depthTest: true,
       });
     
       var vertices = [];

@@ -3,11 +3,13 @@
 	import { onMount } from 'svelte';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
-
+	import PitcherReport from './Desktop/PitcherReport.svelte';
 	
 
 	const urlParams = new URLSearchParams(window.location.search);
     const isVR = urlParams.has('vr');
+	const isForm = urlParams.has('form');
+	const isDesktop = urlParams.has('desktop');
 
 	onMount(async () => {
 		stored_data.loadData("./OhtaniOneGame.csv");
@@ -18,15 +20,6 @@
 	function handleMousemove(event) {
 		updateMousePos([event.clientX, event.clientY]);
 	}
-
-	/* Example of event listener that updates the data when UpdateData is called from store.js
-	document.body.addEventListener('myEvent', (e) => { stored_data.updateStore(e.detail) });
-	*/
-
-
-	document.body.addEventListener('interaction_update', (e) => { peerInteraction.updateData(e.detail) });
-	//document.body.addEventListener('mouse_update', (e) => { mousePosition.updateData(e.detail) });
-	document.body.addEventListener('camera_update', (e) => { cameraPosition.updateData(e.detail) });
 
 
 	let page_value;
@@ -57,13 +50,17 @@
 </script>
 
 
-	{#if !isVR}
+	{#if isDesktop}
 		<DesktopEnv interactions={interactionStore} vrMode={false}></DesktopEnv>
 	{/if}
 
 
 	{#if isVR}
 		<VirtualEnv></VirtualEnv>
+	{/if}
+
+	{#if isForm}
+		<PitcherReport></PitcherReport>
 	{/if}
 
 

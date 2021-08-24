@@ -9,9 +9,13 @@
 	import PitcherCard from './PitcherCard.svelte';
 	import StatCard from './StatCard.svelte';
 	import VirtualEnvEmbed from '../VR/VirtualEnvEmbed.svelte';
+	import PitcherReport from './PitcherReport.svelte';
 
-	let open = false;
-  	const toggle = () => (open = !open);
+	let vrView = false;
+  	const vrViewToggle = () => (vrView = !vrView);
+
+	let report = false;
+  	const reportToggle = () => (report = !report);
 
 	//subscribe to stored_data and assign its value to data
 	let data;
@@ -60,13 +64,16 @@
 		<Row style="height: 30%;">
 			<Col sm='1' style='padding: 20px; max-width: 5%;'>
 				<Row>
-					<button on:click={toggle} disabled={vrMode}>Watch</button>
+					<button on:click={vrViewToggle} disabled={vrMode}>Watch</button>
 				</Row>
 				<Row>
 					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" disabled={vrMode}>Peek</button>
 				</Row>
 				<Row>
 					<button on:click="{() => interaction_store.copy()}" disabled={vrMode}>Copy</button>
+				</Row>
+				<Row>
+					<button on:click={reportToggle} disabled={vrMode}>Report</button>
 				</Row>
 			
 
@@ -110,8 +117,12 @@
 	</Container>
 
 
-	{#if open}
+	{#if vrView}
 		<VirtualEnvEmbed></VirtualEnvEmbed>
+	{/if}
+
+	{#if report}
+		<PitcherReport></PitcherReport>
 	{/if}
 
 	
