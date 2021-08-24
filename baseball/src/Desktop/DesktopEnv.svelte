@@ -1,6 +1,6 @@
 <script>
 	import { Col, Container, Row, Modal, ModalBody} from 'sveltestrap';
-  	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, mousePosition} from '../stores.js';
+  	import {stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
 	import OverheadPitch from './OverheadPitch.svelte';
 	import SidePitch from './SidePitch.svelte';
 	import StrikeZone from './StrikeZone.svelte';
@@ -10,6 +10,10 @@
 	import StatCard from './StatCard.svelte';
 	import VirtualEnvEmbed from '../VR/VirtualEnvEmbed.svelte';
 	import PitcherReport from './PitcherReport.svelte';
+	import { mousePos } from '../viewStore';
+
+	const urlParams = new URLSearchParams(window.location.search);
+    const isVR = urlParams.has('vr');
 
 	let vrView = false;
   	const vrViewToggle = () => (vrView = !vrView);
@@ -57,6 +61,8 @@
 	//this is really slow gets called every time there is an interaction but only needs to happen when the filter gets changed
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
 	//$: filtered_pitches = data;
+
+
 </script>
 
 {#if data.length != 0}
@@ -125,8 +131,9 @@
 		<PitcherReport></PitcherReport>
 	{/if}
 
-	
-	<!--<div id="circle" style="left: {$mousePosition[0]}px; top:{$mousePosition[1]}px"></div>-->
+	{#if isVR}
+		<div id="circle" style="left: {$mousePos.x}px; top:{$mousePos.y}px"></div>
+	{/if}	
 
 {/if}
 
@@ -134,7 +141,7 @@
 	button {
 		height: 50px;
 		width: 100%;
-		font-size: 1vw;
+		font-size: 20px;
 	}
 
 	span {

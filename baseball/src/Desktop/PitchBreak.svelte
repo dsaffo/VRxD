@@ -2,7 +2,7 @@
   import { scaleLinear } from "d3-scale";
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
-
+  import { windowSize } from '../viewStore';
  export let interactions;
 
 
@@ -22,8 +22,8 @@
     width = innerWidth * 0.50 - 40;
     height = innerHeight * 0.35 - 60;
   } else {
-    width = 1920 * 0.40 - 40;
-    height = 1080 * 0.35 - 60;
+    width = $windowSize.width * 0.50 - 40;
+    height = $windowSize.height * 0.35 - 60;
   }
 }
 

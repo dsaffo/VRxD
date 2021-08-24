@@ -6,7 +6,7 @@
 	import "aframe-thumb-controls-component";
 	import "aframe-extras";
 	import "aframe-auto-detect-controllers-component";
-	import {page, stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction, updateCameraPos} from '../stores.js';
+	import {stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction} from '../stores.js';
 	import Field from './Field.svelte';
 	import ThreeDPitches from './ThreeDpitches.svelte';
 	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
@@ -16,6 +16,7 @@
 	import ThreeDPitches2 from './ThreeDpitches2.svelte';
 	import PitcherReport from '../Desktop/PitcherReport.svelte';
 	import StatCard from '../Desktop/StatCard.svelte';
+	import { windowSize } from '../viewStore';
 
 
 
@@ -86,6 +87,7 @@
 
 	let formH = 1.5;
 
+	$:console.log($windowSize);
 
 </script>
 
@@ -182,9 +184,12 @@ rotation="0 -180 0"
 	{/if}
 
 <!--
-<a-entity class="collidable" id="desktopview" htmlembed position="0 1.5 -3" scale="0.5 0.5 0.5" rotation="0 0 0" style="height: {1080}px; width: {1920}px;">
+<a-entity class="collidable" id="desktopview" htmlembed position="0 1.5 -3" scale="0.2 0.2 0.2" rotation="0 0 0" >
+	<div style="height: {$windowSize.height}px; width: {$windowSize.width}px;">	
 		<DesktopEnv interactions={peerInteractions} vrMode={true}></DesktopEnv>
-</a-entity>-->
+	</div>
+</a-entity>
+-->
 
 </a-scene>
 {/if}

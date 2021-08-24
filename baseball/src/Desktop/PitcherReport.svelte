@@ -217,8 +217,6 @@ const changeEvent = (e) => {
 {/if}
 
 <style>
-
-
 #textarea {
     -moz-appearance: textfield-multiline;
     -webkit-appearance: textarea;

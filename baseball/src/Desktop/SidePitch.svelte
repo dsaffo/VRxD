@@ -4,6 +4,7 @@
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
   import simplify from "simplify-3d";
+  import { windowSize } from '../viewStore';
 
   export let data = [];
 
@@ -20,8 +21,8 @@
     width = innerWidth * 0.40 - 40;
     height = innerHeight * 0.35 - 60;
   } else {
-    width = 1920 * 0.40 - 40;
-    height = 1080 * 0.35 - 60;
+    width = $windowSize.width * 0.40 - 40;
+    height = $windowSize.height * 0.35 - 60;
   }
 }
 

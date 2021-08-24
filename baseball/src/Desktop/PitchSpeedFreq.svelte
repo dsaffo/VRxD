@@ -3,7 +3,7 @@
   import { schemeTableau10 } from "d3-scale-chromatic";
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
-
+  import { windowSize } from '../viewStore';
 
   export let pitches = [];
   export let data = [];
@@ -21,8 +21,8 @@
     width = innerWidth * 0.50 - 40;
     height = innerHeight * 0.35 - 60;
   } else {
-    width = 1920 * 0.50 - 40;
-    height = 1080 * 0.35 - 60;
+    width = $windowSize.width * 0.50 - 40;
+    height = $windowSize.height * 0.35 - 60;
   }
 }
 

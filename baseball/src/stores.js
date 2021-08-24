@@ -162,26 +162,7 @@ function pitchesStore() {
 }
 
 function updatePeer(store){
-    //const updateEvent = new CustomEvent ('interaction_update', {detail: {interactions:store, id:clientId}});
-    //console.log("dispatching event", store)
-    //document.body.dispatchEvent(updateEvent);
-   // console.log("event dispatched")
-
-
-    /*
-   db.collection("interactions").doc(doc).set(store)
-        .then(() => {
-            console.log("Document successfully written!");
-           
-        })
-        .catch((error) => {
-            console.error("Error writing document: ", error);
-    
-        });
-        */
-
     peer.set(doc, store);
-    
 }
 
 export function updateMousePos(pos){
@@ -195,20 +176,13 @@ export function updateCameraPos(pos){
 }
 
 function interactionStore (){
-    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null, windowSize: [0,0]});
+    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
     let peerInterval = null;
     let peer_store;
     let unsub = peerInteraction.subscribe(value => peer_store = value);
 
     return{
         subscribe,
-
-        updateWindowSize: (window) => update(store => {
-            store.windowSize = window;
-            updatePeer(store);
-            return store;
-        }),
-
         updateLocalColor: (color) => update(store => {
             store.color_store = color;
             updatePeer(store);
@@ -260,95 +234,18 @@ function interactionStore (){
     }
 }
 
-/*
-function peerInteractionStore (){
-    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null, windowSize: [0,0]});
-
-    db
-    .collection("interactions")
-    .doc("0")
-    .onSnapshot((doc) => {
-        console.log("Current data: ", doc.data());
-       // updateData(doc.data());
-    });
-
-    return {
-    subscribe,
-    updateData: (peer_store) => update(store => {
-       // console.log("recieved");
-       
-            store = peer_store;
-            return store;
-      
-    })
-}
-}
-*/
-
-export const peerInteraction = readable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null, windowSize: [0,0]}, function start(set) {
-
-   /* const unsub = db
-    .collection("interactions")
-    .doc(peerDoc)
-    .onSnapshot((doc) => {
-        console.log("Current data: ", doc.data());
-        set(doc.data());
-    });*/
+export const peerInteraction = readable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null}, function start(set) {
 
     const unsub = peer.subscribe(peerDoc, function(value) {
         set(JSON.parse(JSON.stringify(value)));
     });
-
 
     return function stop() {
         unsub();
     }
 });
 
-function peerMousePosition (){
-    const {subscribe, update, set} = writable([0,0]);
 
-    return {
-    subscribe,
-    updateData: (detail) => update(store => {
-     
-        if (detail.id != clientId){
-       
-            store = detail.mousePos;
-            return store;
-        } else {
-         
-            return store;
-        }
-    })
-    }
-}
-
-function peerCameraPosition (){
-    const {subscribe, update, set} = writable({pos: {x: 0, y: 1.6, z: 0}, rot: {x: 0, y: 0, z: 0}});
-
-    return {
-    subscribe,
-    updateData: (detail) => update(store => {
-     console.log("recieved");
-        if (detail.id != clientId){
-             console.log("accepted");
-            store = detail.camera;
-            return store;
-        } else {
-         
-            return store;
-        }
-    })
-    }
-}
-
-
-
-
-//export const peerInteraction = peerInteractionStore();
-export const mousePosition = peerMousePosition();
-export const cameraPosition = peerCameraPosition();
 
 let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null};
 
