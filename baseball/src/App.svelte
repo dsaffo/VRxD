@@ -32,7 +32,7 @@
 		windowSizeR.set("0", {width: innerWidth, height: innerHeight});
 	}
 
-	$: console.log($windowSize.width, $windowSize.height);
+
 	
 	onMount(async () => {
 		stored_data.loadData("./OhtaniOneGame.csv");
@@ -58,7 +58,7 @@
 	
 	function handleMousemove(event) {
 		if (isDesktop){
-		mousePos.set("0", {x: event.clientX, y: event.clientY});
+		//mousePos.set("0", {x: event.clientX, y: event.clientY});
 		}
 	}
 
@@ -66,7 +66,7 @@
 
 	<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
 
-	<svelte:body on:mousemove={handleMousemove}/>
+	<!--<svelte:body on:mousemove={handleMousemove}/>-->
 
 	{#if isDesktop}
 			<DesktopEnv interactions={interactionStore} vrMode={false}></DesktopEnv>

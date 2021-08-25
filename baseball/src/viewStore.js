@@ -23,7 +23,7 @@ export const cameraRotRecord = client.record.getRecord("cameraRot");
 
 export const windowSize = readable({width:0, height:0}, function start(set) {
     const unsub = windowSizeRecord.subscribe("0", function(value) {
-        set(JSON.parse(JSON.stringify(value)));
+        set(value);
     });
 
     return function stop() {
@@ -32,12 +32,12 @@ export const windowSize = readable({width:0, height:0}, function start(set) {
 });
 
 export const mousePos = readable({x: 0, y:0}, function start(set) {
-    const unsub = mousePosRecord.subscribe("0", function(value) {
-        set(value);
-    });
+    //const unsub = mousePosRecord.subscribe("0", function(value) {
+       // set(value);
+    //});
 
     return function stop() {
-        unsub;
+      //  unsub;
     }
 });
 

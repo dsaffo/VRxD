@@ -4,6 +4,7 @@ import { interaction_store, peerInteraction} from "../stores";
 import { colorScale } from "../colorScales";
 import simplify from "simplify-3d";
 import "./meshline";
+import "./ball";
 
 export let pitches = [];
 export let interactions;
@@ -63,16 +64,28 @@ for (let i =0; i < pitches.length; i++){
 <a-entity>
     {#each pitches as pitch, i}
     <a-entity 
+        position="0 0 0"
         class="collidable"
-        meshline2= "lineWidth: {1}; 
+        meshline= "lineWidth: {1}; 
                 path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; 
                 color: {colorScale(interactions.color_store, pitch)};
-                ballX: {-pitch['plate_x']};
-                ballY: {pitch['plate_z']};
-                opacity: {opacity(pitch.id)};
-                id: {String(pitch.id + pitch.pitch_name)}"
+                opacity: {opacity(pitch.id)};"
         on:mouseenter={() => mouseOver(pitch.id)}
         on:mouseleave={() => mouseOut()}>
     </a-entity>
+  
+
+    <a-entity 
+        position="{-pitch['plate_x']} {pitch['plate_z']} 0" 
+        class="collidable"
+        ball="color: {colorScale(interactions.color_store, pitch)};
+            ballX: {-pitch['plate_x']};
+            ballY: {pitch['plate_z']};
+            opacity: {opacity(pitch.id)};"
+    
+        on:mouseenter={() => mouseOver(pitch.id)}
+        on:mouseleave={() => mouseOut()}>
+    </a-entity>
+
     {/each}
 </a-entity>
