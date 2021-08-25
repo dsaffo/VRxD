@@ -1,12 +1,13 @@
 import { MeshLine, MeshLineMaterial, MeshLineRaycast } from 'three.meshline';
 
-AFRAME.registerComponent('meshline', {
+AFRAME.registerComponent('meshline2', {
     schema: {
-    radius: {type: 'number', default: 0.036},
-    width: {type: 'number', default: 32},
-    height: {type: 'number', default: 16},
-    ballX: {type: 'number', default: 0},
-    ballY: {type: 'number', default: 0},
+    radius: { default: 0.036},
+    width: { default: 32},
+    height: {default: 16},
+    ballX: { default: 0},
+    ballY: { default: 0},
+    id: {default: "-1"},
       color: { default: '#000' },
       lineWidth: { default: 10 },
       lineWidthStyler: { default: '' },
@@ -30,10 +31,6 @@ AFRAME.registerComponent('meshline', {
     
     init: function () {
       this.resolution = new THREE.Vector2 ( window.innerWidth, window.innerHeight ) ;
-      
-      var sceneEl = this.el.sceneEl;
-      sceneEl.addEventListener( 'render-target-loaded', this.do_update.bind(this) );
-      sceneEl.addEventListener( 'render-target-loaded', this.addlisteners.bind(this) );
 
     var material = new MeshLineMaterial({
         color: new THREE.Color(this.data.color),
@@ -73,41 +70,42 @@ AFRAME.registerComponent('meshline', {
     this.el.getObject3D('ball-mesh').translateY(this.data.ballY);
     },
     
-    addlisteners: function () {
-      window.addEventListener( 'resize', this.do_update.bind (this) );
-    },
-    
-    do_update: function () {
-      var canvas = this.el.sceneEl.canvas;
-      this.resolution.set( canvas.width,  canvas.height );
-      this.update();
-    },
+ 
     
     update: function (oldData) {
-
-    var data = this.data;
-    var el = this.el;
-    let object = this.el.object3D;
-      
-    if (Object.keys(oldData).length === 0) { return; }
+      var data = this.data;
+      var el = this.el;
+            
+      if (Object.keys(oldData).length === 0) { return; }
 
 
-  // Material-related properties changed. Update the material.
-  if (data.color !== oldData.color) {
-    this.el.getObject3D('ball-mesh').material.color = new THREE.Color(this.data.color);
-    this.el.getObject3D('path-mesh').material.color = new THREE.Color(this.data.color);
-  }
+      // Material-related properties changed. Update the material.
+      if (data.color !== oldData.color) {
+        console.log(oldData);
+        try {
+        el.getObject3D('ball-mesh').material.color = new THREE.Color(data.color);
+        el.getObject3D('path-mesh').material.color = new THREE.Color(data.color);
+        } catch (error) {
+          console.log(error)
+        }
+      }
 
-  if (data.opacity !== oldData.opacity) {
-    this.el.getObject3D('ball-mesh').material.opacity = this.data.opacity;
-    this.el.getObject3D('path-mesh').material.opacity = this.data.opacity;
-  }
+      if (data.opacity !== oldData.opacity) {
+        try {
+        el.getObject3D('ball-mesh').material.opacity = data.opacity;
+        el.getObject3D('path-mesh').material.opacity = data.opacity;
+        } catch (error) {
+          console.log(error);
+        }
+      }
       
     },
     
     remove: function () {
-      this.el.removeObject3D('mesh');
+      console.log("removed", this.data.id)
+      this.el.removeObject3D('ball-mesh');
+      this.el.removeObject3D('path-mesh');
     },
 
-  multiple: true
+    multiple: true
   });

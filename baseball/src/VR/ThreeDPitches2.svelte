@@ -5,11 +5,8 @@ import { colorScale } from "../colorScales";
 import simplify from "simplify-3d";
 import "./meshline";
 
-
 export let pitches = [];
 export let interactions;
-
-
 
 function pathGen (data) {
         var pitch = pitch_trajectory(
@@ -25,24 +22,17 @@ function pathGen (data) {
         data["release_spin_rate"],
         0.001
         );
-
         pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
         pitch = simplify(pitch, 0.009);
-
     return `${pitch
       .map((p) => `${-p.x} ${p.z} ${p.y}`)}`;
   };
-
-
-
 let pitchPaths = []
 let pitchIDs = []
-
 for (let i =0; i < pitches.length; i++){
     pitchPaths.push(pathGen(pitches[i]));
     pitchIDs.push(pitches[i]['id']);
 }
-
 
    $: radius = (id) => {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
@@ -70,20 +60,19 @@ for (let i =0; i < pitches.length; i++){
     }
 
 </script>
-
-{#each pitches as pitch, i}
-
-
-<a-entity 
-class="collidable"
-meshline= "lineWidth: {1}; 
-path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; 
-color: {colorScale(interactions.color_store, pitch)};
-ballX: {-pitch['plate_x']};
-ballY: {pitch['plate_z']};
-opacity: {opacity(pitch.id)};"
-on:mouseenter={() => mouseOver(pitch.id)}
-on:mouseleave={() => mouseOut()}>
-></a-entity>
-{/each}
-
+<a-entity>
+    {#each pitches as pitch, i}
+    <a-entity 
+        class="collidable"
+        meshline2= "lineWidth: {1}; 
+                path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; 
+                color: {colorScale(interactions.color_store, pitch)};
+                ballX: {-pitch['plate_x']};
+                ballY: {pitch['plate_z']};
+                opacity: {opacity(pitch.id)};
+                id: {String(pitch.id + pitch.pitch_name)}"
+        on:mouseenter={() => mouseOver(pitch.id)}
+        on:mouseleave={() => mouseOut()}>
+    </a-entity>
+    {/each}
+</a-entity>

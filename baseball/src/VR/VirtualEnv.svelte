@@ -17,7 +17,7 @@
 	import PitcherReport from '../Desktop/PitcherReport.svelte';
 	import StatCard from '../Desktop/StatCard.svelte';
 	import { windowSize } from '../viewStore';
-
+	import { cameraPos, cameraRot, cameraRotRecord, cameraPosRecord } from '../viewStore';
 
 
 	//subscribe to stored_data and assign its value to data
@@ -48,7 +48,7 @@
 		peerInteractions = value;
 	});
 
-	AFRAME.registerComponent('rotation-reader', {
+	AFRAME.registerComponent('position-reader', {
 		tick: function (time, timeDelta) {
 			// `this.el` is the element.
 			// `object3D` is the three.js object.
@@ -57,10 +57,28 @@
 			//console.log(this.el.object3D.rotation);
 
 			// `position` is a three.js Vector3.
+
 			//console.log(this.el.object3D.position);
-			updateCameraPos({pos:{x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
-							 rot: {x: this.el.object3D.rotation.x * 57.2958, y: this.el.object3D.rotation.y * 57.2958, z: this.el.object3D.rotation.z * 57.2958}
-							})
+
+			cameraPosRecord.set("0", {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z});
+
+		}
+		});
+
+		AFRAME.registerComponent('roation-reader', {
+		tick: function (time, timeDelta) {
+			// `this.el` is the element.
+			// `object3D` is the three.js object.
+
+			// `rotation` is a three.js Euler using radians. `quaternion` also available.
+			//console.log(this.el.object3D.rotation);
+
+			// `position` is a three.js Vector3.
+
+			//console.log(this.el.object3D.position);
+
+		 	cameraRotRecord.set("0", {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57});
+
 		}
 		});
 
@@ -84,10 +102,8 @@
 	}
 
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
-
+	$: console.log(filtered_pitches)
 	let formH = 1.5;
-
-	$:console.log($windowSize);
 
 </script>
 
@@ -96,25 +112,20 @@
 
 <!-- Basic movement and teleportation   -->
 <a-entity id="cameraRig" 
+position-reader
 movement-controls="constrainToNavMesh: false;" 
 navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" 
 position="0.212 0 -1.321" 
 rotation="0 -180 0"
 >
 	
-	<a-entity id="head" camera="active: true" position="0 1.6 0" look-controls="pointerLockEnabled: true; reverseMouseDrag: true" cursor="rayOrigin: mouse;"></a-entity>
+	<a-entity roation-reader id="head" camera="active: true" position="0 1.6 0" look-controls="pointerLockEnabled: true; reverseMouseDrag: true" cursor="rayOrigin: mouse;"></a-entity>
 				
 				<a-entity id="leftHand" 
 				hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF" 
 				teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger; curveShootingSpeed: 18; landingMaxAngle: 60"
 				visible="true"></a-entity>
 				
-				<!--<a-entity id="rightHand" 
-				hand-controls="hand: right; handModelStyle: lowPoly; color: #15ACCF" 
-				laser-controls raycaster="showLine: true; far: 10; interval: 0;" 
-				line="color: #7cfc00; opacity: 0.5" 
-				visible="true"></a-entity>-->
-
 				<a-entity  id="rightHand" auto-detect-controllers="hand: right" laser-controls raycaster="showLine: true; far: 10; interval: 0; objects: .collidable" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
 
 				
@@ -129,23 +140,6 @@ rotation="0 -180 0"
 						<div>
 				</a-entity>
 
-				<!--<a-plane class="collidable" id="pitcher-report" position="2 1.5 1" scale="1 1 1" rotation="0 -90.000 0">
-					<a-text value="{$form_store.testQ}"></a-text>
-				</a-plane>-->
-
-				
-				
-
-				<!--
-				<a-entity
-					position="2 1.5 1"
-					rotation="0 -90.000 0"
-					geometry="primitive: plane; width: auto; height: {textH / 2}"
-					material="color: #333"
-					text="width: 1; value: {$form_store.stats.replaceAll(';', '')};">
-				</a-entity>
-				-->
-
 				<a-entity htmlembed position="2.5 {formH} 1" rotation="0 -90.000 0">
 					<div style="width: 500px; height:100%">
 						<PitcherReport vr={true}></PitcherReport>
@@ -159,7 +153,6 @@ rotation="0 -180 0"
 					on:mousedown="{() => {formH -= 0.1}}"
 				></a-triangle>
 				
-
 				<a-entity class="collidable" id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0">
 					<div style="width: 1000px; height: 300px">
 						<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={interactions}></StatCard>
@@ -180,7 +173,9 @@ rotation="0 -180 0"
 <Field></Field>  
 
 	{#if filtered_pitches !=0}
+	<a-entity id="pitch-traj">
 		<ThreeDPitches2 pitches={filtered_pitches} interactions={interactions}></ThreeDPitches2>
+	</a-entity>
 	{/if}
 
 <!--

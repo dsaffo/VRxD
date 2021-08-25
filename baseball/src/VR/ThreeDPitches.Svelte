@@ -191,7 +191,7 @@
        
         <a-entity meshline="lineWidth: {stroke(pitch.id)}; path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; color: {colorScale(interactions.color_store, pitch)};"></a-entity>
        
-        <!--
+       
         <a-sphere 
             class="collidable"
             position="{-pitch['plate_x']} {pitch['plate_z']} 0" 
@@ -200,15 +200,9 @@
             color={colorScale(interactions.color_store, pitch)}
             on:mouseenter={() => mouseOver(pitch.id)}
             on:mouseleave={() => mouseOut()}
-        ></a-sphere> -->
+        ></a-sphere> 
 
-        <a-entity 
-            class="collidable"
-            ball2="color: {colorScale(interactions.color_store, pitch)}; id: {pitch.id}; opacity: {opacity(pitch.id)}" 
-            position="{-pitch['plate_x']} {pitch['plate_z']} 0" 
-            on:mouseenter={() => mouseOver(pitch.id)}
-            on:mouseleave={() => mouseOut()}>
-            </a-entity>
+       
  </a-entity>
 {/each}
 </a-entity>
