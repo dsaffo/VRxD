@@ -1,6 +1,5 @@
 <script>
 	import "aframe";
-	import "aframe-websurfaces"
 	import "aframe-htmlembed-component";
 	import "aframe-teleport-controls";
 	import "aframe-thumb-controls-component";
@@ -8,12 +7,11 @@
 	import "aframe-auto-detect-controllers-component";
 	import {stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction} from '../stores.js';
 	import Field from './Field.svelte';
-	import ThreeDPitches from './ThreeDpitches.svelte';
 	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
 	import PitcherCard from '../Desktop/PitcherCard.svelte';
 	import PitchBreakVR from './PitchBreakVR.svelte';
 	import PitchSpeedFreqVR from "./PitchSpeedFreqVR.svelte";
-	import ThreeDPitches2 from './ThreeDpitches2.svelte';
+	import ThreeDPitches2 from './ThreeDPitches2.svelte';
 	import PitcherReport from '../Desktop/PitcherReport.svelte';
 	import StatCard from '../Desktop/StatCard.svelte';
 	import { windowSize } from '../viewStore';

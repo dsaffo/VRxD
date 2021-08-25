@@ -1,7 +1,4 @@
 <script>
-    //import "aframe-curve-component";
-    //import "aframe-meshline-component";
-    import "aframe-geometry-merger-component";
     import { pitch_trajectory }  from "../pitchCalc.js";
     import { interaction_store, peerInteraction} from "../stores";
     import { colorScale } from "../colorScales";
