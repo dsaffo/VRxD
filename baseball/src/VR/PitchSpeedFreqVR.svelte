@@ -7,9 +7,9 @@
 
 
   export let interactions;
-  
+  export let filtered;
   export let pitches = [];
-  export let data = [];
+  let data = pitches;
 
   let width = 2;
   let height = 1;
@@ -70,6 +70,20 @@ for (let i = 0; i < yTicks.length; i++) {
     return "0.1"
   }
 
+  $: visible = (id) => {
+        if (filtered.includes(id)){
+            return "true"
+        } 
+        return "false"
+    }
+
+  $: classed = (id) => {
+      if (filtered.includes(id)){
+          return "collidable"
+      } 
+      return "none"
+  }
+
   function mouseOver(index){
     interaction_store.updateLocalHover(index);
   }
@@ -123,7 +137,8 @@ for (let i = 0; i < yTicks.length; i++) {
   <a-entity position="0 -0.02 0">
     {#each pitches as pitch, i}
       <a-entity 
-      class="collidable"
+      class={classed(pitch.id)}
+      visible={visible(pitch.id)}
       chartpoint="color: {colorScale(interactions.color_store, pitch)};
                   opacity: {opacity(pitch.id)};
                   radius: {radius(pitch.id)};"

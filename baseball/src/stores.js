@@ -175,6 +175,8 @@ export function updateCameraPos(pos){
     document.body.dispatchEvent(updateEvent);
 }
 
+let peeking = false;
+
 function interactionStore (){
     const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
     let peerInterval = null;
@@ -218,14 +220,19 @@ function interactionStore (){
         }),
 
         peekStart: () => update(store => {
+            peeking = true;
             tempLocalInteractionStore = store;
             peerInterval = setInterval(() => {set(JSON.parse(JSON.stringify(peer_store)));}, 0.05);
             return JSON.parse(JSON.stringify(peer_store));
         }),
 
         peekEnd: () => update(store => {
-            clearInterval(peerInterval);
-            return  tempLocalInteractionStore
+            if (peeking == true){
+                clearInterval(peerInterval);
+                return  tempLocalInteractionStore
+            } 
+
+            return store
         }),
 
         copy: () => {

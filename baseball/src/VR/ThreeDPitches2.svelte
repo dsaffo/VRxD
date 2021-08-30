@@ -8,6 +8,7 @@ import "./ball";
 
 export let pitches = [];
 export let interactions;
+export let filtered = [];
 
 function pathGen (data) {
         var pitch = pitch_trajectory(
@@ -24,7 +25,7 @@ function pathGen (data) {
         0.001
         );
         pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
-        pitch = simplify(pitch, 0.009);
+        pitch = simplify(pitch, 0.02);
     return `${pitch
       .map((p) => `${-p.x} ${p.z} ${p.y}`)}`;
   };
@@ -51,6 +52,20 @@ for (let i =0; i < pitches.length; i++){
         }
         return "0.1"
         }
+
+    $: visible = (id) => {
+        if (filtered.includes(id)){
+            return "true"
+        } 
+        return "false"
+    }
+
+    $: classed = (id) => {
+        if (filtered.includes(id)){
+            return "collidable"
+        } 
+        return "none"
+    }
     
     function mouseOver(id){
             interaction_store.updateLocalHover(id);
@@ -63,6 +78,7 @@ for (let i =0; i < pitches.length; i++){
 </script>
 <a-entity>
     {#each pitches as pitch, i}
+    <!--
     <a-entity 
         position="0 0 0"
         class="collidable"
@@ -76,15 +92,30 @@ for (let i =0; i < pitches.length; i++){
   
 
     <a-entity 
+        visible={visible(pitch.id)}
         position="{-pitch['plate_x']} {pitch['plate_z']} 0" 
         class="collidable"
         ball="color: {colorScale(interactions.color_store, pitch)};
             ballX: {-pitch['plate_x']};
             ballY: {pitch['plate_z']};
             opacity: {opacity(pitch.id)};"
-    
         on:mouseenter={() => mouseOver(pitch.id)}
         on:mouseleave={() => mouseOut()}>
+    </a-entity>
+    -->
+
+
+    <a-entity 
+    class={classed(pitch.id)}
+    visible={visible(pitch.id)}
+    meshline="lineWidth: {1}; 
+            path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; 
+            color: {colorScale(interactions.color_store, pitch)};
+            opacity: {opacity(pitch.id)};
+            ballX: {-pitch['plate_x']};
+            ballY: {pitch['plate_z']};"
+    on:mouseenter={() => mouseOver(pitch.id)}
+    on:mouseleave={() => mouseOut()}>
     </a-entity>
 
     {/each}

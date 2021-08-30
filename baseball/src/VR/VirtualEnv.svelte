@@ -99,8 +99,7 @@
 		}
 	}
 
-	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
-	$: console.log(filtered_pitches)
+	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed))).map(a => a.id);
 	let formH = 1.5;
 
 </script>
@@ -126,7 +125,7 @@ rotation="0 -180 0"
 				
 				<a-entity  id="rightHand" auto-detect-controllers="hand: right" laser-controls raycaster="showLine: true; far: 10; interval: 0; objects: .collidable" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
 
-				
+			
 				<a-entity class="collidable" id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
 						<div>
 							<button on:click="{() => interaction_store.copy()}">Copy</button>
@@ -137,7 +136,7 @@ rotation="0 -180 0"
 							<PitcherCard pitches={data} stats={ohtaniStats} interactions={interactions}></PitcherCard>
 						<div>
 				</a-entity>
-
+			
 				<a-entity htmlembed position="2.5 {formH} 1" rotation="0 -90.000 0">
 					<div style="width: 500px; height:100%">
 						<PitcherReport vr={true}></PitcherReport>
@@ -151,19 +150,20 @@ rotation="0 -180 0"
 					on:mousedown="{() => {formH -= 0.1}}"
 				></a-triangle>
 				
-				<a-entity class="collidable" id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0">
+				<a-entity id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0">
 					<div style="width: 1000px; height: 300px">
 						<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={interactions}></StatCard>
 					</div>
 				</a-entity>
 
 				<a-entity id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 80 0">
-					<PitchBreakVR pitches={filtered_pitches} interactions={interactions}></PitchBreakVR>
+					<PitchBreakVR pitches={data} interactions={interactions} filtered={filtered_pitches}></PitchBreakVR>
 				</a-entity>
 	
 				<a-entity id="pitch-speed-freq" position="-2 1.5 0.9" scale="1 1 1" rotation="0 100 0">
-					<PitchSpeedFreqVR pitches={filtered_pitches} data={data} interactions={interactions}></PitchSpeedFreqVR>
+					<PitchSpeedFreqVR pitches={data} interactions={interactions} filtered={filtered_pitches}></PitchSpeedFreqVR>
 				</a-entity>
+			
 							
 </a-entity>
 <!--<a-entity id="camera" camera="userHeight: 1.6" look-controls cursor="rayOrigin: mouse" position="0.000 0.9 -1.4" rotation="0 180 0"></a-entity>-->
@@ -172,7 +172,7 @@ rotation="0 -180 0"
 
 	{#if filtered_pitches !=0}
 	<a-entity id="pitch-traj">
-		<ThreeDPitches2 pitches={filtered_pitches} interactions={interactions}></ThreeDPitches2>
+		<ThreeDPitches2 pitches={data} interactions={interactions} filtered={filtered_pitches}></ThreeDPitches2>
 	</a-entity>
 	{/if}
 

@@ -4,7 +4,7 @@
   import { colorScale } from "../colorScales";
   import "./chartpoint";
 
-
+  export let filtered = [];
   export let interactions;
   // position="{xScale(pitch.pfx_x * 12) - width} {yScale(pitch.release_pos_z * 39.3701 - pitch.plate_z * 39.3701) - height} 0.001"
   export let pitches = [];
@@ -41,6 +41,20 @@
     }
 
     return "0.1"
+  }
+
+  $: visible = (id) => {
+        if (filtered.includes(id)){
+            return "true"
+        } 
+        return "false"
+    }
+
+  $: classed = (id) => {
+      if (filtered.includes(id)){
+          return "collidable"
+      } 
+      return "none"
   }
 
   function mouseOver(index){
@@ -113,7 +127,8 @@
       </a-circle>
     -->
     <a-entity 
-      class="collidable"
+    class={classed(pitch.id)}
+    visible={visible(pitch.id)}
       chartpoint="color: {colorScale(interactions.color_store, pitch)};
                   opacity: {opacity(pitch.id)};
                   radius: {radius(pitch.id)};"

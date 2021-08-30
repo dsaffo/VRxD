@@ -30,9 +30,7 @@ AFRAME.registerComponent('ball', {
       if (Object.keys(oldData).length === 0) { return; }
   
       // Geometry-related properties changed. Update the geometry.
-      if (data.radius !== oldData.radius) {
-        el.getObject3D('mesh').geometry = new THREE.SphereGeometry(data.radius, data.width, data.height);
-      }
+      
   
       // Material-related properties changed. Update the material.
       if (data.color !== oldData.color) {
