@@ -5,7 +5,6 @@
   import { windowSize } from '../viewStore';
 
   export let pitches = [];
-
   export let interactions;
 
 

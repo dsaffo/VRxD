@@ -11,6 +11,7 @@
 	import VirtualEnvEmbed from '../VR/VirtualEnvEmbed.svelte';
 	import PitcherReport from './PitcherReport.svelte';
 	import { mousePos } from '../viewStore';
+	import html2canvas from "html2canvas";
 
 	const urlParams = new URLSearchParams(window.location.search);
     const isVR = urlParams.has('vr');
@@ -99,11 +100,11 @@
 			</Col>
 			<Col style='padding: 20px;'>
 				<span>Overhead View</span>
-				<OverheadPitch data={filtered_pitches} interactions={interactions} vrMode={vrMode}></OverheadPitch>
+				<OverheadPitch data={data} interactions={interactions} vrMode={vrMode} filtered={filtered_pitches.map(a => a.id)}></OverheadPitch>
 			</Col>
 			<Col style='padding: 20px;'>
 				<span>Side View</span>
-				<SidePitch data={filtered_pitches} interactions={interactions} vrMode={vrMode}></SidePitch>
+				<SidePitch data={data} interactions={interactions} vrMode={vrMode} filtered={filtered_pitches.map(a => a.id)}></SidePitch>
 			</Col>
 		</Row>
 

@@ -1,5 +1,5 @@
 const { DeepstreamClient } = window.DeepstreamClient
 
-export const client = new DeepstreamClient('wss://ugly-goose-83.loca.lt')
+export const client = new DeepstreamClient('localhost:6020')
 
 client.login()

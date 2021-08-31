@@ -170,14 +170,13 @@ rotation="0 -180 0"
 
 <Field></Field>  
 
-	{#if filtered_pitches !=0}
 	<a-entity id="pitch-traj">
 		<ThreeDPitches2 pitches={data} interactions={interactions} filtered={filtered_pitches}></ThreeDPitches2>
 	</a-entity>
-	{/if}
+	
 
 <!--
-<a-entity class="collidable" id="desktopview" htmlembed position="0 1.5 -3" scale="0.2 0.2 0.2" rotation="0 0 0" >
+<a-entity id="desktopview" htmlembed position="0 1.5 -3" scale="0.2 0.2 0.2" rotation="0 0 0" >
 	<div style="height: {$windowSize.height}px; width: {$windowSize.width}px;">	
 		<DesktopEnv interactions={peerInteractions} vrMode={true}></DesktopEnv>
 	</div>

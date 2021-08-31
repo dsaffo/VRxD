@@ -6,6 +6,8 @@
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
 	import PitcherReport from './Desktop/PitcherReport.svelte';
 	import { windowSize } from './viewStore';
+	import html2canvas from "html2canvas";
+	import { beforeUpdate, afterUpdate } from 'svelte';
 
 	const urlParams = new URLSearchParams(window.location.search);
     const isVR = urlParams.has('vr');
@@ -42,6 +44,8 @@
 
 	let interactionStore;
 
+	
+
 	const unsubscribe_interaction = interaction_store.subscribe(value => {
 		interactionStore = value;
 	});
@@ -62,6 +66,12 @@
 		}
 	}
 
+
+
+	
+
+
+
 </script>
 
 	<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
@@ -71,6 +81,7 @@
 	{#if isDesktop}
 			<DesktopEnv interactions={interactionStore} vrMode={false}></DesktopEnv>
 	{/if}
+
 
 
 	{#if isVR}

@@ -5,9 +5,10 @@
   import { colorScale } from "../colorScales";
   import simplify from "simplify-3d";
   import { windowSize } from '../viewStore';
-  
+
   export let data = [];
 	export let interactions;
+  export let filtered = [];
  
  
   let innerWidth = 500;
@@ -38,33 +39,37 @@
     .domain([-2, 2])
     .range([padding.top, height - padding.bottom]);
 
-  $: pathGen = function (data) {
-    var pitch = pitch_trajectory(
-      data["release_pos_x"],
-      data["release_pos_y"],
-      data["release_pos_z"],
-      data["vx0"],
-      data["vy0"],
-      data["vz0"],
-      data["ax"],
-      data["ay"],
-      data["az"],
-      data["release_spin_rate"],
-      0.001
-    );
 
+  let pitchPaths = {}
+  for (let i =0; i < data.length; i++){
+      var pitch = pitch_trajectory(
+        data[i]["release_pos_x"],
+        data[i]["release_pos_y"],
+        data[i]["release_pos_z"],
+        data[i]["vx0"],
+        data[i]["vy0"],
+        data[i]["vz0"],
+        data[i]["ax"],
+        data[i]["ay"],
+        data[i]["az"],
+        data[i]["release_spin_rate"],
+        0.001
+      );
+      let id = data[i]['id'];
+      pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
+      pitch = simplify(pitch, 0.02);
+      pitchPaths[id] = pitch;
+  }
+    
 
-    pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
-    pitch = simplify(pitch, 0.001);
+  $: pathGen = function (id) {
     //convert from meters to feet and flip x position to pitchers persepctive
-    return `M${pitch
+    return `M${pitchPaths[id]
       .map((p) => `${xScale(p.y * 3.28084)},${yScale(p.x * 3.28084)}`)
       .join("L")}`;
   };
 
   $: stroke = (id) => {
-    
-
     if (interactions.hover_store == id || $peerInteraction.hover_store == id){
     
       return "8"
@@ -82,6 +87,13 @@
     }
 
     return "0.1"
+  }
+
+  $: display = function(id) {
+        if (filtered.includes(id)){
+            return ""
+        } 
+        return "none"
   }
 
   function mouseOver(id){
@@ -146,8 +158,9 @@
     {#each data as pitch}
       <!-- svelte-ignore a11y-mouse-events-have-key-events -->
       <path
+        display={display(pitch.id)}
         class="path-line"
-        d={pathGen(pitch)}
+        d={pathGen(pitch.id)}
         stroke={colorScale(interactions.color_store, pitch)}
         opacity={opacity(pitch.id)}
         stroke-width={stroke(pitch.id)}

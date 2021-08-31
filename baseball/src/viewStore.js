@@ -21,7 +21,7 @@ export const cameraRotRecord = client.record.getRecord("cameraRot");
 
 
 
-export const windowSize = readable({width:0, height:0}, function start(set) {
+export const windowSize = readable({width:1920, height:1080}, function start(set) {
     const unsub = windowSizeRecord.subscribe("0", function(value) {
         set(value);
     });

@@ -52,45 +52,45 @@ for (let i = 0; i < yTicks.length; i++) {
   });
 }
 
-  $: radius = (id) => {
-    if (interactions.hover_store == id || $peerInteraction.hover_store == id){
-      return "0.03"
-    } 
-    return "0.015"
-  }
+    let radius = function(id) {
+        if (interactions.hover_store == id || $peerInteraction.hover_store == id){
+          return "0.03"
+        } 
+        return "0.015"
+      }
 
-  $: opacity = (id) => {
-    if (interactions.hover_store == id){
-      return "1"
-    } 
-    else if (interactions.hover_store == null){
-      return "0.8"
-    }
+    let opacity = function(id) {
+        if (interactions.hover_store == id || $peerInteraction.hover_store == id){
+        return "1"
+        } 
+        else if (interactions.hover_store == null){
+        return "0.5"
+        }
+        return "0.1"
+        }
 
-    return "0.1"
-  }
-
-  $: visible = (id) => {
+    $: visible = function(id) {
         if (filtered.includes(id)){
             return "true"
         } 
         return "false"
     }
 
-  $: classed = (id) => {
-      if (filtered.includes(id)){
-          return "collidable"
-      } 
-      return "none"
-  }
+    let classed = function(id) {
+        if (filtered.includes(id)){
+            return "collidable"
+        } 
+        return "none"
+    }
 
-  function mouseOver(index){
-    interaction_store.updateLocalHover(index);
-  }
+    function mouseOver(index){
+      interaction_store.updateLocalHover(index);
+    }
 
-  function mouseOut(){
-    interaction_store.updateLocalHover(null);
-  }
+    function mouseOut(){
+      interaction_store.updateLocalHover(null);
+    }
+
 </script>
 
 <a-plane class="collidable" color="#333333" height={height} width={width}>

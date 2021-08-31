@@ -36,31 +36,31 @@ for (let i =0; i < pitches.length; i++){
     pitchIDs.push(pitches[i]['id']);
 }
 
-   $: radius = (id) => {
+    let radius = function(id) {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
         return "0.05"
         } 
         return "0.036"
         }
 
-    $: opacity = (id) => {
+    let opacity = function(id) {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
-        return "1"
+            return "1"
         } 
         else if (interactions.hover_store == null){
-        return "0.8"
+            return "0.8"
         }
-        return "0.1"
+            return "0.1"
         }
 
-    $: visible = (id) => {
+    $: visible = function(id) {
         if (filtered.includes(id)){
             return "true"
         } 
         return "false"
     }
 
-    $: classed = (id) => {
+    let classed = function(id) {
         if (filtered.includes(id)){
             return "collidable"
         } 
@@ -77,7 +77,7 @@ for (let i =0; i < pitches.length; i++){
 
 </script>
 <a-entity>
-    {#each pitches as pitch, i}
+    {#each pitches as pitch}
     <!--
     <a-entity 
         position="0 0 0"
