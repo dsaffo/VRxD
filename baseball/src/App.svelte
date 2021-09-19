@@ -7,7 +7,8 @@
 	import PitcherReport from './Desktop/PitcherReport.svelte';
 	import { windowSize } from './viewStore';
 	import html2canvas from "html2canvas";
-	import { beforeUpdate, afterUpdate } from 'svelte';
+	import { beforeUpdate, afterUpdate, tick } from 'svelte';
+import { async } from 'aframe';
 
 	const urlParams = new URLSearchParams(window.location.search);
     const isVR = urlParams.has('vr');
@@ -36,15 +37,48 @@
 
 
 	
+
+
+	function handleSuccess(stream) {
+		//window.stream = stream; // make stream available to browser console
+		video.srcObject = stream
+	}
+
+	function handleError(error) {
+		console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+	}
+
+			var edge_constraints = {
+		video: true
+		};
+
+		var ff_constraints = {
+		video: {
+			mediaSource: "window"
+			},
+		};
+
+	let video;
+	let canvas;
 	onMount(async () => {
+		video = document.querySelector('video');
+		canvas = document.createElement("canvas");
+		if (typeof(RTCIceGatherer) !== "undefined"){
+			navigator.getDisplayMedia(edge_constraints).
+			then(handleSuccess).catch(handleError);
+      	} else if (typeof(navigator.mediaDevices.getDisplayMedia) !== "undefined"){
+			navigator.mediaDevices.getDisplayMedia(edge_constraints).then(handleSuccess).catch(handleError); 
+		} else {
+			navigator.mediaDevices.getUserMedia(ff_constraints).
+			then(handleSuccess).catch(handleError);
+		}	
+
 		stored_data.loadData("./OhtaniOneGame.csv");
 		ohtani_stats_store.loadData("./OhtaniStats.csv");
 		ohtani_percentile_store.loadData("./OhtaniPercentiles.csv");
 	})
 
 	let interactionStore;
-
-	
 
 	const unsubscribe_interaction = interaction_store.subscribe(value => {
 		interactionStore = value;
@@ -67,19 +101,36 @@
 	}
 
 
+	async function screenCapture(){
+
+		await tick();
+		canvas.width = innerWidth;
+		canvas.height = innerHeight;
+		canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+		const frame = canvas.toDataURL('image/jpeg', 0.5);
+		console.log(frame);
+
+	}
+
+	afterUpdate(() => {
+		screenCapture()
+	});
 
 	
-
 
 
 </script>
 
 	<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
 
-	<!--<svelte:body on:mousemove={handleMousemove}/>-->
+	<!-- svelte-ignore a11y-media-has-caption -->
+	<video style="display: none" playsinline autoplay></video>
 
+	<!--<svelte:body on:mousemove={handleMousemove}/>-->
 	{#if isDesktop}
+	
 			<DesktopEnv interactions={interactionStore} vrMode={false}></DesktopEnv>
+
 	{/if}
 
 

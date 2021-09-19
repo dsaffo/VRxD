@@ -67,7 +67,7 @@
 </script>
 
 {#if data.length != 0}
-	<Container fluid style="height: 100%; margin: 5px;">
+	<Container id="capture" fluid style="height: 100%; margin: 5px;">
 		<Row style="height: 30%;">
 			<Col sm='1' style='padding: 20px; max-width: 5%;'>
 				<Row>
