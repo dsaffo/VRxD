@@ -18,6 +18,7 @@ export const windowSizeRecord = client.record.getRecord("windowSize");
 export const mousePosRecord = client.record.getRecord("mousePos");
 export const cameraPosRecord = client.record.getRecord("cameraPos");
 export const cameraRotRecord = client.record.getRecord("cameraRot");
+export const desktopScreenRecord = client.record.getRecord("desktopScreen");
 
 
 
@@ -54,6 +55,16 @@ export const cameraPos = readable({x: 0, y:0, z:0}, function start(set) {
 
 export const cameraRot = readable({x: 0, y:0, z:0}, function start(set) {
     const unsub = cameraRotRecord.subscribe("0", function(value) {
+        set(value);
+    });
+
+    return function stop() {
+        unsub;
+    }
+});
+
+export const screenRecord = readable("none", function start(set) {
+    const unsub = desktopScreenRecord.subscribe("0", function(value) {
         set(value);
     });
 

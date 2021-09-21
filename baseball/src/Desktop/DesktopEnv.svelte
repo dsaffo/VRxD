@@ -11,7 +11,7 @@
 	import VirtualEnvEmbed from '../VR/VirtualEnvEmbed.svelte';
 	import PitcherReport from './PitcherReport.svelte';
 	import { mousePos } from '../viewStore';
-	import html2canvas from "html2canvas";
+	
 
 	const urlParams = new URLSearchParams(window.location.search);
     const isVR = urlParams.has('vr');
@@ -21,6 +21,10 @@
 
 	let report = false;
   	const reportToggle = () => (report = !report);
+
+
+
+
 
 	//subscribe to stored_data and assign its value to data
 	let data;
@@ -64,7 +68,10 @@
 	//$: filtered_pitches = data;
 
 
+
 </script>
+
+
 
 {#if data.length != 0}
 	<Container id="capture" fluid style="height: 100%; margin: 5px;">
