@@ -4,8 +4,9 @@
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
 	import PitcherReport from './Desktop/PitcherReport.svelte';
-	import { onMount, afterUpdate, tick } from 'svelte';
+	import { onMount, afterUpdate, beforeUpdate,tick } from 'svelte';
 	import { desktopScreenRecord, screenRecord } from './viewStore';
+	import { html2canvas } from "html2canvas";
 
 	let urlParams; 
   let isVR;
@@ -66,39 +67,35 @@
 	})
 
 
-	let screenStore;
+	//let screenStore;
 
-	const unsubscribe_screen = screenRecord.subscribe(value => {
-		screenStore = value;
-	});
+	//const unsubscribe_screen = screenRecord.subscribe(value => {
+	//	screenStore = value;
+	//});
 
 	async function screenCapture(){
-    await tick();
     canvas.width = innerWidth;
-			canvas.height = innerHeight;
-			canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-			canvas.toBlob(function(blob){ 
-				let url = URL.createObjectURL(blob);
-				let oldURL = screenStore;
-				console.log("old", oldURL);
-				console.log("new", url);
-				desktopScreenRecord.set("0", url);
-				URL.revokeObjectURL(oldURL);
-			});
+		canvas.height = innerHeight;
+		await tick();
+		setTimeout(function(){ 
+		canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+		desktopScreenRecord.set("0", canvas.toDataURL("jpeg", 0.1));
+		}, 10);
   }
 	
 
   afterUpdate(() => {
 		if(sharing){
-			screenCapture()
+			screenCapture();
+			screenCapture();
 		}
-  });
+  }); 
 
 	let innerHeight = 0;
 	let innerWidth = 0;
 
 	const windowSizeR = client.record.getRecord("windowSize");
-	const mousePos = client.record.getRecord("mousePos");
+	//const mousePos = client.record.getRecord("mousePos");
 
 	$: if (isDesktop){
 		windowSizeR.set("0", {width: innerWidth, height: innerHeight});
@@ -112,22 +109,26 @@
 
 
 	
+	let m = { x: 0, y: 0 };
 	function handleMousemove(event) {
-		if (isDesktop){
-		//mousePos.set("0", {x: event.clientX, y: event.clientY});
-		}
+		m.x = event.clientX;
+		m.y = event.clientY;
 	}
+
+	//$: interactionStore && screenCapture();
 
 	</script>
 
 	<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
+
+	<!--<svelte:body on:mousemove={handleMousemove}></svelte:body>-->
 
 	<!-- svelte-ignore a11y-media-has-caption -->
 	<video style="display: none" playsinline autoplay></video>
 
 	<!--<svelte:body on:mousemove={handleMousemove}/>-->
 	{#if isDesktop}
-	
+			<div id="circle" style="left: {m.x}px; top:{m.y}px"></div>
 			<DesktopEnv interactions={interactionStore} vrMode={false}></DesktopEnv>
 
 	{/if}
@@ -143,3 +144,14 @@
 	{/if}
 
 
+<style>
+		#circle{
+		pointer-events: none;
+		position:absolute;
+		transform:translate(-50%,-50%);
+		height:35px;
+		width:35px;
+		border-radius:50%;
+		border:2px solid rgb(184, 12, 12);
+		}
+</style>

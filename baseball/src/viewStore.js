@@ -33,18 +33,17 @@ export const windowSize = readable({width:1920, height:1080}, function start(set
 });
 
 export const mousePos = readable({x: 0, y:0}, function start(set) {
-    //const unsub = mousePosRecord.subscribe("0", function(value) {
-       // set(value);
-    //});
+    const unsub = mousePosRecord.subscribe("0", function(value) {
+        set(value);
+    });
 
     return function stop() {
-      //  unsub;
+        unsub;
     }
 });
 
 export const cameraPos = readable({x: 0, y:0, z:0}, function start(set) {
     const unsub = cameraPosRecord.subscribe("0", function(value) {
-        console.log(value)
         set(value);
     });
 

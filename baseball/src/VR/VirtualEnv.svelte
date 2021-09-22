@@ -14,7 +14,7 @@
 	import ThreeDPitches2 from './ThreeDPitches2.svelte';
 	import PitcherReport from '../Desktop/PitcherReport.svelte';
 	import StatCard from '../Desktop/StatCard.svelte';
-	import { windowSize } from '../viewStore';
+	import { windowSize, screenRecord } from '../viewStore';
 	import { cameraPos, cameraRot, cameraRotRecord, cameraPosRecord } from '../viewStore';
 
 
@@ -102,10 +102,22 @@
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed))).map(a => a.id);
 	let formH = 1.5;
 
+	
+	let screenStore;
+
+	const unsubscribe_screen = screenRecord.subscribe(value => {
+		screenStore = value;
+	});
+
+	
+
+
+
 </script>
 
 {#if data.length != 0}
 <a-scene webxr="optionalFeatures: light-estimation;" background="color: #ECECEC" stats>
+
 
 <!-- Basic movement and teleportation   -->
 <a-entity id="cameraRig" 
@@ -182,6 +194,13 @@ rotation="0 -180 0"
 	</div>
 </a-entity>
 -->
+
+{#if screenStore != "none"}
+	<a-entity id="desktop" position="0 1.5 -3" rotation="0 0 0" >
+		<a-image src="{screenStore}" alt="no"></a-image>
+	</a-entity>
+{/if}
+
 
 </a-scene>
 {/if}

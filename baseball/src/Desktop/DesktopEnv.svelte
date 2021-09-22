@@ -67,7 +67,7 @@
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
 	//$: filtered_pitches = data;
 
-
+	
 
 </script>
 
@@ -139,9 +139,9 @@
 		<PitcherReport></PitcherReport>
 	{/if}
 
-	{#if isVR}
-		<div id="circle" style="left: {$mousePos.x}px; top:{$mousePos.y}px"></div>
-	{/if}	
+
+
+	
 
 {/if}
 
@@ -157,6 +157,7 @@
 	}
 
 	#circle{
+		pointer-events: none;
 		position:absolute;
 		transform:translate(-50%,-50%);
 		height:35px;
