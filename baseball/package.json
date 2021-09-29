@@ -33,6 +33,7 @@
     "d3": "^6.6.2",
     "html2canvas": "^1.3.2",
     "jspdf": "^2.4.0",
+    "peerjs": "^1.3.2",
     "simplify-3d": "^1.0.0",
     "sirv-cli": "^1.0.0",
     "sveltefire": "^0.1.5",

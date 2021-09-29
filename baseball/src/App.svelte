@@ -1,12 +1,13 @@
 <script>
-	import { client } from './deepstream';
+	import { client} from './deepstream';
 	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store} from './stores.js';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
 	import PitcherReport from './Desktop/PitcherReport.svelte';
 	import { onMount, afterUpdate, beforeUpdate,tick } from 'svelte';
 	import { desktopScreenRecord, screenRecord } from './viewStore';
-	import { html2canvas } from "html2canvas";
+	import Peer from 'peerjs';
+	
 
 	let urlParams; 
   let isVR;
@@ -14,8 +15,17 @@
 	let isDesktop; 
 	let video;
 	let canvas;
+	let peer;
+	let peerID;
+	let conn;
+
+	let innerHeight = 1080;
+	let innerWidth = 1920;
 
 	let sharing = false;
+	
+
+
 
 	function handleSuccess(stream) {
 			sharing = true;
@@ -38,6 +48,12 @@
 	};
 
 
+	let peerOptions = {
+  config: {'iceServers': [
+    { url: 'stun:stun.l.google.com:19302' },
+    { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
+  ]} /* Sample servers, please use appropriate ones */}
+
 
 	onMount(async () => {
 
@@ -46,6 +62,23 @@
 		isVR = urlParams.has('vr');
 		isForm = urlParams.has('form');
 		isDesktop = urlParams.has('desktop');
+
+
+		
+		if (isVR){
+			peerID = 'vrxdDesktop'
+			peer = new Peer('vrxdVR'); 
+		} else {
+			peerID = 'vrxdVR'
+			peer = new Peer('vrxdDesktop'); 
+		}
+
+		conn = peer.connect(peerID);
+
+		
+		
+
+		
 
 		if(isDesktop){
 			video = document.querySelector('video');
@@ -73,6 +106,7 @@
 	//	screenStore = value;
 	//});
 
+	/*
 	async function screenCapture(){
     canvas.width = innerWidth;
 		canvas.height = innerHeight;
@@ -85,14 +119,31 @@
 	
 
   afterUpdate(() => {
-		if(sharing){
-			screenCapture();
+		if (sharing){
 			screenCapture();
 		}
   }); 
+	*/
 
-	let innerHeight = 0;
-	let innerWidth = 0;
+	
+afterUpdate (() => {
+
+
+	peer.on('open', function(id) {
+			console.log('My peer ID is: ' + id);
+		});
+
+		conn.on('open', function() {	
+			// Receive messages
+			conn.on('data', function(data) {
+				console.log('Received', data);
+			});
+
+			// Send messages
+			conn.send('Hello!');
+		});
+	});
+	
 
 	const windowSizeR = client.record.getRecord("windowSize");
 	//const mousePos = client.record.getRecord("mousePos");
