@@ -1,4 +1,5 @@
 <script>
+	import { peerConenction } from "./peer";
 	import { client} from './deepstream';
 	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store} from './stores.js';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
@@ -6,8 +7,9 @@
 	import PitcherReport from './Desktop/PitcherReport.svelte';
 	import { onMount, afterUpdate, beforeUpdate,tick } from 'svelte';
 	import { desktopScreenRecord, screenRecord } from './viewStore';
-	import Peer from 'peerjs';
+
 	
+
 
 	let urlParams; 
   let isVR;
@@ -15,17 +17,12 @@
 	let isDesktop; 
 	let video;
 	let canvas;
-	let peer;
-	let peerID;
-	let conn;
 
 	let innerHeight = 1080;
 	let innerWidth = 1920;
 
 	let sharing = false;
 	
-
-
 
 	function handleSuccess(stream) {
 			sharing = true;
@@ -48,37 +45,19 @@
 	};
 
 
-	let peerOptions = {
-  config: {'iceServers': [
-    { url: 'stun:stun.l.google.com:19302' },
-    { url: 'turn:homeo@turn.bistri.com:80', credential: 'homeo' }
-  ]} /* Sample servers, please use appropriate ones */}
-
-
 	onMount(async () => {
-
 		urlParams = new URLSearchParams(window.location.search);
-	
+		
 		isVR = urlParams.has('vr');
 		isForm = urlParams.has('form');
-		isDesktop = urlParams.has('desktop');
+		isDesktop = urlParams.has('desktop');		
 
-
-		
-		if (isVR){
-			peerID = 'vrxdDesktop'
-			peer = new Peer('vrxdVR'); 
+		if (urlParams.has('1')){
+			peerConenction('vrxd1', 'vrxd2')
 		} else {
-			peerID = 'vrxdVR'
-			peer = new Peer('vrxdDesktop'); 
+			peerConenction('vrxd2', 'vrxd1')
 		}
-
-		conn = peer.connect(peerID);
-
-		
-		
-
-		
+			
 
 		if(isDesktop){
 			video = document.querySelector('video');
@@ -125,24 +104,6 @@
   }); 
 	*/
 
-	
-afterUpdate (() => {
-
-
-	peer.on('open', function(id) {
-			console.log('My peer ID is: ' + id);
-		});
-
-		conn.on('open', function() {	
-			// Receive messages
-			conn.on('data', function(data) {
-				console.log('Received', data);
-			});
-
-			// Send messages
-			conn.send('Hello!');
-		});
-	});
 	
 
 	const windowSizeR = client.record.getRecord("windowSize");
