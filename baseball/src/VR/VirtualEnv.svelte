@@ -118,6 +118,10 @@
 {#if data.length != 0}
 <a-scene webxr="optionalFeatures: light-estimation;" background="color: #ECECEC" stats>
 
+	<a-assets>
+		<!-- svelte-ignore a11y-media-has-caption -->
+		<video id="videovr" autoplay playsinline crossorigin="anonymous"></video>
+	</a-assets>
 
 <!-- Basic movement and teleportation   -->
 <a-entity id="cameraRig" 
@@ -195,12 +199,8 @@ rotation="0 -180 0"
 </a-entity>
 -->
 
-{#if screenStore != "none"}
-	<a-entity id="desktop" position="0 1.5 -3" rotation="0 0 0" >
-		<a-image src="{screenStore}" alt="no"></a-image>
-	</a-entity>
-{/if}
-
+	
+	<a-video  position="0 1.5 -3" src="#videovr"></a-video>
 
 </a-scene>
 {/if}

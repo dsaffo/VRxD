@@ -1,5 +1,5 @@
 <script>
-	import { peerConenction } from "./peer";
+	import { desktopConnection, vrConnection, desktopStream} from "./peer";
 	import { client} from './deepstream';
 	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store} from './stores.js';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
@@ -27,7 +27,8 @@
 	function handleSuccess(stream) {
 			sharing = true;
 			window.stream = stream; // make stream available to browser console
-			video.srcObject = stream
+			video.srcObject = stream;
+			desktopConnection(stream);
 		}
 
 	function handleError(error) {
@@ -51,14 +52,7 @@
 		isVR = urlParams.has('vr');
 		isForm = urlParams.has('form');
 		isDesktop = urlParams.has('desktop');		
-
-		if (urlParams.has('1')){
-			peerConenction('vrxd1', 'vrxd2')
-		} else {
-			peerConenction('vrxd2', 'vrxd1')
-		}
-			
-
+	
 		if(isDesktop){
 			video = document.querySelector('video');
 			canvas = document.createElement("canvas");
@@ -71,6 +65,8 @@
 				navigator.mediaDevices.getUserMedia(ff_constraints).
 				then(handleSuccess).catch(handleError);
 			}	
+		} else {
+			vrConnection();
 		}
 
 		stored_data.loadData("./OhtaniOneGame.csv");
@@ -152,7 +148,9 @@
 	{/if}
 
 	{#if isForm}
-		<PitcherReport></PitcherReport>
+		<!--<PitcherReport></PitcherReport>-->
+		<!-- svelte-ignore a11y-media-has-caption -->
+		<video playsinline autoplay id="video"></video>
 	{/if}
 
 
