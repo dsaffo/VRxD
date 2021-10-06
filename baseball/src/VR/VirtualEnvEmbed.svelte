@@ -83,36 +83,6 @@ rotation="0 -180 0"
 <a-entity id="head" camera="active: true" position="0 1.6 0" rotation="{$cameraRot.x} {$cameraRot.y} {$cameraRot.z}"></a-entity>
 				
 		
-	<a-entity class="collidable" id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
-		<div>
-			<button disabled on:click="{() => interaction_store.copy()}">Copy</button>
-			<button disabled on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" on:mouseleave="{() => interaction_store.peekEnd()}">Peek</button>
-		</div>
-		
-		<div style="height: 300px; width: 650px;">
-			<PitcherCard pitches={data} stats={ohtaniStats} interactions={peerInteractions}></PitcherCard>
-		<div>
-	</a-entity>
-
-	<a-entity htmlembed position="2.5 1.6 1" rotation="0 -90.000 0">
-	<div style="width: 500px; height:100%">
-		<PitcherReport vr={true}></PitcherReport>
-	</div>
-	</a-entity>
-
-	<a-entity class="collidable" id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0">
-	<div style="width: 1000px; height: 300px">
-		<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={peerInteractions}></StatCard>
-	</div>
-	</a-entity>
-
-	<a-entity id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 80 0">
-	<PitchBreakVR pitches={filtered_pitches} interactions={interactions}></PitchBreakVR>
-	</a-entity>
-
-	<a-entity id="pitch-speed-freq" position="-2 1.5 0.9" scale="1 1 1" rotation="0 100 0">
-	<PitchSpeedFreqVR pitches={filtered_pitches} data={data} interactions={peerInteractions}></PitchSpeedFreqVR>
-	</a-entity>
 
 </a-entity>
 
@@ -120,7 +90,7 @@ rotation="0 -180 0"
 <Field></Field>  
 
 {#if filtered_pitches.length != 0}
-	<ThreeDPitches2 pitches={filtered_pitches} interactions={peerInteractions}></ThreeDPitches2>
+	<ThreeDPitches2 pitches={data} interactions={interactions} filtered={filtered_pitches}></ThreeDPitches2>
 {/if}
 {/if}
 
