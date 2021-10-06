@@ -1,4 +1,4 @@
-import { writable, readable } from 'svelte/store';
+import { readable } from 'svelte/store';
 import { client } from './deepstream.js';
 
 

@@ -1,9 +1,8 @@
 <script>
     import { Col,  Row, Table} from 'sveltestrap';
-    import { pitchTypeColorScale, speedScale, speedColorScale, pitchOutcomeColorScale}  from '../colorScales.js';
     import { interaction_store } from '../stores.js';
     import FilterLegend from '../FilterLegend.svelte';
-import { index } from 'aframe';
+
 
     export let pitches = [];
     export let stats = {};
@@ -78,30 +77,11 @@ import { index } from 'aframe';
 
 
 <style>
-    .chart, h2, p, img{
+    .chart{
         width: 100%;
         height: 100%;
         font-size: 0.6vw;
     }
-
-    h4 {
-        font-size: 1.2vh;
-        
-    }
-
-    input{
-	width: 12px;
-	height: 12px;
-	font-size: 0.1vw;
-	margin-top: 5px;
-}
-
-    input:checked {
-        border-color:  rgba(0, 195, 255, 0.795);
-        background-color: rgba(0, 195, 255, 0.795);
-    }
-
-
     tbody{
         color: white;
         font-size: 12px;

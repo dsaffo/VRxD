@@ -3,10 +3,8 @@
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
   import { windowSize } from '../viewStore';
- export let interactions;
-
-
-
+ 
+  export let interactions;
   export let pitches = [];
 
 

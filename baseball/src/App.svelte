@@ -1,29 +1,22 @@
 <script>
-	import { desktopConnection, vrConnection, desktopStream} from "./peer";
+	import { desktopConnection, vrConnection } from "./peer";
 	import { client} from './deepstream';
-	import { ohtani_percentile_store, ohtani_stats_store, page, stored_data, peerInteraction, interaction_store} from './stores.js';
+	import { ohtani_percentile_store, ohtani_stats_store, stored_data, interaction_store} from './stores.js';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
-	import PitcherReport from './Desktop/PitcherReport.svelte';
-	import { onMount, afterUpdate, beforeUpdate,tick } from 'svelte';
-	import { desktopScreenRecord, screenRecord } from './viewStore';
-
-	
-
+	import { onMount } from 'svelte';
 
 	let urlParams; 
   let isVR;
 	let isForm;
 	let isDesktop; 
 	let video;
-	let canvas;
 
 	let innerHeight = 1080;
 	let innerWidth = 1920;
 
 	let sharing = false;
 	
-
 	function handleSuccess(stream) {
 			sharing = true;
 			window.stream = stream; // make stream available to browser console
@@ -55,7 +48,6 @@
 	
 		if(isDesktop){
 			video = document.querySelector('video');
-			canvas = document.createElement("canvas");
 			if (typeof(RTCIceGatherer) !== "undefined"){
 				navigator.getDisplayMedia(edge_constraints).
 				then(handleSuccess).catch(handleError);
@@ -73,33 +65,6 @@
 		ohtani_stats_store.loadData("./OhtaniStats.csv");
 		ohtani_percentile_store.loadData("./OhtaniPercentiles.csv");
 	})
-
-
-	//let screenStore;
-
-	//const unsubscribe_screen = screenRecord.subscribe(value => {
-	//	screenStore = value;
-	//});
-
-	/*
-	async function screenCapture(){
-    canvas.width = innerWidth;
-		canvas.height = innerHeight;
-		await tick();
-		setTimeout(function(){ 
-		canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-		desktopScreenRecord.set("0", canvas.toDataURL("jpeg", 0.1));
-		}, 10);
-  }
-	
-
-  afterUpdate(() => {
-		if (sharing){
-			screenCapture();
-		}
-  }); 
-	*/
-
 	
 
 	const windowSizeR = client.record.getRecord("windowSize");
@@ -136,7 +101,6 @@
 
 	<!--<svelte:body on:mousemove={handleMousemove}/>-->
 	{#if isDesktop}
-			<div id="circle" style="left: {m.x}px; top:{m.y}px"></div>
 			<DesktopEnv interactions={interactionStore} vrMode={false}></DesktopEnv>
 
 	{/if}
@@ -153,15 +117,3 @@
 		<video playsinline autoplay id="video"></video>
 	{/if}
 
-
-<style>
-		#circle{
-		pointer-events: none;
-		position:absolute;
-		transform:translate(-50%,-50%);
-		height:35px;
-		width:35px;
-		border-radius:50%;
-		border:2px solid rgb(184, 12, 12);
-		}
-</style>

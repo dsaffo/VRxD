@@ -1,6 +1,5 @@
 <script>
-import { split } from 'aframe';
-import { Form, FormGroup, FormText, Input, Label, Row, Col, Container } from 'sveltestrap';
+import { FormGroup, Input, Label, Row, Col, Container } from 'sveltestrap';
 import { form_store } from '../formStore.js';
 
  export let vr = false

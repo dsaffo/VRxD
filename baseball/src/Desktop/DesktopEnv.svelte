@@ -1,17 +1,15 @@
 <script>
-	import { Col, Container, Row, Modal, ModalBody} from 'sveltestrap';
-  	import {stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
+	import { Col, Container, Row } from 'sveltestrap';
+  import {stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store} from '../stores.js';
 	import OverheadPitch from './OverheadPitch.svelte';
 	import SidePitch from './SidePitch.svelte';
 	import StrikeZone from './StrikeZone.svelte';
-  	import PitchBreak from './PitchBreak.svelte';
-  	import PitchSpeedFreq from './PitchSpeedFreq.svelte';
+  import PitchBreak from './PitchBreak.svelte';
+  import PitchSpeedFreq from './PitchSpeedFreq.svelte';
 	import PitcherCard from './PitcherCard.svelte';
 	import StatCard from './StatCard.svelte';
 	import VirtualEnvEmbed from '../VR/VirtualEnvEmbed.svelte';
 	import PitcherReport from './PitcherReport.svelte';
-	import { mousePos } from '../viewStore';
-	
 
 	const urlParams = new URLSearchParams(window.location.search);
     const isVR = urlParams.has('vr');
@@ -21,11 +19,7 @@
 
 	let report = false;
   	const reportToggle = () => (report = !report);
-
-
-
-
-
+		
 	//subscribe to stored_data and assign its value to data
 	let data;
 	let ohtaniStats;
@@ -155,15 +149,4 @@
 	span {
 		font-size: 15px;
 	}
-
-	#circle{
-		pointer-events: none;
-		position:absolute;
-		transform:translate(-50%,-50%);
-		height:35px;
-		width:35px;
-		border-radius:50%;
-		border:2px solid rgb(184, 12, 12);
-		}
-
 </style>

@@ -22,13 +22,6 @@
 </div>
 
 <style>
-    .lengend-header {
-        display: inline-block;
-        text-align: center;
-        vertical-align: middle;
-        align-items: center;
-    }
-   
     button {
         padding: 0px;
         margin: 0px;

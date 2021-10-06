@@ -7,7 +7,6 @@
 	import "aframe-auto-detect-controllers-component";
 	import {stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction} from '../stores.js';
 	import Field from './Field.svelte';
-	import DesktopEnv from '../Desktop/DesktopEnv.svelte';
 	import PitcherCard from '../Desktop/PitcherCard.svelte';
 	import PitchBreakVR from './PitchBreakVR.svelte';
 	import PitchSpeedFreqVR from "./PitchSpeedFreqVR.svelte";

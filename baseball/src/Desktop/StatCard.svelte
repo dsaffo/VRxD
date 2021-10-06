@@ -1,5 +1,5 @@
 <script>
- import { Col,  Row, Table, Popover} from 'sveltestrap';
+ import { Col,  Row, Popover} from 'sveltestrap';
  import PrecentileScale from './PercentileScale.svelte';
 
  export let stats = {};
@@ -204,13 +204,13 @@
         </Popover>
       </Col>
       <Col>
-        <div  id="pwoba">
+        <div  id="pxba">
           <PrecentileScale label="xBA" percentile={percentiles.xBA}></PrecentileScale>
         </div>
         <Popover
           trigger="hover"
           placement="bottom"
-          target="pwoba">
+          target="pxba">
           Weighted On-base Average (wOBA)  is a version of on-base percentage that accounts for how a player reached base -- 
           instead of simply considering whether a player reached base. The value for each method of reaching base is determined 
           by how much that event is worth in relation to projected runs scored (example: a double is worth more than a single).
@@ -218,13 +218,13 @@
         </Popover>
       </Col>
       <Col>
-        <div  id="pwoba">
+        <div  id="pxslg">
           <PrecentileScale label="xSLG" percentile={percentiles.xSLG}></PrecentileScale>
         </div>
         <Popover
           trigger="hover"
           placement="bottom"
-          target="pwoba">
+          target="pxslg">
           Weighted On-base Average (wOBA)  is a version of on-base percentage that accounts for how a player reached base -- 
           instead of simply considering whether a player reached base. The value for each method of reaching base is determined 
           by how much that event is worth in relation to projected runs scored (example: a double is worth more than a single).
@@ -232,73 +232,73 @@
         </Popover>
       </Col>
       <Col>
-        <div  id="pwoba">
+        <div  id="pxiso">
           <PrecentileScale label="xISO" percentile={percentiles.xISO}></PrecentileScale>
         </div>
       </Col>
     </Row>
     <Row style="height: 25%">
       <Col>
-        <div  id="pwoba">
+        <div  id="pxobp">
           <PrecentileScale label="xOBP" percentile={percentiles.xOBP}></PrecentileScale>
         </div>
       </Col>
       <Col>
-        <div  id="pwoba">
+        <div  id="pb">
         <PrecentileScale label="Barrel" percentile={percentiles.Brl}></PrecentileScale>
       </div>
     </Col>
       <Col>
-        <div id="pwoba">
+        <div id="pbp">
           <PrecentileScale label="Barrel %" percentile={percentiles.BrlP}></PrecentileScale>
         </div>
       </Col>
       <Col>
-        <div id="pwoba">
+        <div id="pev">
           <PrecentileScale label="Exit Velocity" percentile={percentiles.EV}></PrecentileScale>
         </div>
       </Col>
     </Row>
     <Row style="height: 25%">
       <Col>
-        <div id="pwoba">
+        <div id="phh">
           <PrecentileScale label="Hard Hit %" percentile={percentiles.HHP}></PrecentileScale>
         </div>
       </Col>
       <Col>
-        <div id="pwoba">
+        <div id="pk">
           <PrecentileScale label="Strike %" percentile={percentiles.KP}></PrecentileScale>
         </div>
       </Col>
       <Col>
-        <div id="pwoba">
+        <div id="pbb">
           <PrecentileScale label="Batted Ball %" percentile={percentiles.BBP}></PrecentileScale>
         </div>
       </Col>
       <Col>
-        <div id="pwoba">
+        <div id="pwhiff">
           <PrecentileScale label="Whiff %" percentile={percentiles.WP}></PrecentileScale>
         </div>
       </Col>
     </Row>
     <Row style="height: 25%">
       <Col>
-        <div id="pwoba">
+        <div id="pxera">
           <PrecentileScale label="xERA" percentile={percentiles.xERA}></PrecentileScale>
         </div>
       </Col>
       <Col>
-        <div id="pwoba">
+        <div id="pfbs">
           <PrecentileScale label="Fast Ball Speed" percentile={percentiles.FB_V}></PrecentileScale>
         </div>
       </Col>
       <Col>
-        <div id="pwoba">
+        <div id="pfbss">
           <PrecentileScale label="Fast Ball Spin" percentile={percentiles.FB_Spin}></PrecentileScale>
         </div>
       </Col>
       <Col>
-        <div id="pwoba">
+        <div id="pcbs">
           <PrecentileScale label="Curve Ball Spin" percentile={percentiles.CB_Spin}></PrecentileScale>
         </div>
       </Col>
