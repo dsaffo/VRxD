@@ -30,8 +30,8 @@
     background-color: #2c2928;
 	color: white;
     margin: 1px;
-    padding: 2px;
-    font-size: 15px;
+    padding: 5px;
+    font-size: 0.6vw;
  }
 
  .selected {

@@ -11,6 +11,7 @@
 	import VirtualEnvEmbed from '../VR/VirtualEnvEmbed.svelte';
 	import PitcherReport from './PitcherReport.svelte';
 
+
 	const urlParams = new URLSearchParams(window.location.search);
     const isVR = urlParams.has('vr');
 
@@ -69,7 +70,18 @@
 
 {#if data.length != 0}
 	<Container id="capture" fluid style="height: 100%; margin: 5px;">
-		<Row style="height: 30%;">
+		<Row style="height: 2%; text-align: center;">
+			<Col sm='1' style='padding: 20px; max-width: 5%;'>
+				
+			</Col>
+			<Col sm='4' style='padding: 20px; min-width: 35%;'>
+				<span>Pitcher Details and Dashboard Controls</span>
+				</Col>
+				<Col sm='7' style='padding: 20px; min-width: 60%;'>
+					<span>Pitcher Stats and Performance Percentile</span>
+				</Col>
+		</Row>
+		<Row style="height: 28%;">
 			<Col sm='1' style='padding: 20px; max-width: 5%;'>
 				<Row>
 					<button on:click={vrViewToggle} disabled={vrMode}>Watch</button>
@@ -83,8 +95,6 @@
 				<Row>
 					<button on:click={reportToggle} disabled={vrMode}>Report</button>
 				</Row>
-			
-
 			</Col>
 			<Col sm='4' style='padding: 20px; min-width: 35%;'>
 				<PitcherCard pitches={data} stats={ohtaniStats} vrMode={vrMode} interactions={interactions}></PitcherCard>
@@ -100,11 +110,11 @@
 				<StrikeZone pitches={filtered_pitches} interactions={interactions} vrMode={vrMode}></StrikeZone>
 			</Col>
 			<Col style='padding: 20px;'>
-				<span>Overhead View</span>
+				<span>Pitch Overhead View</span>
 				<OverheadPitch data={data} interactions={interactions} vrMode={vrMode} filtered={filtered_pitches.map(a => a.id)}></OverheadPitch>
 			</Col>
 			<Col style='padding: 20px;'>
-				<span>Side View</span>
+				<span>Pitch Side View</span>
 				<SidePitch data={data} interactions={interactions} vrMode={vrMode} filtered={filtered_pitches.map(a => a.id)}></SidePitch>
 			</Col>
 		</Row>
@@ -118,7 +128,7 @@
 			</Col>
 			
 			<Col sm='6' style='padding: 20px;'>
-				<span>Vertical and Horizontal Break</span>
+				<span>Pitch Vertical and Horizontal Break</span>
 				<PitchBreak pitches={filtered_pitches} interactions={interactions} vrMode={vrMode}></PitchBreak>
 			</Col>
 		</Row>
@@ -131,7 +141,10 @@
 
 	{#if report}
 		<PitcherReport></PitcherReport>
+		
 	{/if}
+
+
 
 
 
@@ -143,10 +156,11 @@
 	button {
 		height: 50px;
 		width: 100%;
-		font-size: 20px;
+		font-size: 0.6vw;
 	}
 
 	span {
-		font-size: 15px;
+		font-size: 0.6vw;
+
 	}
 </style>

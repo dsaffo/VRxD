@@ -83,7 +83,8 @@
         font-size: 0.6vw;
     }
     tbody{
+        width: 100%;
         color: white;
-        font-size: 12px;
+        font-size: 0.6vw;
     }
 </style>

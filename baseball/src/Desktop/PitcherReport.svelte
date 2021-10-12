@@ -1,11 +1,15 @@
 <script>
 import { FormGroup, Input, Label, Row, Col, Container } from 'sveltestrap';
 import { form_store } from '../formStore.js';
+import { draggable } from 'svelte-drag';
 
  export let vr = false
 
- let width = window.innerWidth * 0.6;
- let height = window.innerHeight * 0.8;
+
+ let windowH = window.innerHeight;
+ let windowW = window.innerWidth;
+ let width = window.innerHeight * 0.8;
+ let height = window.innerHeight * 0.6;
 
 $: value = $form_store;
 
@@ -16,10 +20,11 @@ const changeEvent = (e) => {
 </script>
 
 {#if !vr}
-<Container style="overflow: scroll; width: {width}px; height: {height}px; position: absolute; top: {window.innerHeight / 2 - height / 2}px; left: {window.innerWidth / 2 - width / 2}px; background: #333; border: solid grey;">
+<div class="resizable" style="width: 1000px; height: 800px;" use:draggable={{ handle: '.handle', defaultPosition:  { x: (windowW - width)/2, y:  -windowH + (height/2)/2}}}>
+<Container fluid style="background: #333; border: solid grey; width: 100%; height: 100%; overflow:auto">
 
   <Row>
-    <Col>
+    <Col  class="handle" style="text-align: center; background:tomato;">
       <h3>Scouting Report</h3>
     </Col>
   </Row>
@@ -113,6 +118,7 @@ const changeEvent = (e) => {
     </Col>
   </Row>
 </Container>
+</div>
 {/if}
 
 {#if vr}
@@ -215,7 +221,16 @@ const changeEvent = (e) => {
 </Container>
 {/if}
 
+
+
 <style>
+
+.resizable {
+  resize: both;
+  overflow: auto;
+  border: 1px solid black;
+}
+
 #textarea {
     -moz-appearance: textfield-multiline;
     -webkit-appearance: textarea;
@@ -247,7 +262,6 @@ const changeEvent = (e) => {
     font: -moz-field;
     font: -webkit-small-control;
     width:  100%;    
-    max-width:  100%;   
     height: 100%;
     color: black;
     word-wrap: break-word;

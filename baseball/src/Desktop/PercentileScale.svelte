@@ -20,7 +20,7 @@
 
 <div class="chart">
     <svg>
-        <text x={xScale(50)} y={0} text-anchor="middle" fill="white" font-size="15px" dy=".35em">{label}</text>
+        <text x={xScale(50)} y={0} text-anchor="middle" fill="white" font-size="0.6vw" dy=".35em">{label}</text>
         <line x1={xScale(0)} y1={padding.top} x2={xScale(100)} y2={padding.top} stroke="white"></line>
         <circle r="5" cx={xScale(0)} cy={padding.top} fill="white"></circle>
         <circle r="5" cx={xScale(50)} cy={padding.top} fill="white"></circle>
@@ -34,7 +34,7 @@
 
 <style>
     .chart{
-        width: 100%;
+        width: 1vw;
         height: 10px;
     }
 

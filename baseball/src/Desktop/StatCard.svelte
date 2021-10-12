@@ -312,7 +312,8 @@ h5 {
   margin: auto;
   width: 100%;
   padding: 10px;
-  font-size: 12px;
+  font-size: 0.6vw;
 }
+
 
 </style>
