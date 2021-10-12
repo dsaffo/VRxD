@@ -14,7 +14,14 @@
 	import PitchSpeedFreqVR from "./PitchSpeedFreqVR.svelte";
 	import { cameraPos, cameraRot } from '../viewStore';
 	import PitcherReport from '../Desktop/PitcherReport.svelte';
+	import { draggable } from 'svelte-drag';
 
+
+
+	let windowH = window.innerHeight;
+ let windowW = window.innerWidth;
+ let width = 1400;
+ let height =  800;
 
 
 	//subscribe to stored_data and assign its value to data
@@ -63,14 +70,16 @@
 		}
 	}
 
+
 	
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed)));
 
 	$: console.log($cameraPos, $cameraRot);
 </script>
-<a-scene background="color: #ECECEC" embedded vr-mode-ui="enabled: false" style="width: 1400px; height: 800px; position: absolute;
-top: {window.innerHeight / 2 - 400}px;
-left: {window.innerWidth / 2 - 700}px;">
+
+<div class="resizable" style="width: 1400px; height: 800px; " use:draggable={{ handle:'.handle', defaultPosition:  { x: (windowW - width)/2, y:  -windowH + (height/2)/2}}}>
+<div class="handle" style="width: 100%; height: 30px; background:tomato; text-align:center;"><h3>Collaborator View</h3></div>
+<a-scene background="color: #ECECEC" embedded vr-mode-ui="enabled: false" style="width: 100%; height: 100%;">
 
 <!-- Basic movement and teleportation   -->
 {#if data.length != 0}	
@@ -94,6 +103,13 @@ rotation="0 -180 0"
 {/if}
 {/if}
 
-
-
 </a-scene>
+</div>
+
+<style>
+.resizable {
+  resize: both;
+  overflow: auto;
+  border: 3px solid black;
+}
+</style>
