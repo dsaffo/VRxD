@@ -36,14 +36,16 @@ for (let i =0; i < pitches.length; i++){
     pitchIDs.push(pitches[i]['id']);
 }
 
-    let radius = function(id) {
+    
+    $: radius = function(id) {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
         return "0.05"
         } 
         return "0.036"
         }
+    
 
-    let opacity = function(id) {
+    $: opacity = function(id) {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
             return "1"
         } 
@@ -60,7 +62,7 @@ for (let i =0; i < pitches.length; i++){
         return "false"
     }
 
-    let classed = function(id) {
+    $: classed = function(id) {
         if (filtered.includes(id)){
             return "collidable"
         } 
@@ -112,6 +114,7 @@ for (let i =0; i < pitches.length; i++){
             path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; 
             color: {colorScale(interactions.color_store, pitch)};
             opacity: {opacity(pitch.id)};
+            radius: {radius(pitch.id)};
             ballX: {-pitch['plate_x']};
             ballY: {pitch['plate_z']};"
     on:mouseenter={() => mouseOver(pitch.id)}

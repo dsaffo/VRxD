@@ -103,6 +103,9 @@ AFRAME.registerComponent('meshline', {
     this.el.getObject3D('path-mesh').material.opacity = this.data.opacity;
   }
       
+  if (data.radius !== oldData.radius) {
+    this.el.getObject3D('ball-mesh').geometry = new THREE.SphereGeometry( this.data.radius, this.data.width, this.data.height);
+  }
     },
     
     remove: function () {
