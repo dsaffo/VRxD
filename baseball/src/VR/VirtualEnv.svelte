@@ -136,7 +136,11 @@ rotation="0 -180 0"
 				<a-entity id="leftHand" 
 				hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF" 
 				teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger; curveShootingSpeed: 18; landingMaxAngle: 60"
-				visible="true"></a-entity>
+				visible="true">
+			
+			
+				</a-entity>
+				
 				
 				<a-entity  id="rightHand" auto-detect-controllers="hand: right" laser-controls raycaster="showLine: true; far: 10; interval: 0; objects: .collidable" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
 

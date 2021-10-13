@@ -156,11 +156,11 @@
 	button {
 		height: 50px;
 		width: 100%;
-		font-size: 0.6vw;
+		font-size: large;
 	}
 
 	span {
-		font-size: 0.6vw;
+		font-size: large;
 
 	}
 </style>

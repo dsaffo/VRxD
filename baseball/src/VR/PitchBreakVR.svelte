@@ -25,14 +25,14 @@
     .domain([90, 0])
     .range([height - padding.bottom, padding.top]);
 
-  let radius = function(id) {
+  $: radius = function(id) {
     if (interactions.hover_store == id || $peerInteraction.hover_store == id){
       return "0.03"
     } 
     return "0.015"
   }
 
-  let opacity = function(id) {
+  $: opacity = function(id) {
     if (interactions.hover_store == id){
       return "1"
     } 
@@ -50,7 +50,7 @@
         return "false"
     }
 
-  let classed = function(id) {
+  $: classed = function(id) {
       if (filtered.includes(id)){
           return "collidable"
       } 
