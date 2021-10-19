@@ -5,6 +5,7 @@
 	import "aframe-thumb-controls-component";
 	import "aframe-extras";
 	import "aframe-auto-detect-controllers-component";
+	import "aframe-dialog-popup-component";
 	import {stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction} from '../stores.js';
 	import Field from './Field.svelte';
 	import PitcherCard from '../Desktop/PitcherCard.svelte';
@@ -146,6 +147,7 @@ rotation="0 -180 0"
 
 			
 				<a-entity class="collidable" id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+					<a-text value="Pitcher Details and Dashboard Controls" align="center" position="0 0.73 0" scale="0.45 0.45 0.45" color="black"></a-text>
 						<div>
 							<button on:click="{() => interaction_store.copy()}">Copy</button>
 							<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" on:mouseleave="{() => interaction_store.peekEnd()}">Peek</button>
@@ -169,17 +171,20 @@ rotation="0 -180 0"
 					on:mousedown="{() => {formH -= 0.1}}"
 				></a-triangle>
 				
-				<a-entity id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0">
+				<a-entity id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0" >
+					<a-text value="Pitcher Stats and Performance Percentile" align="center" position="0 0.65 0" scale="0.45 0.45 0.45" color="black"></a-text>
 					<div style="width: 1000px; height: 300px">
 						<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={interactions}></StatCard>
 					</div>
 				</a-entity>
 
 				<a-entity id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 80 0">
+					<a-text value="Vertical/Horizontal Break From a Straight Line" align="center" position="0 0.6 0" scale="0.45 0.45 0.45" color="black"></a-text>
 					<PitchBreakVR pitches={data} interactions={interactions} filtered={filtered_pitches}></PitchBreakVR>
 				</a-entity>
 	
 				<a-entity id="pitch-speed-freq" position="-2 1.5 0.9" scale="1 1 1" rotation="0 100 0">
+					<a-text value="Pitch Frequency and Speed" align="center" position="0 0.6 0" scale="0.45 0.45 0.45" color="black"></a-text>
 					<PitchSpeedFreqVR pitches={data} interactions={interactions} filtered={filtered_pitches}></PitchSpeedFreqVR>
 				</a-entity>
 			
@@ -194,7 +199,7 @@ rotation="0 -180 0"
 	</a-entity>
 
 	
-	<a-video  position="0 1.5 -3" src="#videovr"></a-video>
+	<a-video height="{$windowSize.height}" width="{$windowSize.width}" position="0 1.5 -3" scale="0.001 0.001 0.001" src="#videovr"></a-video>
 
 </a-scene>
 {/if}

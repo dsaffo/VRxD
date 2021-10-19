@@ -130,7 +130,7 @@ for (let i = 0; i < yTicks.length; i++) {
         opacity="0.1">
       </a-plane>
 
-      <a-text align="center" anchor="center" value="{tick}" position="{xScale(tick)- padding.left} {(0 - height/2) + padding.bottom} 0" scale="0.2 0.2 0.2"></a-text>
+      <a-text align="center" anchor="center" value="{tick}mph" position="{xScale(tick)- padding.left} {(0 - height/2) + padding.bottom} 0" scale="0.2 0.2 0.2"></a-text>
     {/each}
   </a-entity>
 

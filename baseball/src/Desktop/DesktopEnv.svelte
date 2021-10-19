@@ -128,7 +128,7 @@
 			</Col>
 			
 			<Col sm='6' style='padding: 20px;'>
-				<span>Pitch Vertical and Horizontal Break</span>
+				<span>Vertical/Horizontal Break From a Straight Line</span>
 				<PitchBreak pitches={filtered_pitches} interactions={interactions} vrMode={vrMode}></PitchBreak>
 			</Col>
 		</Row>

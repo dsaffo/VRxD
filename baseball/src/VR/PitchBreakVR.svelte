@@ -12,17 +12,17 @@
   let width = 2;
   let height = 1;
 
-  const yTicks = [0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90];
-  const xTicks = [-30, -24, -18, -12, -6, 0, 6, 12, 18, 24, 30];
+  const yTicks = [-2, -1, 0, 1, 2];
+  const xTicks = [-2, -1, 0, 1, 2];
 
   const padding = { top: 0.08, right: 0.08, bottom: 0.08, left: 0.08};
 
   $: xScale = scaleLinear()
-    .domain([-30, 30])
+    .domain([-2, 2])
     .range([padding.left, width - padding.right]);
 
   $: yScale = scaleLinear()
-    .domain([90, 0])
+    .domain([2, -2])
     .range([height - padding.bottom, padding.top]);
 
   $: radius = function(id) {
@@ -87,7 +87,7 @@
         opacity="0.1">
       </a-plane>
 
-      <a-text align="right" anchor="right" value="{tick}" position="{0  - (width / 2) + padding.left} {yScale(tick) - padding.bottom} 0" scale="0.2 0.2 0.2"></a-text>
+      <a-text align="right" anchor="right" value="{tick}ft" position="{0  - (width / 2) + padding.left} {yScale(tick) - padding.bottom} 0" scale="0.2 0.2 0.2"></a-text>
     {/each}
   </a-entity>
 
@@ -110,7 +110,7 @@
         opacity="0.1">
       </a-plane>
 
-      <a-text align="center" anchor="center" value="{tick}" position="{xScale(tick)- padding.right} {(0 - height/2) + padding.bottom / 2} 0" scale="0.2 0.2 0.2"></a-text>
+      <a-text align="center" anchor="center" value="{tick}ft" position="{xScale(tick)- padding.right} {(0 - height/2) + padding.bottom / 2} 0" scale="0.2 0.2 0.2"></a-text>
     {/each}
   </a-entity>
 
@@ -132,7 +132,7 @@
       chartpoint="color: {colorScale(interactions.color_store, pitch)};
                   opacity: {opacity(pitch.id)};
                   radius: {radius(pitch.id)};"
-      position="{xScale(pitch.pfx_x * 12)  - (width / 2)} {(yScale(pitch.release_pos_z * 39.3701 - pitch.plate_z * 39.3701) - (height / 2))} 0.001{i + 1}"
+      position="{xScale(pitch.pfx_x)  - (width / 2)} {(yScale(pitch.pfx_z) - (height / 2))} 0.001{i + 1}"
       on:mouseenter={() => mouseOver(pitch.id)}
       on:mouseleave={() => mouseOut()}>
     </a-entity>

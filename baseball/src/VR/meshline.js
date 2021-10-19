@@ -42,7 +42,7 @@ AFRAME.registerComponent('meshline', {
         lineWidth: this.data.lineWidth,
         transparent: true,
         opacity: this.data.opacity, 
-        depthTest: false,
+        depthTest: true,
       });
     
       var vertices = [];
