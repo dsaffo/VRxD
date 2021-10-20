@@ -5,7 +5,8 @@
 	import "aframe-thumb-controls-component";
 	import "aframe-extras";
 	import "aframe-auto-detect-controllers-component";
-	import "aframe-dialog-popup-component";
+	import "super-hands";
+	import "aframe-physics-system";
 	import {stored_data, ohtani_stats_store, ohtani_percentile_store, interaction_store, peerInteraction} from '../stores.js';
 	import Field from './Field.svelte';
 	import PitcherCard from '../Desktop/PitcherCard.svelte';
@@ -45,6 +46,21 @@
 	const peer_unsub = peerInteraction.subscribe(value => {
 		peerInteractions = value;
 	});
+
+
+	AFRAME.registerComponent( 'move', {
+    init: function() {
+		let el = this.el;
+    this.el.addEventListener ('grab-end', function(evt) {
+			let body = el.body;
+			body.velocity.set(0,0,0);
+			body.angularVelocity.set(0,0,0);
+			body.vlambda.set(0,0,0);
+			body.wlambda.set(0,0,0);
+    });
+  }
+});
+
 
 	AFRAME.registerComponent('position-reader', {
 		tick: function (time, timeDelta) {
@@ -111,16 +127,58 @@
 
 	
 
-
+	AFRAME.registerComponent('capture-mouse', {
+        init: function () {
+          this.eventRepeater = this.eventRepeater.bind(this)
+          this.el.sceneEl.addEventListener('loaded', () => {
+            this.el.sceneEl.canvas.addEventListener('mousedown', this.eventRepeater)
+            this.el.sceneEl.canvas.addEventListener('mouseup', this.eventRepeater)
+            this.el.sceneEl.canvas.addEventListener('touchstart', this.eventRepeater)
+            this.el.sceneEl.canvas.addEventListener('touchmove', this.eventRepeater)
+            this.el.sceneEl.canvas.addEventListener('touchend', this.eventRepeater)
+          }, {once: true})
+        },
+        eventRepeater: function (evt) {
+          if (evt.type.startsWith('touch')) {
+            evt.preventDefault()
+            // avoid repeating touchmove because it interferes with look-controls
+            if (evt.type === 'touchmove') { return }
+          }
+          this.el.emit(evt.type, evt.detail)
+        }
+      })
 
 </script>
 
 {#if data.length != 0}
-<a-scene webxr="optionalFeatures: light-estimation;" background="color: #ECECEC" stats>
+<a-scene physics="gravity:0;" webxr="optionalFeatures: light-estimation;" background="color: #ECECEC" stats>
 
 	<a-assets>
 		<!-- svelte-ignore a11y-media-has-caption -->
 		<video id="videovr" autoplay playsinline crossorigin="anonymous"></video>
+
+
+		<a-mixin id="controllers-right" laser-controls vive-controls="hand: right"
+		oculus-touch-controls="hand: right"
+		windows-motion-controls="hand: right"
+		gearvr-controls daydream-controls
+		oculus-go-controls>
+		</a-mixin>
+
+		<a-mixin id="controllers-left" vive-controls="hand: left"
+				oculus-touch-controls="hand: left"
+				windows-motion-controls="hand: left">
+		</a-mixin>
+
+		<a-mixin id="point" raycaster="showLine: true; objects: .collidable"
+		collision-filter="collisionForces: false"
+		static-body="shape: sphere; sphereRadius: 0.001"
+		super-hands="colliderEvent: raycaster-intersection;
+								 colliderEventProperty: els;
+								 colliderEndEvent:raycaster-intersection-cleared;
+								 colliderEndEventProperty: clearedEls;"></a-mixin>
+
+
 	</a-assets>
 
 <!-- Basic movement and teleportation   -->
@@ -132,19 +190,25 @@ position="0.212 0 -1.321"
 rotation="0 -180 0"
 >
 	
-	<a-entity roation-reader id="head" camera="active: true" position="0 1.6 0" look-controls="pointerLockEnabled: true; reverseMouseDrag: true" cursor="rayOrigin: mouse;"></a-entity>
-				
+	<a-entity roation-reader id="head" camera="active: true" wasd-controls position="0 1.6 0" capture-mouse
+	raycaster cursor="rayOrigin: mouse;"   body="type: static; shape: sphere; sphereRadius: 0.001"
+	super-hands="colliderEvent: raycaster-intersection;
+							 colliderEventProperty: els;
+							 colliderEndEvent:raycaster-intersection-cleared;
+							 colliderEndEventProperty: clearedEls;">></a-entity>
+				<!--
 				<a-entity id="leftHand" 
 				hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF" 
 				teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger; curveShootingSpeed: 18; landingMaxAngle: 60"
 				visible="true">
-			
-			
 				</a-entity>
-				
-				
-				<a-entity  id="rightHand" auto-detect-controllers="hand: right" laser-controls raycaster="showLine: true; far: 10; interval: 0; objects: .collidable" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
 
+				<a-entity  id="rightHand" auto-detect-controllers="hand: right" laser-controls raycaster="showLine: true; far: 10; interval: 0; objects: .collidable" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
+				-->
+
+				<a-entity id="rhand" mixin="controllers-right point"></a-entity>
+        <a-entity id="lhand" mixin="controllers-left point"></a-entity>
+				
 			
 				<a-entity class="collidable" id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
 					<a-text value="Pitcher Details and Dashboard Controls" align="center" position="0 0.73 0" scale="0.45 0.45 0.45" color="black"></a-text>
@@ -199,7 +263,7 @@ rotation="0 -180 0"
 	</a-entity>
 
 	
-	<a-video height="{$windowSize.height}" width="{$windowSize.width}" position="0 1.5 -3" scale="0.001 0.001 0.001" src="#videovr"></a-video>
+	<a-video class="collidable" move dynamic-body grabbable height="{$windowSize.height}" width="{$windowSize.width}" position="0 1.5 -3" scale="0.001 0.001 0.001" src="#videovr"></a-video>
 
 </a-scene>
 {/if}
