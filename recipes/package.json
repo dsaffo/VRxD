@@ -9,24 +9,42 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
+    "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.0.0",
-    "layercake": "^4.1.0",
     "rollup": "^2.3.4",
     "rollup-plugin-css-only": "^3.1.0",
     "rollup-plugin-livereload": "^2.0.0",
     "rollup-plugin-svelte": "^7.0.0",
     "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0"
+    "svelte": "^3.40.2"
   },
   "dependencies": {
+    "@deepstream/client": "^5.2.4",
     "aframe": "^1.2.0",
+    "aframe-auto-detect-controllers-component": "^0.1.4",
+    "aframe-curve-component": "github:kotavy/aframe-curve-component",
+    "aframe-dialog-popup-component": "^1.0.0",
     "aframe-event-set-component": "^5.0.0",
     "aframe-extras": "^6.1.1",
+    "aframe-html-shader": "^0.2.0",
+    "aframe-htmlembed-component": "^1.0.0",
+    "aframe-meshline-component": "^0.4.0",
+    "aframe-physics-system": "github:n5ro/aframe-physics-system",
     "aframe-teleport-controls": "^0.3.1",
     "aframe-thumb-controls-component": "^2.0.2",
+    "aframe-tooltip-component": "^0.1.2",
     "d3": "^6.6.2",
-    "rollup-plugin-dev": "^1.1.3",
+    "html2canvas": "^1.3.2",
+    "jspdf": "^2.4.0",
+    "peerjs": "^1.3.2",
+    "simplify-3d": "^1.0.0",
     "sirv-cli": "^1.0.0",
-    "visconnect": "^1.2.2"
+    "super-hands": "^3.0.2",
+    "svelte-drag": "^2.0.0",
+    "sveltefire": "^0.1.5",
+    "sveltestrap": "^5.5.1",
+    "three": "^0.131.3",
+    "three.meshline": "^1.3.0",
+    "threejs-meshline": "^2.0.12"
   }
 }

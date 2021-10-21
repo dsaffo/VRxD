@@ -1,0 +1,25 @@
+diff --git a/node_modules/aframe-meshline-component/dist/aframe-meshline-component.js b/node_modules/aframe-meshline-component/dist/aframe-meshline-component.js
+index a367a5f..a5394cb 100644
+--- a/node_modules/aframe-meshline-component/dist/aframe-meshline-component.js
++++ b/node_modules/aframe-meshline-component/dist/aframe-meshline-component.js
+@@ -59,6 +59,7 @@
+ 	    lineWidth: { default: 10 },
+ 	    lineWidthStyler: { default: '' },
+ 	    sizeAttenuation: { default: 0 },
++		opacity: { default: 0.1},
+ 	    path: {
+ 	      default: [
+ 	        { x: -0.5, y: 0, z: 0 },
+@@ -126,7 +127,11 @@
+ 	      color: new THREE.Color(this.data.color),
+ 	      resolution: this.resolution,
+ 	      sizeAttenuation: this.data.sizeAttenuation,
+-	      lineWidth: this.data.lineWidth
++	      lineWidth: this.data.lineWidth,
++		  transparent: true,
++		  opacity: this.data.opacity, 
++		  depthTest: false,
++		  alphaTest: 0.1,
+ 	    });
+ 	  
+ 	    var vertices = [];

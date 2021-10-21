@@ -1,40 +1,107 @@
 <script>
-	import { page } from './stores.js';
+	import { desktopConnection, vrConnection } from "./peer";
+	import { client} from './deepstream';
+	import { ohtani_percentile_store, ohtani_stats_store, stored_data, interaction_store} from './stores.js';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
+	import { onMount } from 'svelte';
 
-	/* How to load data from store.js */
+	let urlParams; 
+  	let isVR;
+	let isForm;
+	let isDesktop; 
+	let video;
+
+	let innerHeight = 1080;
+	let innerWidth = 1920;
+
+	let sharing = false;
+	
+	function handleSuccess(stream) {
+			sharing = true;
+			window.stream = stream; // make stream available to browser console
+			video.srcObject = stream;
+			desktopConnection(stream);
+		}
+
+	function handleError(error) {
+		console.log('navigator.MediaDevices.getUserMedia error: ', error.message, error.name);
+	}
+
+	var edge_constraints = {
+		video: true
+	};
+
+	var ff_constraints = {
+		video: {
+		mediaSource: "window"
+		},
+	};
+
+
 	onMount(async () => {
-		stored_data.loadData();
+		urlParams = new URLSearchParams(window.location.search);
+		
+		isVR = urlParams.has('vr');
+		isForm = urlParams.has('form');
+		isDesktop = urlParams.has('desktop');		
+	
+		/*
+		if(isDesktop){
+			video = document.querySelector('video');
+			if (typeof(RTCIceGatherer) !== "undefined"){
+				navigator.getDisplayMedia(edge_constraints).
+				then(handleSuccess).catch(handleError);
+					} else if (typeof(navigator.mediaDevices.getDisplayMedia) !== "undefined"){
+				navigator.mediaDevices.getDisplayMedia(edge_constraints).then(handleSuccess).catch(handleError); 
+			} else {
+				navigator.mediaDevices.getUserMedia(ff_constraints).
+				then(handleSuccess).catch(handleError);
+			}	
+		} else {
+			vrConnection();
+		}
+		*/
+
 	})
 	
 
-	/* Example of event listener that updates the data when UpdateData is called from store.js
-	document.body.addEventListener('myEvent', (e) => { stored_data.updateStore(e.detail) });
-	*/
-
-	let page_value;
-
-	const unsubscribe = page.subscribe(value => {
-		page_value = value;
-	});
-
-</script>
-
-{#if page_value == 0}
-
-	<DesktopEnv></DesktopEnv>
-
-{/if}
+	const windowSizeR = client.record.getRecord("windowSize");
 
 
-{#if page_value == 1}
+	$: if (isDesktop){
+		windowSizeR.set("0", {width: innerWidth, height: innerHeight});
+	}
 
-	<VirtualEnv></VirtualEnv>
+	//let interactionStore;
 
-{/if}
+	//const unsubscribe_interaction = interaction_store.subscribe(value => {
+	//	interactionStore = value;
+	//});
+
+	</script>
+
+	<svelte:window bind:innerWidth={innerWidth} bind:innerHeight={innerHeight}/>
+
+	<!--<svelte:body on:mousemove={handleMousemove}></svelte:body>-->
+
+	<!-- svelte-ignore a11y-media-has-caption -->
+	<video style="display: none" playsinline autoplay></video>
+
+	<!--<svelte:body on:mousemove={handleMousemove}/>-->
+	{#if isDesktop}
+		<DesktopEnv></DesktopEnv>
+	{/if}
 
 
 
+	{#if isVR}
+		<VirtualEnv></VirtualEnv>
+	{/if}
 
+	{#if isForm}
+		<!--<PitcherReport></PitcherReport>-->
+		<!-- svelte-ignore a11y-media-has-caption -->
+		<video playsinline autoplay id="video"></video>
+	{/if}
 
