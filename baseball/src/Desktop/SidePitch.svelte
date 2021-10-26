@@ -153,9 +153,9 @@
     <!-- Strike Zone  -->
     <rect
       width={xScale(0.01)}
-      height={yScale(4)}
+      height={yScale(5.5)}
       x={xScale(0)}
-      y={yScale(3.8)}
+      y={yScale(3.4)}
       fill="#ccd5e3"
     />
 
