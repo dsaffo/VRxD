@@ -106,6 +106,8 @@
 			return 'red'; 
 		} else if (id.includes("recipe_italian")) {
 			return 'blue'; 
+		} else if (id.includes("recipe_italamer")) {
+			return 'orange'; 
 		} 
 		return 0;
 	}
