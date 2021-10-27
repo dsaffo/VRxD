@@ -197,7 +197,7 @@
 
     tbody{
         color: white;
-        font-size: 0.6vw;
+        font-size: medium;
     }
 
     td {

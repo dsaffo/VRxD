@@ -80,11 +80,11 @@
     .chart{
         width: 100%;
         height: 100%;
-        font-size: large
+        font-size: small;
     }
     tbody{
         width: 100%;
         color: white;
-        font-size: large
+        font-size: small;
     }
 </style>

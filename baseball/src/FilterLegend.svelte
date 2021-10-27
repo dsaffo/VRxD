@@ -31,7 +31,7 @@
 	color: white;
     margin: 1px;
     padding: 5px;
-    font-size: large;
+    font-size: medium;
  }
 
  .selected {

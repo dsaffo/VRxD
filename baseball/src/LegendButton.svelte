@@ -38,6 +38,6 @@
        }
 
     span {
-        font-size: large;
+        font-size: small;
     }
    </style>

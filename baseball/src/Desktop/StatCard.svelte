@@ -405,7 +405,7 @@ h5 {
   margin: auto;
   width: 100%;
   padding: 10px;
-  font-size: large;
+  font-size: medium;
 }
 
 
