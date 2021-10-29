@@ -67,8 +67,17 @@
     AFRAME.registerComponent('move', {
 		init: function() {
 			let el = this.el;
+
+      this.el.addEventListener ('grab-start', function(evt) {
+				let body = el.body;
+				body.linearDamping = 0.01;
+        body.angularDamping = 0.01;
+			});
+
 			this.el.addEventListener ('grab-end', function(evt) {
 				let body = el.body;
+        body.linearDamping = 1;
+        body.angularDamping = 1;
 				body.velocity.set(0,0,0);
 				body.angularVelocity.set(0,0,0);
 				body.vlambda.set(0,0,0);
@@ -120,7 +129,7 @@ rotation="0 -180 0">
         wasd-controls 
         position="0 1.6 0" 
         capture-mouse
-	    raycaster 
+	      raycaster 
         cursor="rayOrigin: mouse;"   
         body="type: static; 
               shape: sphere; 

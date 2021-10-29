@@ -106,7 +106,7 @@
 	}
 
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed))).map(a => a.id);
-	let formH = 1.5;
+	let formH = 0;
 
 	
 	let screenStore;
@@ -129,29 +129,35 @@
 
 <!-- Basic movement and teleportation   -->
 <Avatar>		
-	<a-entity move dynamic-body grabbable class="collidable" id="pitcher-card" htmlembed position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
-		<a-text value="Pitcher Details and Dashboard Controls" align="center" position="0 0.73 0" scale="0.45 0.45 0.45" color="black"></a-text>
-			<div>
-				<button on:click="{() => interaction_store.copy()}">Copy</button>
-				<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" on:mouseleave="{() => interaction_store.peekEnd()}">Peek</button>
-			</div>
-			
-			<div style="height: 300px; width: 650px;">
-				<PitcherCard pitches={data} stats={ohtaniStats} interactions={interactions}></PitcherCard>
-			<div>
+
+	<!--Filter Controls-->
+	<a-entity move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable geometry="primitive: box; width: 2.5s; height: 1.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+		<a-entity class="collidable" id="pitcher-card" htmlembed>
+			<a-text value="Pitcher Details and Dashboard Controls" align="center" position="0 0.73 0" scale="0.45 0.45 0.45" color="black"></a-text>
+				<div>
+					<button on:click="{() => interaction_store.copy()}">Copy</button>
+					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" on:mouseleave="{() => interaction_store.peekEnd()}">Peek</button>
+				</div>
+				
+				<div style="height: 300px; width: 650px;">
+					<PitcherCard pitches={data} stats={ohtaniStats} interactions={interactions}></PitcherCard>
+				<div>
+		</a-entity>
 	</a-entity>
 
-	<a-entity move dynamic-body grabbable>
-		<a-entity htmlembed position="2.5 {formH} 1" rotation="0 -90.000 0">
+	<!--Report Form-->
+	<a-entity move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable geometry="primitive: box; width: 2; height: 2.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2.5 1.5 1" rotation="0 -90.000 0">
+		<a-entity htmlembed position="0 {formH} 0">
 			<div style="width: 500px; height:100%">
 				<PitcherReport vr={true}></PitcherReport>
 			</div>
 		</a-entity>
-		<a-triangle class="collidable" position="2.5 1.5 2.3" scale=".5 .5 .5"rotation="0 -90.000 0" on:mousedown="{() => {formH += 0.1}}"></a-triangle>
-		<a-triangle class="collidable" position="2.5 .8 2.3" scale=".5 .5 .5"rotation="0 -90.000 180" on:mousedown="{() => {formH -= 0.1}}"></a-triangle>
+		<a-triangle class="collidable" position="1.4 0.6 0" scale=".5 .5 .5" on:mousedown="{() => {formH += 0.1}}"></a-triangle>
+		<a-triangle class="collidable" position="1.4 0 0" rotation="0 0 180"  scale=".5 .5 .5" on:mousedown="{() => {formH -= 0.1}}"></a-triangle>
 	</a-entity>
 
-	<a-entity move dynamic-body grabbable>
+	<!--2D Charts and Stats-->
+	<a-entity move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable>
 		<a-entity id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0" >
 			<a-text value="Pitcher Stats and Performance Percentile" align="center" position="0 0.65 0" scale="0.45 0.45 0.45" color="black"></a-text>
 			<div style="width: 1000px; height: 300px">
@@ -178,7 +184,7 @@
 	</a-entity>
 
 	
-	<a-video id="watch" visible="false" class="collidable" move dynamic-body grabbable height="{$windowSize.height}" width="{$windowSize.width}" position="0 1.5 -3" scale="0.001 0.001 0.001" src="#videovr"></a-video>
+	<a-video id="watch" visible="false" class="collidable" move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable height="{$windowSize.height}" width="{$windowSize.width}" position="0 1.5 -3" scale="0.001 0.001 0.001" src="#videovr"></a-video>
 
 </a-scene>
 {/if}
