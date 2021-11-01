@@ -18,7 +18,9 @@ export const windowSizeRecord = client.record.getRecord("windowSize");
 export const mousePosRecord = client.record.getRecord("mousePos");
 export const cameraPosRecord = client.record.getRecord("cameraPos");
 export const cameraRotRecord = client.record.getRecord("cameraRot");
-export const desktopScreenRecord = client.record.getRecord("desktopScreen");
+export const chartRecord = client.record.getRecord("chartRecs");
+export const controlRecord = client.record.getRecord("controlRecs");
+export const formRecord = client.record.getRecord("formRecs");
 
 
 
@@ -42,7 +44,7 @@ export const mousePos = readable({x: 0, y:0}, function start(set) {
     }
 });
 
-export const cameraPos = readable({x: 0, y:0, z:0}, function start(set) {
+export const cameraPos = readable({x: 0, y:-1, z:0}, function start(set) {
     const unsub = cameraPosRecord.subscribe("0", function(value) {
         set(value);
     });
@@ -62,8 +64,8 @@ export const cameraRot = readable({x: 0, y:0, z:0}, function start(set) {
     }
 });
 
-export const screenRecord = readable("none", function start(set) {
-    const unsub = desktopScreenRecord.subscribe("0", function(value) {
+export const chartRecs = readable({pos: {x: 0, y: 0, z: 0}, rot: {x: 0, y: 0, z: 0}}, function start(set) {
+    const unsub = chartRecord.subscribe("0", function(value) {
         set(value);
     });
 
@@ -71,5 +73,27 @@ export const screenRecord = readable("none", function start(set) {
         unsub;
     }
 });
+
+export const controlRecs = readable({pos: {x: 0, y: 0, z: 0}, rot: {x: 0, y: 0, z: 0}}, function start(set) {
+    const unsub = controlRecord.subscribe("0", function(value) {
+        set(value);
+    });
+
+    return function stop() {
+        unsub;
+    }
+});
+
+export const formRecs = readable({pos: {x: 0, y: 0, z: 0}, rot: {x: 0, y: 0, z: 0}, height: 0}, function start(set) {
+    const unsub = formRecord.subscribe("0", function(value) {
+        set(value);
+    });
+
+    return function stop() {
+        unsub;
+    }
+});
+
+
 
 

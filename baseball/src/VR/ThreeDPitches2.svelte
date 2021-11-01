@@ -10,6 +10,8 @@ export let pitches = [];
 export let interactions;
 export let filtered = [];
 
+console.log(pitches, filtered);
+
 function pathGen (data) {
         var pitch = pitch_trajectory(
         data["release_pos_x"],

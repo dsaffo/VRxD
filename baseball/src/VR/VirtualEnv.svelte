@@ -16,8 +16,8 @@
 	import PitcherReport from '../Desktop/PitcherReport.svelte';
 	import StatCard from '../Desktop/StatCard.svelte';
 	import Avatar from './Avatar.svelte';
-	import { windowSize, screenRecord } from '../viewStore';
-	import { cameraPos, cameraRot, cameraRotRecord, cameraPosRecord } from '../viewStore';
+	import { windowSize, chartRecord, formRecord, controlRecord} from '../viewStore';
+
 
 
 	//subscribe to stored_data and assign its value to data
@@ -48,45 +48,6 @@
 		peerInteractions = value;
 	});
 
-
-	
-
-
-	AFRAME.registerComponent('position-reader', {
-		tick: function (time, timeDelta) {
-			// `this.el` is the element.
-			// `object3D` is the three.js object.
-
-			// `rotation` is a three.js Euler using radians. `quaternion` also available.
-			//console.log(this.el.object3D.rotation);
-
-			// `position` is a three.js Vector3.
-
-			//console.log(this.el.object3D.position);
-
-			cameraPosRecord.set("0", {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z});
-
-		}
-		});
-
-		AFRAME.registerComponent('roation-reader', {
-		tick: function (time, timeDelta) {
-			// `this.el` is the element.
-			// `object3D` is the three.js object.
-
-			// `rotation` is a three.js Euler using radians. `quaternion` also available.
-			//console.log(this.el.object3D.rotation);
-
-			// `position` is a three.js Vector3.
-
-			//console.log(this.el.object3D.position);
-
-		 	cameraRotRecord.set("0", {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57});
-
-		}
-		});
-
-
 	function checkSpeed(speed) {
 
 		if (speed >= 65 && speed <= 75){
@@ -108,14 +69,31 @@
 	$: filtered_pitches = data.filter(data => interactions.filter_store.includes(data.pitch_name) && interactions.filter_store.includes(data.description) && interactions.filter_store.includes(checkSpeed(data.effective_speed))).map(a => a.id);
 	let formH = 0;
 
-	
-	let screenStore;
 
-	const unsubscribe_screen = screenRecord.subscribe(value => {
-		screenStore = value;
-	});
+	AFRAME.registerComponent('chart-reader', {
+		tick: function (time, timeDelta) {
+      //console.log("roation",this.el.object3D.rotation);
+			chartRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
+																rot: {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57}});
+		}
+		});
 
-	
+		AFRAME.registerComponent('control-reader', {
+		tick: function (time, timeDelta) {
+      //console.log(this.el.object3D.position);
+			controlRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
+																rot: {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57}});
+		}
+		});
+
+		AFRAME.registerComponent('form-reader', {
+		tick: function (time, timeDelta) {
+      //console.log(this.el.object3D.position);
+			formRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
+																rot: {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57},
+																height: formH});
+		}
+		});
 
 </script>
 
@@ -131,7 +109,7 @@
 <Avatar>		
 
 	<!--Filter Controls-->
-	<a-entity move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable geometry="primitive: box; width: 2.5s; height: 1.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+	<a-entity  class="collidable" control-reader move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" geometry="primitive: box; width: 2.5s; height: 1.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
 		<a-entity class="collidable" id="pitcher-card" htmlembed>
 			<a-text value="Pitcher Details and Dashboard Controls" align="center" position="0 0.73 0" scale="0.45 0.45 0.45" color="black"></a-text>
 				<div>
@@ -146,7 +124,7 @@
 	</a-entity>
 
 	<!--Report Form-->
-	<a-entity move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable geometry="primitive: box; width: 2; height: 2.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2.5 1.5 1" rotation="0 -90.000 0">
+	<a-entity  form-reader class="collidable" move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" geometry="primitive: box; width: 2; height: 2.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2.5 1.5 1" rotation="0 -90.000 0">
 		<a-entity htmlembed position="0 {formH} 0">
 			<div style="width: 500px; height:100%">
 				<PitcherReport vr={true}></PitcherReport>
@@ -157,7 +135,7 @@
 	</a-entity>
 
 	<!--2D Charts and Stats-->
-	<a-entity move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable>
+	<a-entity  chart-reader class="collidable" move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;">
 		<a-entity id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0" >
 			<a-text value="Pitcher Stats and Performance Percentile" align="center" position="0 0.65 0" scale="0.45 0.45 0.45" color="black"></a-text>
 			<div style="width: 1000px; height: 300px">

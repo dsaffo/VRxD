@@ -1,5 +1,5 @@
 <script>
-    import "aframe";
+  import "aframe";
 	import "aframe-htmlembed-component";
 	import "aframe-teleport-controls";
 	import "aframe-thumb-controls-component";
@@ -8,6 +8,7 @@
 	import "super-hands";
 	import "aframe-physics-system";
 	import {interaction_store} from '../stores.js';
+  import { cameraPos, cameraRot, cameraRotRecord, cameraPosRecord } from '../viewStore';
 
     AFRAME.registerComponent('capture-mouse', {
         init: function () {
@@ -85,6 +86,23 @@
 			});
 		}
 	});
+
+
+  
+	AFRAME.registerComponent('position-reader', {
+		tick: function (time, timeDelta) {
+      //console.log(this.el.object3D.position);
+			cameraPosRecord.set("0", {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z});
+
+		}
+		});
+
+		AFRAME.registerComponent('roation-reader', {
+		tick: function (time, timeDelta) {
+      //console.log(this.el.object3D.rotation);
+		 	cameraRotRecord.set("0", {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57});
+		}
+		});
 
   
 </script>
