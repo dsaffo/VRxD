@@ -95,6 +95,14 @@
 				<Row>
 					<button on:click={reportToggle} disabled={vrMode}>Report</button>
 				</Row>
+				<Row>
+					<div class="play-btn">
+						  <svg id="pitch" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26">
+							<polygon class="play-btn__svg" points="9.33 6.69 9.33 19.39 19.3 13.04 9.33 6.69"/>
+							<path class="play-btn__svg" d="M26,13A13,13,0,1,1,13,0,13,13,0,0,1,26,13ZM13,2.18A10.89,10.89,0,1,0,23.84,13.06,10.89,10.89,0,0,0,13,2.18Z"/>
+						  </svg> 
+					  </div>
+				</Row>
 			</Col>
 			<Col sm='4' style='padding: 20px; min-width: 35%;'>
 				<PitcherCard pitches={data} stats={ohtaniStats} vrMode={vrMode} interactions={interactions}></PitcherCard>
@@ -154,7 +162,7 @@
 
 <style>
 	button {
-		height: 50px;
+		height: 35px;
 		width: 100%;
 		font-size: medium;
 	}
@@ -162,4 +170,23 @@
 	span {
 		font-size: medium;
 	}
+
+	.play-btn {
+  width: 50%;
+  height: auto;
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+.play-btn__svg{
+  transition: 0.5s; 
+  fill:#7c7c7c; 
+  opacity: .5;
+}
+
+.play-btn:hover .play-btn__svg {
+  fill: #a41d33;
+  opacity: 1;
+}
+
 </style>

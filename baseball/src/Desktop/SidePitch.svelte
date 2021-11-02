@@ -54,11 +54,12 @@
         0.001
       );
       let id = data[i]['id'];
-      pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
-      pitch = simplify(pitch, 0.02);
+      pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z, t: p.t}});
+      pitch = simplify(pitch, 0.01);
       pitchPaths[id] = pitch;
   }
     
+  
 
   $: pathGen = function (id) {
     //convert from meters to feet and flip x position to pitchers persepctive
@@ -66,6 +67,10 @@
       .map((p) => `${xScale(p.y * 3.28084)},${yScale(p.z * 3.28084)}`)
       .join("L")}`;
   };
+
+  $: pitchTime = function (id) {
+    return pitchPaths[id][pitchPaths[id].length - 1].t;
+  }
 
   $: stroke = (id) => {
 
@@ -163,6 +168,7 @@
     {#each data as pitch}
       <!-- svelte-ignore a11y-mouse-events-have-key-events -->
       <path
+        id="sidepitch{pitch.id}"
         display={display(pitch.id)}
         class="path-line"
         d={pathGen(pitch.id)}
@@ -172,6 +178,13 @@
         on:mouseover={() => mouseOver(pitch.id)}
         on:mouseout={() => mouseOut()}
       />
+      <circle r="8" stroke="white" fill="white" display={display(pitch.id)}>
+        <animateMotion dur="{pitchTime(pitch.id)}s" repeatCount="1"
+        begin="sidepitch{pitch.id}.click; overpitch{pitch.id}.click; 
+        strikepitch{pitch.id}.click; pitch.click; 
+        speedpitch{pitch.id}.click; breakpitch{pitch.id}.click" 
+        path={pathGen(pitch.id)} />
+      </circle>
     {/each}
   </svg>
 </div>

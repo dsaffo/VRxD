@@ -99,6 +99,7 @@
     {#each pitches as pitch}
       <!-- svelte-ignore a11y-mouse-events-have-key-events -->
       <circle
+        id="breakpitch{pitch.id}"   
         cx={xScale(pitch.pfx_x)}
         cy={yScale(pitch.pfx_z)}
         fill={colorScale(interactions.color_store, pitch)}

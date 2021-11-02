@@ -56,8 +56,8 @@
         0.001
       );
       let id = data[i]['id'];
-      pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
-      pitch = simplify(pitch, 0.02);
+      pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z, t: p.t}});
+      pitch = simplify(pitch, 0.01);
       pitchPaths[id] = pitch;
   }
     
@@ -68,6 +68,10 @@
       .map((p) => `${xScale(p.y * 3.28084)},${yScale(p.x * 3.28084)}`)
       .join("L")}`;
   };
+
+  $: pitchTime = function (id) {
+    return pitchPaths[id][pitchPaths[id].length - 1].t;
+  }
 
   $: stroke = (id) => {
     if (interactions.hover_store == id || $peerInteraction.hover_store == id){
@@ -133,6 +137,8 @@
           <line y1="-{height}" y2="-{padding.bottom}" x1="0" x2="0" />
           <text y="-2">{tick}ft</text>
         </g>
+
+       
       {/each}
     </g>
 
@@ -158,6 +164,7 @@
     {#each data as pitch}
       <!-- svelte-ignore a11y-mouse-events-have-key-events -->
       <path
+        id="overpitch{pitch.id}"
         display={display(pitch.id)}
         class="path-line"
         d={pathGen(pitch.id)}
@@ -167,6 +174,14 @@
         on:mouseover={() => mouseOver(pitch.id)}
         on:mouseout={() => mouseOut()}
       />
+
+      <circle r="8" stroke="white" fill="white" display={display(pitch.id)}>
+        <animateMotion dur="{pitchTime(pitch.id)}s" repeatCount="1"
+        begin="sidepitch{pitch.id}.click; overpitch{pitch.id}.click; 
+        strikepitch{pitch.id}.click; pitch.click; 
+        speedpitch{pitch.id}.click; breakpitch{pitch.id}.click" 
+        path={pathGen(pitch.id)} />
+      </circle>
     {/each}
   </svg>
 </div>

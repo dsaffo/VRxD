@@ -114,6 +114,7 @@
     {#each pitches as pitch}
       <!-- svelte-ignore a11y-mouse-events-have-key-events -->
       <circle
+        id="strikepitch{pitch.id}"      
         cx={xScale(pitch.plate_x * 3.2808)}
         cy={yScale(pitch.plate_z * 3.2808)}
         fill={colorScale(interactions.color_store, pitch)}

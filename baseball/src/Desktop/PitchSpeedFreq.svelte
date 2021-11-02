@@ -149,6 +149,7 @@
       {#each pitches as pitch}
         <!-- svelte-ignore a11y-mouse-events-have-key-events -->
         <circle
+          id="speedpitch{pitch.id}"   
           cx={xScale(pitch.effective_speed)}
           cy={yScale(pitch.pitch_name) + 10}
           fill={colorScale(interactions.color_store, pitch)}
