@@ -5,12 +5,12 @@ import { colorScale } from "../colorScales";
 import simplify from "simplify-3d";
 import "./meshline";
 import "./ball";
+import "aframe-curve-component";
+import "aframe-alongpath-component";
 
 export let pitches = [];
 export let interactions;
 export let filtered = [];
-
-console.log(pitches, filtered);
 
 function pathGen (data) {
         var pitch = pitch_trajectory(
@@ -26,15 +26,20 @@ function pathGen (data) {
         data["release_spin_rate"],
         0.001
         );
-        pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z}});
-        pitch = simplify(pitch, 0.02);
-    return `${pitch
-      .map((p) => `${-p.x} ${p.z} ${p.y}`)}`;
+        pitch = pitch.map(p => { return {x: p.x, y: p.y, z: p.z, t: p.t}});
+        pitch = simplify(pitch, 0.01);
+        return pitch; 
   };
+
+
+let pitchObjs = []
 let pitchPaths = []
 let pitchIDs = []
+
 for (let i =0; i < pitches.length; i++){
-    pitchPaths.push(pathGen(pitches[i]));
+    var pitch = pathGen(pitches[i]);
+    pitchObjs.push(pitch)
+    pitchPaths.push(`${pitch.map((p) => `${-p.x} ${p.z} ${p.y}`)}`);
     pitchIDs.push(pitches[i]['id']);
 }
 
@@ -72,43 +77,38 @@ for (let i =0; i < pitches.length; i++){
     }
     
     function mouseOver(id){
-            interaction_store.updateLocalHover(id);
-        }
+        interaction_store.updateLocalHover(id);
+    }
 
     function mouseOut(){
         interaction_store.updateLocalHover(null);
     }
 
+    /*
+    let animatedIDs = [];
+    function animate(id){
+        var index = pitchIDs.indexOf(id);
+        if(!animatedIDs.includes(index)){
+            animatedIDs.push(index);
+            setTimeout(function(){
+                animatedIDs = animatedIDs.splice(index, 1);
+            }, pitchObjs[index][pitchObjs[index].length - 1].t * 1000 + 5);     
+        }    
+      
+    }
+
+    $: played = function(id) {
+        if (filtered.includes(id) && animatedIDs.includes(id)){
+            return "true"
+        } 
+        return "false"
+    }
+    */
+
+
 </script>
 <a-entity>
-    {#each pitches as pitch}
-    <!--
-    <a-entity 
-        position="0 0 0"
-        class="collidable"
-        meshline= "lineWidth: {1}; 
-                path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; 
-                color: {colorScale(interactions.color_store, pitch)};
-                opacity: {opacity(pitch.id)};"
-        on:mouseenter={() => mouseOver(pitch.id)}
-        on:mouseleave={() => mouseOut()}>
-    </a-entity>
-  
-
-    <a-entity 
-        visible={visible(pitch.id)}
-        position="{-pitch['plate_x']} {pitch['plate_z']} 0" 
-        class="collidable"
-        ball="color: {colorScale(interactions.color_store, pitch)};
-            ballX: {-pitch['plate_x']};
-            ballY: {pitch['plate_z']};
-            opacity: {opacity(pitch.id)};"
-        on:mouseenter={() => mouseOver(pitch.id)}
-        on:mouseleave={() => mouseOut()}>
-    </a-entity>
-    -->
-
-
+    {#each pitches as pitch, i}
     <a-entity 
     class={classed(pitch.id)}
     visible={visible(pitch.id)}
@@ -122,6 +122,15 @@ for (let i =0; i < pitches.length; i++){
     on:mouseenter={() => mouseOver(pitch.id)}
     on:mouseleave={() => mouseOut()}>
     </a-entity>
+    <!--
+    <a-curve visible={played(pitch.id)} id="pitchtrack{pitch.id}">
+        {#each pitchObjs[i] as p}
+            <a-curve-point position="{-p.x} {p.z} {p.y}"></a-curve-point>
+        {/each}
+    </a-curve>
 
-    {/each}
+    <a-sphere visible={played(pitch.id)} radius="0.0365" alongpath="curve: #pitchtrack{pitch.id}; loop: true; 
+    dur: {pitchObjs[i][pitchObjs[i].length - 1].t * 1000}"></a-sphere>
+    -->
+   {/each}
 </a-entity>

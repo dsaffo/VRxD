@@ -109,7 +109,7 @@
 <Avatar>		
 
 	<!--Filter Controls-->
-	<a-entity  class="collidable" control-reader move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" geometry="primitive: box; width: 2.5s; height: 1.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+	<a-entity control-reader move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" geometry="primitive: box; width: 2.5s; height: 1.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
 		<a-entity class="collidable" id="pitcher-card" htmlembed>
 			<a-text value="Pitcher Details and Dashboard Controls" align="center" position="0 0.73 0" scale="0.45 0.45 0.45" color="black"></a-text>
 				<div>
@@ -124,7 +124,7 @@
 	</a-entity>
 
 	<!--Report Form-->
-	<a-entity  form-reader class="collidable" move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" geometry="primitive: box; width: 2; height: 2.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2.5 1.5 1" rotation="0 -90.000 0">
+	<a-entity  form-reader class="collidable"  move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" geometry="primitive: box; width: 2; height: 2.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2.5 1.5 1" rotation="0 -90.000 0">
 		<a-entity htmlembed position="0 {formH} 0">
 			<div style="width: 500px; height:100%">
 				<PitcherReport vr={true}></PitcherReport>
@@ -135,7 +135,7 @@
 	</a-entity>
 
 	<!--2D Charts and Stats-->
-	<a-entity  chart-reader class="collidable" move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;">
+	<a-entity  chart-reader move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;">
 		<a-entity id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0" >
 			<a-text value="Pitcher Stats and Performance Percentile" align="center" position="0 0.65 0" scale="0.45 0.45 0.45" color="black"></a-text>
 			<div style="width: 1000px; height: 300px">

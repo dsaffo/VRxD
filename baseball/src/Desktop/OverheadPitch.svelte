@@ -137,8 +137,6 @@
           <line y1="-{height}" y2="-{padding.bottom}" x1="0" x2="0" />
           <text y="-2">{tick}ft</text>
         </g>
-
-       
       {/each}
     </g>
 
