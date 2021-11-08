@@ -1,41 +1,49 @@
-import { MeshLine, MeshLineMaterial, MeshLineRaycast } from 'three.meshline';
+import { Vector } from 'html2canvas/dist/types/render/vector';
+import { MeshLine, MeshLineMaterial } from 'three.meshline';
 
 AFRAME.registerComponent('meshline', {
     schema: {
+    dur: {default: 1000},
+	  delay: {default: 0},
+	  loop: {default: false},
+	  rotate: {default: false},
+	  resetonplay: {default:true},
     radius: {type: 'number', default: 0.036},
     width: {type: 'number', default: 32},
     height: {type: 'number', default: 16},
     ballX: {type: 'number', default: 0},
     ballY: {type: 'number', default: 0},
-      color: { default: '#000' },
-      lineWidth: { default: 10 },
-      lineWidthStyler: { default: '' },
-      sizeAttenuation: { default: 0 },
-        opacity: { default: 1},
-      path: {
-        default: [
-          { x: -0.5, y: 0, z: 0 },
-          { x: 0.5, y: 0, z: 0 }
-        ],
-        // Deserialize path in the form of comma-separated vec3s: `0 0 0, 1 1 1, 2 0 3`.
-        parse: function (value) {
-          return value.split(',').map(AFRAME.utils.coordinates.parse);
-        },
-        // Serialize array of vec3s in case someone does setAttribute('line', 'path', [...]).
-        stringify: function (data) {
-          return data.map(AFRAME.utils.coordinates.stringify).join(',');
-        }
+    color: { default: '#000' },
+    lineWidth: { default: 10 },
+    lineWidthStyler: { default: '' },
+    sizeAttenuation: { default: 0 },
+    opacity: { default: 1},
+    path: {
+      default: [
+        { x: -0.5, y: 0, z: 0 },
+        { x: 0.5, y: 0, z: 0 }
+      ],
+      // Deserialize path in the form of comma-separated vec3s: `0 0 0, 1 1 1, 2 0 3`.
+      parse: function (value) {
+        return value.split(',').map(AFRAME.utils.coordinates.parse);
+      },
+      // Serialize array of vec3s in case someone does setAttribute('line', 'path', [...]).
+      stringify: function (data) {
+        return data.map(AFRAME.utils.coordinates.stringify).join(',');
       }
+    },
+    curve: {default: null}
     },
     
     init: function () {
       this.resolution = new THREE.Vector2 ( window.innerWidth, window.innerHeight ) ;
       
       var sceneEl = this.el.sceneEl;
+      
       sceneEl.addEventListener( 'render-target-loaded', this.do_update.bind(this) );
       sceneEl.addEventListener( 'render-target-loaded', this.addlisteners.bind(this) );
 
-    var material = new MeshLineMaterial({
+      var material = new MeshLineMaterial({
         color: new THREE.Color(this.data.color),
         resolution: this.resolution,
         sizeAttenuation: this.data.sizeAttenuation,
@@ -44,11 +52,25 @@ AFRAME.registerComponent('meshline', {
         opacity: this.data.opacity, 
         depthTest: true,
       });
-    
+
+      var pointsArray = this.data.path.map(function (point) {
+
+        if (point.x !== undefined && point.y !== undefined && point.z !== undefined) {
+            return new THREE.Vector3( point.x, point.y, point.z );
+        }
+  
+    });
+
+      this.data.curve = new THREE.CatmullRomCurve3(pointsArray);
+
       var vertices = [];
-      
+    
       this.data.path.forEach(function (vec3) {
         vertices.push(vec3.x || 0, vec3.y || 0, vec3.z || 0);
+      });
+
+      this.el.addEventListener('click', function (event) {
+        console.log(vertices);
       });
       
       var widthFn = (
@@ -56,61 +78,163 @@ AFRAME.registerComponent('meshline', {
         this.data.lineWidthStyler.length > 0
       ) ? new Function('p', 'return ' + this.data.lineWidthStyler)
         : function() { return 1; };
-      //? try {var w = widthFn(0);} catch(e) {warn(e);}
+      //? try {var w = widthFn(0);} catch(e) {warn(e);}w
+      
+      //pitch trajectory
       var line = new MeshLine();
       line.setPoints(new Float32Array(vertices), widthFn);
       this.el.setObject3D('path-mesh', new THREE.Mesh(line.geometry, material));
 
-    this.ballGeometry = new THREE.SphereGeometry( this.data.radius, this.data.width, this.data.height);
+      //pitch end
+      this.ballGeometry = new THREE.SphereGeometry( this.data.radius, this.data.width, this.data.height);
+      this.ballMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color(this.data.color), opacity: this.data.opacity, transparent: true}); 
+      this.ballMesh = new THREE.Mesh(this.ballGeometry, this.ballMaterial);
+      this.el.setObject3D('ball-mesh', this.ballMesh);
+      this.el.getObject3D('ball-mesh').translateX(this.data.ballX);
+      this.el.getObject3D('ball-mesh').translateY(this.data.ballY);
 
-
-    this.ballMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color(this.data.color), opacity: this.data.opacity, transparent: true}); 
- 
-    this.ballMesh = new THREE.Mesh(this.ballGeometry, this.ballMaterial);
-
-    this.el.setObject3D('ball-mesh', this.ballMesh);
-    this.el.getObject3D('ball-mesh').translateX(this.data.ballX);
-    this.el.getObject3D('ball-mesh').translateY(this.data.ballY);
+      //pitch animated ball
+      this.animationGeometry = new THREE.SphereGeometry( this.data.radius, this.data.width, this.data.height);
+      this.animationMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color("0xff0000"), opacity: this.data.opacity, transparent: true}); 
+      this.animationMesh = new THREE.Mesh(this.animationGeometry, this.aniamtionMaterial);
+      this.el.setObject3D('animation-mesh', this.animationMesh);
+      this.el.getObject3D('animation-mesh').position.set(vertices[0], vertices[1], vertices[2]);
     },
-    
-    addlisteners: function () {
-      window.addEventListener( 'resize', this.do_update.bind (this) );
-    },
-    
-    do_update: function () {
-      var canvas = this.el.sceneEl.canvas;
-      this.resolution.set( canvas.width,  canvas.height );
-      this.update();
-    },
-    
-    update: function (oldData) {
 
-    var data = this.data;
-    var el = this.el;
-    let object = this.el.object3D;
+  reset: function() {
+      // Reset to initial state
+      console.log('reset');
+      this.interval = 0;
+
+      //this.el.getObject3D('animation-mesh').translateX(this.data.curve.points[0].x);
+      //this.el.getObject3D('animation-mesh').translateY(this.data.curve.points[0].y);
+      //this.el.getObject3D('animation-mesh').translateZ(this.data.curve.points[0].z);
       
-    if (Object.keys(oldData).length === 0) { return; }
+
+      this.el.removeState("endofpath");
+      this.el.removeState("moveonpath");
+
+      if (this.activeTrigger) {
+          this.activeTrigger.removeState("alongpath-active-trigger");
+          this.activeTrigger = null;
+      }
+  },
+
+  getI_: function (interval, delay, dur) {
+    var i = 0;
+
+    if (interval - delay >= dur) {
+      // Time is up, we should be at the end of the path
+      i = 1;
+    } else if ((interval - delay < 0)) {
+      // We are still waiting for the delay-time to finish
+      // so keep entity at the beginning of the path
+      i = 0;
+    } else {
+      // Update path position based on timing
+      i = (interval - delay) / dur;
+    }
+
+    return i
+  },
 
 
-  // Material-related properties changed. Update the material.
-  if (data.color !== oldData.color) {
-    this.el.getObject3D('ball-mesh').material.color = new THREE.Color(this.data.color);
-    this.el.getObject3D('path-mesh').material.color = new THREE.Color(this.data.color);
-  }
+  
+  tick: function (time, timeDelta) {
+    // Only update position if we didn't reach
+    // the end of the path
 
-  if (data.opacity !== oldData.opacity) {
-    this.el.getObject3D('ball-mesh').material.opacity = this.data.opacity;
-    this.el.getObject3D('path-mesh').material.opacity = this.data.opacity;
-  }
-      
-  if (data.radius !== oldData.radius) {
-    this.el.getObject3D('ball-mesh').geometry = new THREE.SphereGeometry( this.data.radius, this.data.width, this.data.height);
-  }
-    },
     
-    remove: function () {
-      this.el.removeObject3D('mesh');
-    },
+    var curve = this.data.curve;
+
+    if (!this.el.is("endofpath")) {
+        this.interval = this.interval + timeDelta;
+
+        var i = this.getI_(this.interval, this.data.delay, this.data.dur)
+        //console.log(i);
+        if ((this.data.loop === false) && i >= 1) {
+            // Set the end-position
+            this.el.getObject3D('animation-mesh').position.set(curve.points[curve.points.length - 1].x, 
+              curve.points[curve.points.length - 1].y, curve.points[curve.points.length - 1].z);
+            //console.log("animation ended", curve.points, this.data.ballX, this.data.ballY);
+
+            // We have reached the end of the path and are not going
+            // to loop back to the beginning therefore set final state
+            this.el.removeState("moveonpath");
+            this.el.addState("endofpath");
+            this.el.emit("movingended");
+        } else if ((this.data.loop === true) && i >= 1) {
+            // We have reached the end of the path
+            // but we are looping through the curve,
+            // so restart here.
+            this.el.emit("movingended");
+            this.interval = this.data.delay;
+        } else {
+            // We are starting to move or somewhere in the middle of the path…
+            if (!this.el.is("moveonpath")) {
+                this.el.addState("moveonpath");
+                this.el.emit("movingstarted");
+            }
+
+            // …updating position
+            var p = this.data.curve.getPoint(i);
+            //console.log(p);
+            //this.el.setAttribute('position', p);
+            //this.el.getObject3D('animation-mesh').translateX(p.x - curve.points[0].x);
+            //this.el.getObject3D('animation-mesh').translateY(p.z - curve.points[0].y);
+            //this.el.getObject3D('animation-mesh').translateZ(p.y - curve.points[0].z);
+            this.el.getObject3D('animation-mesh').position.set(p.x, p.y, p.z);
+        }
+    }
+},
+
+
+play: function () {
+  if (this.data.resetonplay) {
+      this.reset();
+  }
+},
+
+    
+  addlisteners: function () {
+    window.addEventListener( 'resize', this.do_update.bind (this) );
+  },
+  
+  do_update: function () {
+    var canvas = this.el.sceneEl.canvas;
+    this.resolution.set( canvas.width,  canvas.height );
+    this.update();
+  },
+  
+  update: function (oldData) {
+
+  var data = this.data;
+  var el = this.el;
+  let object = this.el.object3D;
+    
+  if (Object.keys(oldData).length === 0) { return; }
+
+
+// Material-related properties changed. Update the material.
+if (data.color !== oldData.color) {
+  this.el.getObject3D('animation-mesh').material.color = new THREE.Color("#000");
+  this.el.getObject3D('ball-mesh').material.color = new THREE.Color(this.data.color);
+  this.el.getObject3D('path-mesh').material.color = new THREE.Color(this.data.color);
+}
+
+if (data.opacity !== oldData.opacity) {
+  this.el.getObject3D('ball-mesh').material.opacity = this.data.opacity;
+  this.el.getObject3D('path-mesh').material.opacity = this.data.opacity;
+}
+    
+if (data.radius !== oldData.radius) {
+  this.el.getObject3D('ball-mesh').geometry = new THREE.SphereGeometry( this.data.radius, this.data.width, this.data.height);
+}
+  },
+  
+  remove: function () {
+    this.el.removeObject3D('mesh');
+  },
 
   multiple: true
   });
