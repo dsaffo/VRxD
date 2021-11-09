@@ -47,6 +47,15 @@
         }
     });
 
+    AFRAME.registerComponent('animate', {
+        init: function() {
+            let el = this.el;
+            this.el.addEventListener ('xbuttondown', function(evt) {
+              document.dispatchEvent(new CustomEvent('animateAll'));
+            });
+        }
+    });
+
     let open = false;
 
     AFRAME.registerComponent('watch', {
