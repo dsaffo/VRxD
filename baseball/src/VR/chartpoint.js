@@ -1,5 +1,6 @@
 AFRAME.registerComponent('chartpoint', {
     schema: {
+        id: {type: 'string', default: "0"},
         radius: {type: 'number', default: 1},
         segments: {type: 'number', default: 8},
         color: { default: '#000'},
@@ -39,6 +40,13 @@ AFRAME.registerComponent('chartpoint', {
             el.getObject3D('mesh').material.opacity = data.opacity;
         }
     },
+
+    events: {
+        click: function (evt) {
+        console.log('clicked', 'animatePitch' + this.data.id)
+        document.dispatchEvent(new CustomEvent('animatePitch' + this.data.id));
+        },
+      },
 
     remove: function () {
         this.el.removeObject3D('mesh');

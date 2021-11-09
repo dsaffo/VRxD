@@ -112,7 +112,10 @@ for (let i =0; i < pitches.length; i++){
     <a-entity 
     class={classed(pitch.id)}
     visible={visible(pitch.id)}
-    meshline="lineWidth: {1}; 
+    meshline="
+            id: {pitch.id};
+            dur: {pitchObjs[i][pitchObjs[i].length - 1].t * 1000};
+            lineWidth: {1}; 
             path: {pitchPaths[pitchIDs.indexOf(pitch.id)]}; 
             color: {colorScale(interactions.color_store, pitch)};
             opacity: {opacity(pitch.id)};

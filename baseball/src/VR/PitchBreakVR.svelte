@@ -129,7 +129,8 @@
     <a-entity 
     class={classed(pitch.id)}
     visible={visible(pitch.id)}
-      chartpoint="color: {colorScale(interactions.color_store, pitch)};
+      chartpoint="id: {pitch.id};
+                  color: {colorScale(interactions.color_store, pitch)};
                   opacity: {opacity(pitch.id)};
                   radius: {radius(pitch.id)};"
       position="{xScale(pitch.pfx_x)  - (width / 2)} {(yScale(pitch.pfx_z) - (height / 2))} 0.001{i + 1}"

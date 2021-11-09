@@ -139,7 +139,9 @@ for (let i = 0; i < yTicks.length; i++) {
       <a-entity 
       class={classed(pitch.id)}
       visible={visible(pitch.id)}
-      chartpoint="color: {colorScale(interactions.color_store, pitch)};
+      chartpoint="
+                  id: {pitch.id};
+                  color: {colorScale(interactions.color_store, pitch)};
                   opacity: {opacity(pitch.id)};
                   radius: {radius(pitch.id)};"
       position="{xScale(pitch.effective_speed)  - (width / 2)} {(yScale(pitch.pitch_name) + (padding.bottom + padding.top /2) - (height / 2))} 0.002{i + 2}"

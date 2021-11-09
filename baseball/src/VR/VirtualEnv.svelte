@@ -109,12 +109,13 @@
 <Avatar>		
 
 	<!--Filter Controls-->
-	<a-entity control-reader move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" geometry="primitive: box; width: 2.5s; height: 1.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
+	<a-entity control-reader move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose; endButtons: gripup, gripopen;" position="2 1.5 -1.2" scale="1 1 1" rotation="0 -30.000 0">
 		<a-entity class="collidable" id="pitcher-card" htmlembed>
 			<a-text value="Pitcher Details and Dashboard Controls" align="center" position="0 0.73 0" scale="0.45 0.45 0.45" color="black"></a-text>
 				<div>
 					<button on:click="{() => interaction_store.copy()}">Copy</button>
 					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" on:mouseleave="{() => interaction_store.peekEnd()}">Peek</button>
+					<button on:click="{() => document.dispatchEvent(new CustomEvent('animateAll'))}">Animate All</button>
 				</div>
 				
 				<div style="height: 300px; width: 650px;">

@@ -3,6 +3,7 @@ import { MeshLine, MeshLineMaterial } from 'three.meshline';
 
 AFRAME.registerComponent('meshline', {
     schema: {
+    id: {type: 'string', default: "0"},
     dur: {default: 1000},
 	  delay: {default: 0},
 	  loop: {default: false},
@@ -36,6 +37,10 @@ AFRAME.registerComponent('meshline', {
     },
     
     init: function () {
+
+   
+
+
       this.resolution = new THREE.Vector2 ( window.innerWidth, window.innerHeight ) ;
       
       var sceneEl = this.el.sceneEl;
@@ -68,10 +73,6 @@ AFRAME.registerComponent('meshline', {
       this.data.path.forEach(function (vec3) {
         vertices.push(vec3.x || 0, vec3.y || 0, vec3.z || 0);
       });
-
-      this.el.addEventListener('click', function (event) {
-        console.log(vertices);
-      });
       
       var widthFn = (
         typeof this.data.lineWidthStyler === 'string' &&
@@ -95,29 +96,22 @@ AFRAME.registerComponent('meshline', {
 
       //pitch animated ball
       this.animationGeometry = new THREE.SphereGeometry( this.data.radius, this.data.width, this.data.height);
-      this.animationMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color("0xff0000"), opacity: this.data.opacity, transparent: true}); 
-      this.animationMesh = new THREE.Mesh(this.animationGeometry, this.aniamtionMaterial);
+      this.animationMaterial = new THREE.MeshBasicMaterial( { color: new THREE.Color(this.data.color), opacity: 1, transparent: true}); 
+      this.animationMesh = new THREE.Mesh(this.animationGeometry, this.animationMaterial);
       this.el.setObject3D('animation-mesh', this.animationMesh);
       this.el.getObject3D('animation-mesh').position.set(vertices[0], vertices[1], vertices[2]);
+
+      document.addEventListener("animatePitch" + this.data.id, ()=> this.reset())
+      document.addEventListener("animateAll", ()=> this.reset())
     },
 
   reset: function() {
       // Reset to initial state
-      console.log('reset');
       this.interval = 0;
-
-      //this.el.getObject3D('animation-mesh').translateX(this.data.curve.points[0].x);
-      //this.el.getObject3D('animation-mesh').translateY(this.data.curve.points[0].y);
-      //this.el.getObject3D('animation-mesh').translateZ(this.data.curve.points[0].z);
-      
-
       this.el.removeState("endofpath");
       this.el.removeState("moveonpath");
-
-      if (this.activeTrigger) {
-          this.activeTrigger.removeState("alongpath-active-trigger");
-          this.activeTrigger = null;
-      }
+      this.el.getObject3D('animation-mesh').material.color = new THREE.Color('grey')
+      this.el.addState("played");
   },
 
   getI_: function (interval, delay, dur) {
@@ -147,53 +141,44 @@ AFRAME.registerComponent('meshline', {
     
     var curve = this.data.curve;
 
-    if (!this.el.is("endofpath")) {
-        this.interval = this.interval + timeDelta;
+    if (this.el.is("played")){
+      if (!this.el.is("endofpath")) {
+          this.interval = this.interval + timeDelta;
 
-        var i = this.getI_(this.interval, this.data.delay, this.data.dur)
-        //console.log(i);
-        if ((this.data.loop === false) && i >= 1) {
-            // Set the end-position
-            this.el.getObject3D('animation-mesh').position.set(curve.points[curve.points.length - 1].x, 
-              curve.points[curve.points.length - 1].y, curve.points[curve.points.length - 1].z);
-            //console.log("animation ended", curve.points, this.data.ballX, this.data.ballY);
+          var i = this.getI_(this.interval, this.data.delay, this.data.dur)
+        
+          if ((this.data.loop === false) && i >= 1) {
+              // Set the end-position
+              this.el.getObject3D('animation-mesh').position.set(curve.points[0].x, curve.points[0].y, curve.points[0].z);
+              this.el.removeState("played");
+              this.el.getObject3D('animation-mesh').material.color = new THREE.Color(this.data.color)
+              // We have reached the end of the path and are not going
+              // to loop back to the beginning therefore set final state
+              this.el.removeState("moveonpath");
+              this.el.addState("endofpath");
+              this.el.emit("movingended");
 
-            // We have reached the end of the path and are not going
-            // to loop back to the beginning therefore set final state
-            this.el.removeState("moveonpath");
-            this.el.addState("endofpath");
-            this.el.emit("movingended");
-        } else if ((this.data.loop === true) && i >= 1) {
-            // We have reached the end of the path
-            // but we are looping through the curve,
-            // so restart here.
-            this.el.emit("movingended");
-            this.interval = this.data.delay;
-        } else {
-            // We are starting to move or somewhere in the middle of the path…
-            if (!this.el.is("moveonpath")) {
-                this.el.addState("moveonpath");
-                this.el.emit("movingstarted");
-            }
+          } else if ((this.data.loop === true) && i >= 1) {
+              // We have reached the end of the path
+              // but we are looping through the curve,
+              // so restart here.
+              this.el.emit("movingended");
+              this.interval = this.data.delay;
+          } else {
+              // We are starting to move or somewhere in the middle of the path…
+              if (!this.el.is("moveonpath")) {
+                  this.el.addState("moveonpath");
+                  this.el.emit("movingstarted");
+              }
 
-            // …updating position
-            var p = this.data.curve.getPoint(i);
-            //console.log(p);
-            //this.el.setAttribute('position', p);
-            //this.el.getObject3D('animation-mesh').translateX(p.x - curve.points[0].x);
-            //this.el.getObject3D('animation-mesh').translateY(p.z - curve.points[0].y);
-            //this.el.getObject3D('animation-mesh').translateZ(p.y - curve.points[0].z);
-            this.el.getObject3D('animation-mesh').position.set(p.x, p.y, p.z);
-        }
-    }
-},
-
-
-play: function () {
-  if (this.data.resetonplay) {
-      this.reset();
+              // …updating position
+              var p = this.data.curve.getPoint(i);
+              this.el.getObject3D('animation-mesh').position.set(p.x, p.y, p.z);
+          }
+      }
   }
 },
+
 
     
   addlisteners: function () {
@@ -217,12 +202,13 @@ play: function () {
 
 // Material-related properties changed. Update the material.
 if (data.color !== oldData.color) {
-  this.el.getObject3D('animation-mesh').material.color = new THREE.Color("#000");
+  this.el.getObject3D('animation-mesh').material.color = new THREE.Color(this.data.color)
   this.el.getObject3D('ball-mesh').material.color = new THREE.Color(this.data.color);
   this.el.getObject3D('path-mesh').material.color = new THREE.Color(this.data.color);
 }
 
 if (data.opacity !== oldData.opacity) {
+  this.el.getObject3D('animation-mesh').material.opacity = 1;
   this.el.getObject3D('ball-mesh').material.opacity = this.data.opacity;
   this.el.getObject3D('path-mesh').material.opacity = this.data.opacity;
 }
@@ -230,6 +216,12 @@ if (data.opacity !== oldData.opacity) {
 if (data.radius !== oldData.radius) {
   this.el.getObject3D('ball-mesh').geometry = new THREE.SphereGeometry( this.data.radius, this.data.width, this.data.height);
 }
+  },
+
+  events: {
+    click: function (evt) {
+      this.reset()
+    },
   },
   
   remove: function () {
