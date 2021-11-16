@@ -37,10 +37,6 @@ AFRAME.registerComponent('meshline', {
     },
     
     init: function () {
-
-   
-
-
       this.resolution = new THREE.Vector2 ( window.innerWidth, window.innerHeight ) ;
       
       var sceneEl = this.el.sceneEl;

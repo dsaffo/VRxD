@@ -61,15 +61,17 @@
     AFRAME.registerComponent('watch', {
         init: function() {
             let el = document.getElementById("watch");
-            el.object3D.visible = "false";
+            el.setAttribute("visible", "false");
+            
             this.el.addEventListener ('ybuttonup', function(evt) {
-				if(open == false){
-					el.setAttribute("visible", "true");
-                    open = true;
-				} else if (open == true) {
-					el.setAttribute("visible", "false");
-                    open = false;
-				}
+              //el.setAttribute("position", {x: pos.x, y: pos.y, z: pos.z});
+              if(open == false){
+                el.setAttribute("visible", "true");
+                          open = true;
+              } else if (open == true) {
+                el.setAttribute("visible", "false");
+                          open = false;
+              }
             });
         }
     });
@@ -131,7 +133,7 @@
             windows-motion-controls="hand: left">
     </a-mixin>
 
-    <a-mixin id="point" raycaster="showLine: true; objects: .collidable"
+    <a-mixin id="point" raycaster="showLine: true; objects: .collidable;"
     collision-filter="collisionForces: false"
     static-body="shape: sphere; sphereRadius: 0.001"
     super-hands="colliderEvent: raycaster-intersection;
@@ -156,7 +158,7 @@ rotation="0 -180 0">
         wasd-controls 
         position="0 1.6 0" 
         capture-mouse
-	      raycaster 
+	      raycaster="objects: .collidable;"
         cursor="rayOrigin: mouse;"   
         body="type: static; 
               shape: sphere; 

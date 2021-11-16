@@ -140,7 +140,7 @@
 		<a-entity id="stat-card" htmlembed position="-1.891  0.3 -0.163" scale="1 1 1" rotation="-25 90 0" >
 			<a-text value="Pitcher Stats and Performance Percentile" align="center" position="0 0.65 0" scale="0.45 0.45 0.45" color="black"></a-text>
 			<div style="width: 1000px; height: 300px">
-				<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats} interactions={interactions}></StatCard>
+				<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats}></StatCard>
 			</div>
 		</a-entity>
 
@@ -163,7 +163,7 @@
 	</a-entity>
 
 	
-	<a-video id="watch" visible="false" class="collidable" move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable height="{$windowSize.height}" width="{$windowSize.width}" position="0 1.5 -3" scale="0.001 0.001 0.001" src="#videovr"></a-video>
+	<a-video id="watch" class="collidable" move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" height="{$windowSize.height}" width="{$windowSize.width}" position="0 1.5 -3" scale="0.001 0.001 0.001" src="#videovr"></a-video>
 
 </a-scene>
 {/if}

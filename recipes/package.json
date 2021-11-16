@@ -26,6 +26,7 @@
     "aframe-dialog-popup-component": "^1.0.0",
     "aframe-event-set-component": "^5.0.0",
     "aframe-extras": "^6.1.1",
+    "aframe-forcegraph-component": "^3.0.2",
     "aframe-html-shader": "^0.2.0",
     "aframe-htmlembed-component": "^1.0.0",
     "aframe-meshline-component": "^0.4.0",

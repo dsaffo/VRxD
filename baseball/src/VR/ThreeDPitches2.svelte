@@ -5,8 +5,6 @@ import { colorScale } from "../colorScales";
 import simplify from "simplify-3d";
 import "./meshline";
 import "./ball";
-import "aframe-curve-component";
-import "aframe-alongpath-component";
 
 export let pitches = [];
 export let interactions;
@@ -43,7 +41,6 @@ for (let i =0; i < pitches.length; i++){
     pitchIDs.push(pitches[i]['id']);
 }
 
-    
     $: radius = function(id) {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
         return "0.05"
@@ -51,7 +48,6 @@ for (let i =0; i < pitches.length; i++){
         return "0.036"
         }
     
-
     $: opacity = function(id) {
         if (interactions.hover_store == id || $peerInteraction.hover_store == id){
             return "1"
@@ -84,27 +80,6 @@ for (let i =0; i < pitches.length; i++){
         interaction_store.updateLocalHover(null);
     }
 
-    /*
-    let animatedIDs = [];
-    function animate(id){
-        var index = pitchIDs.indexOf(id);
-        if(!animatedIDs.includes(index)){
-            animatedIDs.push(index);
-            setTimeout(function(){
-                animatedIDs = animatedIDs.splice(index, 1);
-            }, pitchObjs[index][pitchObjs[index].length - 1].t * 1000 + 5);     
-        }    
-      
-    }
-
-    $: played = function(id) {
-        if (filtered.includes(id) && animatedIDs.includes(id)){
-            return "true"
-        } 
-        return "false"
-    }
-    */
-
 
 </script>
 <a-entity>
@@ -125,15 +100,5 @@ for (let i =0; i < pitches.length; i++){
     on:mouseenter={() => mouseOver(pitch.id)}
     on:mouseleave={() => mouseOut()}>
     </a-entity>
-    <!--
-    <a-curve visible={played(pitch.id)} id="pitchtrack{pitch.id}">
-        {#each pitchObjs[i] as p}
-            <a-curve-point position="{-p.x} {p.z} {p.y}"></a-curve-point>
-        {/each}
-    </a-curve>
-
-    <a-sphere visible={played(pitch.id)} radius="0.0365" alongpath="curve: #pitchtrack{pitch.id}; loop: true; 
-    dur: {pitchObjs[i][pitchObjs[i].length - 1].t * 1000}"></a-sphere>
-    -->
    {/each}
 </a-entity>
