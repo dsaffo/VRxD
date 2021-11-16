@@ -4,6 +4,7 @@
 
  export let stats = {};
  export let percentiles = {};
+
 </script>
 
 <Row style="height: 100%"> 
@@ -302,8 +303,8 @@
         trigger="hover"
         placement="bottom"
         target="phh">
-        The percentage of pitches that resulted in a hard hit -- one hit with an exit velocity of 95 mph or higher. 
-        For pitchers, a lower score is better. 
+        Average speed of batted balls.  
+        For pitchers, a lower score is better.  
       </Popover>
       </Col>
       <Col>

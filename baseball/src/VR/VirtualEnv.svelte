@@ -16,6 +16,7 @@
 	import PitcherReport from '../Desktop/PitcherReport.svelte';
 	import StatCard from '../Desktop/StatCard.svelte';
 	import Avatar from './Avatar.svelte';
+	import Hovers from './Hovers.svelte';
 	import { windowSize, chartRecord, formRecord, controlRecord} from '../viewStore';
 
 
@@ -142,6 +143,7 @@
 			<div style="width: 1000px; height: 300px">
 				<StatCard percentiles={ohtaniPercentile} stats={ohtaniStats}></StatCard>
 			</div>
+			<Hovers></Hovers>
 		</a-entity>
 
 		<a-entity id="pitch-break" position="-2 1.5 -1.2" scale="1 1 1" rotation="0 80 0">
