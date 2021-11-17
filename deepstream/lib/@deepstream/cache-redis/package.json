@@ -1,0 +1,87 @@
+{
+  "_from": "@deepstream/cache-redis",
+  "_id": "@deepstream/cache-redis@2.0.9",
+  "_inBundle": false,
+  "_integrity": "sha512-I1YxCxikBCsJKnwuQ08tRtOLmbG3wf2bZP3oQGdHKc8Du2k2XA+TeSJSj3hxhKGWt8KbdfvhML+1zL21BBBEjg==",
+  "_location": "/@deepstream/cache-redis",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@deepstream/cache-redis",
+    "name": "@deepstream/cache-redis",
+    "escapedName": "@deepstream%2fcache-redis",
+    "scope": "@deepstream",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@deepstream/cache-redis/-/cache-redis-2.0.9.tgz",
+  "_shasum": "9321d8fea07822017f744163f4f14fb17d4ffc44",
+  "_spec": "@deepstream/cache-redis",
+  "_where": "D:\\a\\deepstream.io\\deepstream.io\\build\\5.2.4\\deepstream.io\\lib",
+  "author": {
+    "name": "deepstreamHub GmbH"
+  },
+  "bugs": {
+    "url": "https://github.com/deepstreamIO/deepstream.io-cache-redis/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@deepstream/types": "^2.0.9",
+    "ioredis": "^4.16.3"
+  },
+  "deprecated": false,
+  "description": "Redis cache connector for deepstream.io",
+  "devDependencies": {
+    "@deepstream/protobuf": "^1.0.1",
+    "@types/chai": "^4.2.11",
+    "@types/ioredis": "^4.14.9",
+    "@types/mocha": "^7.0.2",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.14",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.1",
+    "ts-node": "^8.9.0",
+    "tslint": "^6.1.1",
+    "typescript": "^3.8.3"
+  },
+  "homepage": "http://deepstream.io",
+  "license": "Apache-2.0",
+  "main": "dist/src/connector.js",
+  "name": "@deepstream/cache-redis",
+  "nyc": {
+    "include": [
+      "src/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register/transpile-only"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepstreamIO/deepstream.io-cache-redis.git"
+  },
+  "scripts": {
+    "ci": "npm run tsc && npm run coverage",
+    "coverage": "nyc mocha 'test/*.spec.ts' --exit",
+    "docker": "docker run -p 6379:6379 redis",
+    "lint": "tslint --project .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "mocha --opts mocha.opts 'test/*.spec.ts' --exit",
+    "tsc": "tsc"
+  },
+  "version": "2.0.9"
+}

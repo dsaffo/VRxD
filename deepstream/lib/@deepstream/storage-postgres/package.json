@@ -1,0 +1,105 @@
+{
+  "_from": "@deepstream/storage-postgres",
+  "_id": "@deepstream/storage-postgres@3.0.4",
+  "_inBundle": false,
+  "_integrity": "sha512-Wi/kNhvHm3cDZVVQBnHHCmicV5i9IEFpI91jcdwyIyTLdFMvnbBDQ6Ho/8PTFXQ5t2+x58KIfy/P1tH4igqtlg==",
+  "_location": "/@deepstream/storage-postgres",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@deepstream/storage-postgres",
+    "name": "@deepstream/storage-postgres",
+    "escapedName": "@deepstream%2fstorage-postgres",
+    "scope": "@deepstream",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@deepstream/storage-postgres/-/storage-postgres-3.0.4.tgz",
+  "_shasum": "673fb05acac2c1f2cf683f4f6ce4650d0dc2eaed",
+  "_spec": "@deepstream/storage-postgres",
+  "_where": "D:\\a\\deepstream.io\\deepstream.io\\build\\5.2.4\\deepstream.io\\lib",
+  "author": {
+    "name": "deepstreamHub GmbH"
+  },
+  "bugs": {
+    "url": "https://github.com/deepstreamIO/deepstream.io-storage-postgres/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@types/pg": "^7.14.3",
+    "pg": "^8.0.3",
+    "pg-escape": "^0.2.0",
+    "ts-essentials": "^6.0.4"
+  },
+  "deprecated": false,
+  "description": "A deepstream.io storage connector for use with deepstream",
+  "devDependencies": {
+    "@deepstream/protobuf": "^1.0.1",
+    "@deepstream/types": "^2.1.0",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/mongodb": "^3.5.5",
+    "@types/node": "^13.11.1",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.11",
+    "husky": "^4.2.5",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.1",
+    "ts-node": "^8.8.2",
+    "tslint": "^6.1.1",
+    "typescript": "^3.8.3"
+  },
+  "homepage": "https://deepstream.io/tutorials/integrations/db-postgres/",
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm run tsc",
+      "pre-push": "npm run tsc"
+    }
+  },
+  "keywords": [
+    "postgres",
+    "postgresql",
+    "realtime search",
+    "realtime",
+    "deepstream.io"
+  ],
+  "license": "Apache-2.0",
+  "main": "dist/src/connector.js",
+  "name": "@deepstream/storage-postgres",
+  "nyc": {
+    "include": [
+      "src/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register/transpile-only"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepstreamIO/deepstream.io-storage-postgres.git"
+  },
+  "scripts": {
+    "ci": "npm run tsc && npm run coverage",
+    "coverage": "nyc mocha 'test/*.spec.ts' --exit",
+    "docker": "docker run -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword postgres",
+    "lint": "tslint --project .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "mocha --opts mocha.opts 'test/*.spec.ts' --exit",
+    "tsc": "tsc"
+  },
+  "version": "3.0.4"
+}

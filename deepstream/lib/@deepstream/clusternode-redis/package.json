@@ -1,0 +1,90 @@
+{
+  "_from": "@deepstream/clusternode-redis",
+  "_id": "@deepstream/clusternode-redis@1.0.1",
+  "_inBundle": false,
+  "_integrity": "sha512-yPyjkBZn5ZViH2FV7Nvy3NrTaOXMQHGlaVAeoSpmckozVnbWSILG31J2n9O1XcRbDaNmH6rGMkARCWcsAhXBHA==",
+  "_location": "/@deepstream/clusternode-redis",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@deepstream/clusternode-redis",
+    "name": "@deepstream/clusternode-redis",
+    "escapedName": "@deepstream%2fclusternode-redis",
+    "scope": "@deepstream",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@deepstream/clusternode-redis/-/clusternode-redis-1.0.1.tgz",
+  "_shasum": "a5887e3d41de37d6cb7b51cd97cba48b58a0768e",
+  "_spec": "@deepstream/clusternode-redis",
+  "_where": "D:\\a\\deepstream.io\\deepstream.io\\build\\5.2.4\\deepstream.io\\lib",
+  "author": {
+    "name": "deepstreamHub GmbH"
+  },
+  "bugs": {
+    "url": "https://github.com/deepstreamIO/deepstream.io-clusternode-redis/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@deepstream/types": "^1.0.2",
+    "ioredis": "^4.11.2"
+  },
+  "deprecated": false,
+  "description": "A redis cluster bus implementation to allow deepstream nodes to scale",
+  "devDependencies": {
+    "@deepstream/protobuf": "^1.0.1",
+    "@types/chai": "^4.1.7",
+    "@types/ioredis": "^4.0.13",
+    "@types/mocha": "^5.2.7",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.6",
+    "mocha": "^6.2.0",
+    "nyc": "^13.3.0",
+    "ts-node": "^8.3.0",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.2"
+  },
+  "homepage": "http://deepstream.io",
+  "license": "Apache-2.0",
+  "main": "./dist/src/redis-cluster-node.js",
+  "name": "@deepstream/clusternode-redis",
+  "nyc": {
+    "include": [
+      "src/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register/transpile-only"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepstreamIO/deepstream.io-clusternode-redis.git"
+  },
+  "scripts": {
+    "ci": "npm run tsc && npm run coverage",
+    "coverage": "nyc npm run test",
+    "docker": "docker start -p 6379:6379 redis",
+    "lint": "tslint --project .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "mocha --opts mocha.opts 'src/*.spec.ts'",
+    "tsc": "tsc"
+  },
+  "version": "1.0.1"
+}

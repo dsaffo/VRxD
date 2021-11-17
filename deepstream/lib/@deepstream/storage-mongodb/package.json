@@ -1,0 +1,88 @@
+{
+  "_from": "@deepstream/storage-mongodb",
+  "_id": "@deepstream/storage-mongodb@2.0.8",
+  "_inBundle": false,
+  "_integrity": "sha512-ZS3JS2mOXZ8d8JbEHRDQ4jwd+zIbphx4UU6Wab7/YIuCbr8Zz0HQg6/YRgo0l0I8L7Rxgwob90yZi7X/8QLMBw==",
+  "_location": "/@deepstream/storage-mongodb",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "@deepstream/storage-mongodb",
+    "name": "@deepstream/storage-mongodb",
+    "escapedName": "@deepstream%2fstorage-mongodb",
+    "scope": "@deepstream",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/@deepstream/storage-mongodb/-/storage-mongodb-2.0.8.tgz",
+  "_shasum": "3116c93e618e58c7a1ab2aae645a681de25612e6",
+  "_spec": "@deepstream/storage-mongodb",
+  "_where": "D:\\a\\deepstream.io\\deepstream.io\\build\\5.2.4\\deepstream.io\\lib",
+  "author": {
+    "name": "deepstreamHub GmbH"
+  },
+  "bugs": {
+    "url": "https://github.com/deepstreamIO/deepstream.io-storage-mongodb/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {
+    "@deepstream/types": "^2.0.9",
+    "mongodb": "~3.5"
+  },
+  "deprecated": false,
+  "description": "Connects deepstream.io to mongodb",
+  "devDependencies": {
+    "@deepstream/protobuf": "^1.0.1",
+    "@types/chai": "^4.2.11",
+    "@types/mocha": "^7.0.2",
+    "@types/mongodb": "^3.5.5",
+    "@types/node": "^13.11.1",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.11",
+    "mocha": "^7.1.1",
+    "nyc": "^15.0.1",
+    "ts-node": "^8.8.2",
+    "tslint": "^6.1.1",
+    "typescript": "^3.8.3"
+  },
+  "homepage": "http://deepstream.io",
+  "license": "Apache-2.0",
+  "main": "dist/src/connector.js",
+  "name": "@deepstream/storage-mongodb",
+  "nyc": {
+    "include": [
+      "src/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register/transpile-only"
+    ],
+    "reporter": [
+      "lcov"
+    ],
+    "sourceMap": true,
+    "instrument": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deepstreamIO/deepstream.io-storage-mongodb.git"
+  },
+  "scripts": {
+    "ci": "npm run tsc && npm run coverage",
+    "coverage": "nyc mocha 'test/*.spec.ts' --exit",
+    "docker": "docker run -p 27017:27017 mongo",
+    "lint": "tslint --project .",
+    "lint:fix": "npm run lint -- --fix",
+    "test": "mocha --opts mocha.opts 'test/*.spec.ts' --exit",
+    "tsc": "tsc"
+  },
+  "version": "2.0.8"
+}

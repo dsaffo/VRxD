@@ -1,0 +1,32 @@
+{
+  "_from": "github:uNetworking/uWebSockets.js#v18.11.0",
+  "_id": "uWebSockets.js@18.11.0",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/uWebSockets.js",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "uWebSockets.js@github:uNetworking/uWebSockets.js#v18.11.0",
+    "name": "uWebSockets.js",
+    "escapedName": "uWebSockets.js",
+    "rawSpec": "github:uNetworking/uWebSockets.js#v18.11.0",
+    "saveSpec": "github:uNetworking/uWebSockets.js#v18.11.0",
+    "fetchSpec": null,
+    "gitCommittish": "v18.11.0"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "github:uNetworking/uWebSockets.js#bd720c90ff8b90f478d918c1cbe3f1dcbc3a765b",
+  "_spec": "uWebSockets.js@github:uNetworking/uWebSockets.js#v18.11.0",
+  "_where": "D:\\a\\deepstream.io\\deepstream.io\\build\\5.2.4\\deepstream.io\\lib",
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "Automatically built from source by GitHub Actions.",
+  "main": "uws.js",
+  "name": "uWebSockets.js",
+  "types": "./index.d.ts",
+  "version": "18.11.0"
+}
