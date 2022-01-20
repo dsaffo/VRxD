@@ -101,7 +101,7 @@ export function updateCameraPos(pos){
 let peeking = false;
 
 function interactionStore (){
-    const {subscribe, update, set} = writable({pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null});
+    const {subscribe, update, set} = writable({filter_store: [], color_store: "type", hover_store: null});
     let peerInterval = null;
     let peer_store;
     let unsub = peerInteraction.subscribe(value => peer_store = value);
@@ -115,7 +115,6 @@ function interactionStore (){
         }),
 
         updateLocalFilter: (filter) => update(store => {
-
             if(!store.filter_store.includes(filter)){          //checking weather filtersay contain the id
                 store.filter_store.push(filter);               //adding to filtersay because value doesnt exists
             }else{
@@ -132,12 +131,6 @@ function interactionStore (){
 
         updateLocalHover: (hover) => update(store => {
             store.hover_store = hover;
-            updatePeer(store);
-            return store;
-        }),
-
-        updateLocalPitcher: (pitcher) => update(store => {
-            store.pitcher_store = pitcher;
             updatePeer(store);
             return store;
         }),
@@ -164,7 +157,7 @@ function interactionStore (){
     }
 }
 
-export const peerInteraction = readable({pitcher_store: "pitcher1", filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null}, function start(set) {
+export const peerInteraction = readable({filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null}, function start(set) {
 
     const unsub = peer.subscribe(peerDoc, function(value) {
         set(JSON.parse(JSON.stringify(value)));
@@ -177,7 +170,7 @@ export const peerInteraction = readable({pitcher_store: "pitcher1", filter_store
 
 
 
-let tempLocalInteractionStore = {pitcher_store: "pitcher1", filter_store: [], color_store: "type", hover_store: null};
+let tempLocalInteractionStore = {filter_store: [], color_store: "type", hover_store: null};
 
 export const stats_store = statsStore();
 export const interaction_store = interactionStore();

@@ -2,7 +2,7 @@
 	import { desktopConnection, vrConnection } from "./peer";
 	import { client} from './deepstream';
 	import { onMount } from 'svelte';
-	import { stats_store } from './stores.js';
+	import { stats_store, interaction_store} from './stores.js';
 	import VirtualEnv from './VR/VirtualEnv.svelte';
 	import DesktopEnv from './Desktop/DesktopEnv.svelte';
 	
@@ -75,11 +75,9 @@
 
 	let interactionStore;
 
-	/*
 	const unsubscribe_interaction = interaction_store.subscribe(value => {
 		interactionStore = value;
 	});
-	*/
 
 
 	
