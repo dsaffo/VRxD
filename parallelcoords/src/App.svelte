@@ -62,7 +62,7 @@
 			vrConnection();
 		}
 
-		stats_store.loadData("./topbottom25.csv");
+		stats_store.loadData("./topbottom10.csv");
 	})
 	
 
