@@ -12,7 +12,8 @@ let width = 500;
 let height = 500;
 const padding = { top: 40, right: 40, bottom: 40, left: 40 };
 
-let dimensions = data["columns"].slice(4);
+let dimensions = data["columns"].slice(3);
+$: console.log(dimensions)
 let coords = [];
 
 $: lengthD = interactions.filter_store.length;
@@ -83,6 +84,13 @@ $: strokeWidth = (id) => {
   return "3";
 }
 
+$: radius = (id) => {
+    if (interactions.hover_store == id) {
+    return "8";
+  }
+  return "3";
+}
+
 $: strokeOpacity = (id) => {
     if (interactions.hover_store == id){
       return "1"
@@ -131,7 +139,7 @@ function mouseOut(){
 
         
 
-        <circle r="2" stroke="white" fill="white" cx={xScale(i)} cy={coord.yScale(d)}>
+        <circle r={radius(coord.ids[j])} opacity={strokeOpacity(coord.ids[j])} stroke="white" fill="white" cx={xScale(i)} cy={coord.yScale(d)}>
         </circle>
       {/each}
     </g>

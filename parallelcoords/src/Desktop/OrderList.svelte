@@ -4,9 +4,7 @@
   import { interaction_store } from '../stores.js'
 
   export let interactions;
-  
-	let list = [{name: "foo", id: 0}, {name: "bar", id: 1},
-							{name: "bob", id: 2}, {name: "jean", id: 3}];
+
   let hovering = false;
 
   const drop = (event, target) => {

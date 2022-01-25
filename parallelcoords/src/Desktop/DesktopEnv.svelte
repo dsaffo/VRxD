@@ -1,9 +1,9 @@
 <script>
-	import { Col, Container, Row } from 'sveltestrap';
+	import { Col, Container, Row, Tooltip} from 'sveltestrap';
 	import { stats_store, interaction_store } from '../stores.js';
 	import ParallelCoords2D from './ParallelCoords2D.svelte';
 	import CoordButton from "./CoordButton.svelte";
-	import DragList from "./DragList.svelte";
+	import OrderList from "./OrderList.svelte";
 	import PlayerInfo from './PlayerInfo.svelte';
 
 	export let interactions;
@@ -42,12 +42,12 @@
 	</Row>
 	<Row  style="height: 15%;">
 		<div class="section">
-			<DragList interactions={interactions}></DragList>
+			<OrderList interactions={interactions}></OrderList>
 		</div>
 	</Row>
 	<Row  style="height: 15%;">
 		<div class="section fl">
-		{#each $stats_store["columns"].slice(4) as d}
+		{#each $stats_store["columns"].slice(3) as d}
 				<CoordButton name={d} value={d}></CoordButton>
 		{/each}
 	</div>
@@ -67,9 +67,9 @@
 	}
 
 	.fl {
-    display: inline-flex;
+		display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: center;
 	}
 </style>

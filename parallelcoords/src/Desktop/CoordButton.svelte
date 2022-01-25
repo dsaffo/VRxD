@@ -1,15 +1,16 @@
 <script>
-    import { interaction_store } from "../stores";
+    import { interaction_store, definitions} from "../stores";
+    import { Tooltip } from 'sveltestrap';
 
     export let name = "undefined";
     export let value = "undefined";
     export let vrMode = false;
-    export let interactions;
 
 </script>
 
 <div class="lengend-header">
-    <button class:selected="{$interaction_store.filter_store.includes(value)}" on:click="{() => interaction_store.updateLocalFilter(value)}" disabled={vrMode}>{name}</button>
+    <button id={name} class:selected="{$interaction_store.filter_store.includes(value)}" on:click="{() => interaction_store.updateLocalFilter(value)}" disabled={vrMode}>{name}</button>
+    <Tooltip target={name}>{$definitions[name]}</Tooltip>
 </div>
 
 
