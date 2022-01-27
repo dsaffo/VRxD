@@ -60,9 +60,10 @@
 <Avatar>			
 </Avatar>
 
-<ParallelCoords3D data={data} interactions={interactions}></ParallelCoords3D>
-
-<a-entity class="collidable" htmlembed rotation="0 0 0" position="0 1 0" >
+<a-entity position="0 1.5 0">
+	<ParallelCoords3D data={data} interactions={interactions}></ParallelCoords3D>
+</a-entity>
+<a-entity class="collidable" htmlembed rotation="0 0 0" position="0 0 0" >
 	<div class="section fl">
 		{#each $stats_store["columns"].slice(3) as d}
 				<CoordButton name={d} value={d}></CoordButton>
@@ -70,9 +71,9 @@
 	</div>
 </a-entity>
 
-<a-entity class="collidable" htmlembed rotation="0 0 0" position="0 2 0" >
+<!--<a-entity class="collidable" htmlembed rotation="0 0 0" position="0 2 0" >
 	<OrderList interactions={interactions}></OrderList>
-</a-entity>
+</a-entity>-->
 
 </a-scene>
 

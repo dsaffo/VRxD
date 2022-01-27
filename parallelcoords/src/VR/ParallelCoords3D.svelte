@@ -9,7 +9,7 @@ import { each } from "svelte/internal";
   export let data;
   export let interactions;
 
-  let width = 10;
+  let width = 6;
   let height = 1;
   const padding = { top: 0.05, right: 0.05, bottom: 0.05, left: 0.05 };
 
@@ -23,7 +23,7 @@ import { each } from "svelte/internal";
 
   const xTicks = range(lengthD);
 
-  $: for (let i = 0; i < dimensions.length; i++){
+  for (let i = 0; i < dimensions.length; i++){
     let coord = {}
     let dimension = dimensions[i];
     let minMax = extent(data, d => d[dimension]);
@@ -33,6 +33,10 @@ import { each } from "svelte/internal";
     data.forEach(function(obj){
       cData.push(obj[dimension]);
       ids.push(obj['player_id']);
+      coord['yScale'] = scaleLinear()
+      .domain([minMax[1],minMax[0]])
+      .range([-(height/2), (height/2)]);
+      coord['yTicks'] = ticks(minMax[0],minMax[1], 10);
       coord['name'] = dimension;
       coord['data'] = cData;
       coord['ids'] = ids;
@@ -42,8 +46,9 @@ import { each } from "svelte/internal";
   }
 
   let filtered_coords = [];
-
+  let oldFilterStore = [];
   $: {
+   
     filtered_coords = [];
     for (let i = 0; i < lengthD; i++){
       filtered_coords.push(coords[dimensions.indexOf(interactions.filter_store[i])]);
@@ -53,9 +58,10 @@ import { each } from "svelte/internal";
 
 {#each filtered_coords as coords, i}
   <!--<a-plane color="#000000" height="1" width="1" rotation="0 90 0"  position="{xScale(i)} 0 0" material="opacity: 0.2; transparent: true; side: double"></a-plane>-->
-<a-entity rotation="0 90 0"  position="{xScale(i)} 0 0">
-  <ScatterPlotVR dimension={coords}></ScatterPlotVR>
-</a-entity>
-
+  {#if i < lengthD - 1}
+  <ScatterPlotVR interactions={interactions} dimension={coords} nextDimension={filtered_coords[interactions.filter_store.indexOf(coords.name) + 1]} pos={xScale(i)} pos2={xScale(i+1)}></ScatterPlotVR>
+  {:else}
+  <ScatterPlotVR interactions={interactions} dimension={coords} nextDimension={"none"} pos={xScale(i)}></ScatterPlotVR>
+  {/if}
 {/each}
 

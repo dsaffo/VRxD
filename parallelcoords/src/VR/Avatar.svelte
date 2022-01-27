@@ -143,16 +143,17 @@ movement-controls="constrainToNavMesh: false;"
 navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" 
 position="0 0 2" 
 rotation="0 0 0">
-	
+	<!--
 	<a-entity 
         roation-reader 
         id="head" 
         camera="active: true" 
+        look-controls 
         wasd-controls 
         position="0 1.6 0" 
         capture-mouse
 	      raycaster="objects: .collidable;"
-        cursor="rayOrigin: mouse;"   
+        cursor="rayOrigin: mouse; fuseTimeout: 0"   
         body="type: static; 
               shape: sphere; 
               sphereRadius: 0.001;"
@@ -160,10 +161,26 @@ rotation="0 0 0">
 					 colliderEventProperty: els;
 					 colliderEndEvent:raycaster-intersection-cleared;
 					 colliderEndEventProperty: clearedEls;">
+    </a-entity>-->
+
+    <a-entity 
+    roation-reader 
+    id="head" 
+    camera="active: true" 
+    look-controls 
+    wasd-controls 
+    position="0 1.6 0" 
+    capture-mouse
+    raycaster="objects: .collidable;"
+    cursor="rayOrigin: mouse; fuseTimeout: 0"   
+    body="type: static; 
+          shape: sphere; 
+          sphereRadius: 0.001;">
     </a-entity>
 
+    <!--
     <a-entity id="rhand" mixin="controllers-right point" peekncopy></a-entity>
-    <a-entity id="lhand" mixin="controllers-left point" watch></a-entity>
+    <a-entity id="lhand" mixin="controllers-left point" watch></a-entity>-->
 
     <slot></slot>
 

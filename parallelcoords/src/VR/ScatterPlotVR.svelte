@@ -3,10 +3,14 @@
   import { scaleLinear } from "d3-scale";
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScale } from "../colorScales";
+  import "aframe-meshline-component";
   import "./chartpoint";
 
   export let dimension;
-  export let interactions;
+  export let nextDimension;
+  export let pos = 'none';
+  export let pos2 = 'none';
+  export let interactions = 'none';
   export let height = 1;
   export let width = 1;
 
@@ -21,9 +25,9 @@
     .domain([0, dimension.data.length - 1])
     .range([-(width/2), (width/2)]);
 
-  $: yScale = scaleLinear()
-    .domain(minMax)
-    .range([-(height/2), (height/2)]);
+  //$: yScale = scaleLinear()
+  //  .domain(minMax)
+  //  .range([-(height/2), (height/2)]);
 
   $: radius = function(id) {
     if (interactions.hover_store == id || $peerInteraction.hover_store == id){
@@ -64,9 +68,29 @@
   function mouseOut(){
     interaction_store.updateLocalHover(null);
   }
+
+  function changeOrderUp(name){
+    let store = interactions.filter_store;
+    let index = store.indexOf(name);
+    if (index != interactions.filter_store.length + 1){
+      store.splice(index, 1);
+      store.splice(index + 1, 0, name);
+      interaction_store.setFilterStore(store);
+    }
+  }
+
+  function changeOrderDown(name){
+    let store = interactions.filter_store;
+    let index = store.indexOf(name);
+    if (index != 0){
+      store.splice(index, 1);
+      store.splice(index - 1, 0, name);
+      interaction_store.setFilterStore(store);
+    }
+  }
 </script>
 
-<a-plane class="collidable" color="#333333" height={height} width={width} material="opacity: 0.2; transparent: true; side: double">
+<a-plane class="collidable" color="#333333" rotation="0 90 0" position="{pos} 0 0" height={height} width={width} material="opacity: 0.2; transparent: true; side: double">
 
   <!-- y axis
   <a-entity position="0 {0 - (height / 2) + padding.top} 0.001">
@@ -114,21 +138,25 @@
     {/each}
   </a-entity> -->
 
-  <a-entity>
-    {#each dimension.data as d, i}
+  {#each dimension.data as d, i}
     <a-entity 
       chartpoint="id: {i};
                   color: {'red'};
                   opacity: {1};
                   radius: {0.015};"
-      position="{xScale(i)} {yScale(d)} 0.001">
+      position="{xScale(i)} {dimension.yScale(d)} 0.001">
     </a-entity>
-
     {/each}
-  </a-entity>
-
 </a-plane>
-<style>
 
+<a-entity position="{pos} {-height/1.5} {width/2}">
+  <a-entity text="value: {dimension.name}; color: black; align: center;" scale="1.5 1.5 1.5"></a-entity>
+  <a-triangle class="collidable" color="#000000"  scale="0.1 0.1 0.1" rotation="0 0 90" position="-0.1 -0.1 0" on:click="{() => changeOrderDown(dimension.name)}"></a-triangle>
+  <a-triangle class="collidable" color="#000000"  scale="0.1 0.1 0.1" rotation="0 0 -90" position="0.1 -0.1 0" on:click="{() => changeOrderUp(dimension.name)}"></a-triangle>
+</a-entity>
 
-</style>
+{#if nextDimension != 'none'}
+{#each dimension.data as d, i}
+    <a-entity meshline="lineWidth: 2; path:{xScale(i)} {dimension.yScale(d)} {pos},{xScale(i)} {nextDimension.yScale(nextDimension.data[i])} {pos2}; color: #E20049" rotation="0 90 0"></a-entity>
+{/each}
+{/if}
