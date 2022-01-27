@@ -124,7 +124,7 @@ export function updateCameraPos(pos){
 let peeking = false;
 
 function interactionStore (){
-    const {subscribe, update, set} = writable({filter_store: [], color_store: "absolute", hover_store: null});
+    const {subscribe, update, set} = writable({filter_store: ['Games','Hits','Runs'], color_store: "absolute", hover_store: null});
     let peerInterval = null;
     let peer_store;
     let unsub = peerInteraction.subscribe(value => peer_store = value);

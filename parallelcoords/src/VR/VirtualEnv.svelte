@@ -49,7 +49,7 @@
 
 
 {#if data.length != 0}
-<a-scene physics="gravity:0;" webxr="optionalFeatures: light-estimation;" background="color: #ECECEC" stats>
+<a-scene physics="gravity:0;" webxr="optionalFeatures: light-estimation;" background="color: #333231" stats>
 
 	<a-assets>
 		<!-- svelte-ignore a11y-media-has-caption -->

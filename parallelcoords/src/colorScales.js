@@ -31,6 +31,22 @@ export function colorScale(scale, data, index, n){
     return 'black';
 }
 
+export function colorScaleVR(scale, data0, data1, data2, index){
+    if (scale === "absolute"){
+        let cScale = scaleLinear().domain(extent(data0)).range([1,0]);
+        return speedColorScale(cScale(data0[index]));
+    } else if (scale === "relative"){
+        let relVal = [];
+        for (let i = 0; i < coord1.length; i++){
+            relVal.push(data1[i] - data2[i]);
+        }
+        let cScale = scaleLinear().domain(extent(relVal)).range([1,0]);
+        return percentileColorScale(cScale(relVal[index]));
+    }
+
+    return 'black'
+}
+
 /*
 export function colorScale(scale, pitch){
     if (scale === "type"){
