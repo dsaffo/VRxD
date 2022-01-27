@@ -106,7 +106,7 @@
 
 
 	{#if isVR}
-		<VirtualEnv></VirtualEnv>
+		<VirtualEnv interactions={interactionStore}></VirtualEnv>
 	{/if}
 
 	{#if isForm}

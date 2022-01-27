@@ -21,6 +21,7 @@
     "aframe": "^1.2.0",
     "aframe-auto-detect-controllers-component": "^0.1.4",
     "aframe-extras": "^6.1.1",
+    "aframe-htmlembed-component": "^1.0.0",
     "aframe-physics-system": "github:n5ro/aframe-physics-system",
     "aframe-teleport-controls": "^0.3.1",
     "aframe-thumb-controls-component": "^2.0.2",

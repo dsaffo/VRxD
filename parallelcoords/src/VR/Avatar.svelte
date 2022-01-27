@@ -47,17 +47,10 @@
         }
     });
 
-    AFRAME.registerComponent('animate', {
-        init: function() {
-            let el = this.el;
-            this.el.addEventListener ('xbuttondown', function(evt) {
-              document.dispatchEvent(new CustomEvent('animateAll'));
-            });
-        }
-    });
 
     let open = false;
 
+    /*
     AFRAME.registerComponent('watch', {
         init: function() {
             let el = document.getElementById("watch");
@@ -75,6 +68,7 @@
             });
         }
     });
+    */
 
     AFRAME.registerComponent('move', {
 		init: function() {
@@ -147,14 +141,13 @@
 position-reader
 movement-controls="constrainToNavMesh: false;" 
 navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" 
-position="0.212 0 -1.321" 
-rotation="0 -180 0">
+position="0 0 2" 
+rotation="0 0 0">
 	
 	<a-entity 
         roation-reader 
         id="head" 
         camera="active: true" 
-        look-controls 
         wasd-controls 
         position="0 1.6 0" 
         capture-mouse

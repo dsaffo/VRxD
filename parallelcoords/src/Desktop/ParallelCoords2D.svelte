@@ -13,9 +13,7 @@ let height = 500;
 const padding = { top: 40, right: 40, bottom: 40, left: 40 };
 
 let dimensions = data["columns"].slice(3);
-$: console.log(dimensions)
 let coords = [];
-
 $: lengthD = interactions.filter_store.length;
 
 $: xScale = scaleLinear()
