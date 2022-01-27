@@ -48,7 +48,7 @@
     if (interactions.hover_store == id){
       return "10"
     }  else if (interactions.hover_store == null){
-      return "5"
+      return "3"
     }
     return "1"
   }
