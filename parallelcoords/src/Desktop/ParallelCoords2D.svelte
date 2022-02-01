@@ -1,4 +1,5 @@
 <script>
+import { fade, fly } from 'svelte/transition';
 import { scaleLinear } from "d3-scale";
 import { range , extent, ticks } from "d3";
 import { interaction_store} from "../stores";
@@ -7,6 +8,13 @@ import { colorScale } from "../colorScales";
 export let data = [];
 export let interactions;
 export let vrMode = false;
+
+let m = { x: 0, y: 0 };
+
+function handleMousemove(event) {
+  m.x = event.clientX;
+  m.y = event.clientY;
+}
 
 let width = 500;
 let height = 500;
@@ -99,6 +107,14 @@ $: strokeOpacity = (id) => {
     return "0.1"
   }
 
+$: index = data.findIndex(object => {
+  return object.player_id == interactions.hover_store;
+});
+
+$: player = data[index];
+
+$: visible = (index === -1) ? false : true;
+
 function mouseOver(index){
   interaction_store.updateLocalHover(index);
 }
@@ -109,7 +125,7 @@ function mouseOut(){
 
 </script>
 
-<div class="chart" bind:clientWidth={width} bind:clientHeight={height}>
+<div class="chart" on:mousemove={handleMousemove} bind:clientWidth={width} bind:clientHeight={height}>
   <svg>
     {#each filtered_coords as coord, i (coord)}
       
@@ -148,9 +164,41 @@ function mouseOut(){
 
     {/each}
   </svg>
+
+  {#if visible}
+  <div class="flex" style="transform: translate3d({m.x}px, {m.y - height}px, 0px);" out:fade>
+    {#if index === -1}
+      <div>Player Name: Hover line to display stats</div>
+    {:else}
+    <div style="margin-bottom: 5px; display:flex; flex-flow: row wrap; width: 100%;">
+      <div style="font-size: medium; font-weight: bold;">{player.first_name} {player.last_name}</div>
+    </div>
+    {#each interactions.filter_store as coord}    
+    <div style="margin-bottom: 2px; display:flex; flex-flow: row; width: 100%;">
+      <div style="width: 50%;">{coord}:</div>
+      <div style="width: 50%;  text-align:right;">{player[coord]}</div>
+      </div>
+    {/each}
+    {/if}
+  </div>
+  {/if}
 </div>
 
 <style>
+  .flex {
+    border: 2px solid white;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.80);
+    position: absolute;
+    padding: 10px;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-direction: column; 
+    flex-wrap:wrap;
+  }
+
+
   .chart {
     width: 100%;
     height: 100%;

@@ -49,26 +49,17 @@
     </div>
   {/each}
 </div>
-<div class="buttons">
-  <button on:click="{() => interaction_store.updateLocalColor("absolute")}">Colorize Absolute</button>
-  <button on:click="{() => interaction_store.updateLocalColor("relative")}">Colorize Relative</button>
-</div>
+
 
 <style>
   .list {
-    width: 94%;
+    width: 100%;
     display: inline-flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
   }
 
-  .buttons {
-    width: 4%;
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-  }
 
   .list-item {
     text-align: center;

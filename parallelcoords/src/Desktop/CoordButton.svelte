@@ -9,8 +9,8 @@
 </script>
 
 <div class="lengend-header">
-    <button id={name} class:selected="{$interaction_store.filter_store.includes(value)}" on:click="{() => interaction_store.updateLocalFilter(value)}" disabled={vrMode}>{name}</button>
-    <Tooltip target={name}>{$definitions[name]}</Tooltip>
+    <button id={value} class:selected="{$interaction_store.filter_store.includes(value)}" on:click="{() => interaction_store.updateLocalFilter(value)}" disabled={vrMode}>{name}</button>
+    <Tooltip target={value}>{$definitions[value]}</Tooltip>
 </div>
 
 

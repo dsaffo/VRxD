@@ -11,7 +11,7 @@
 	import ParallelCoords3D from "./ParallelCoords3D.svelte";
 	import CoordButton from "../Desktop/CoordButton.svelte";
 	import OrderList from "../Desktop/OrderList.svelte";
-	import { stats_store } from '../stores';
+	import { stats_store, interaction_store } from '../stores';
 
 	export let interactions;
 
@@ -64,10 +64,21 @@
 	<ParallelCoords3D data={data} interactions={interactions}></ParallelCoords3D>
 </a-entity>
 <a-entity class="collidable" htmlembed rotation="0 0 0" position="0 0 0" >
-	<div class="section fl">
+	<div class="section">
+		<div class="fl" style="width: 90%;">
 		{#each $stats_store["columns"].slice(3) as d}
 				<CoordButton name={d} value={d}></CoordButton>
 		{/each}
+		</div>
+		<div class="buttons">
+			<button on:click="{() => interaction_store.updateLocalColor("absolute")}">Colorize Absolute</button>
+			<button on:click="{() => interaction_store.updateLocalColor("relative")}">Colorize Relative</button>
+		</div>
+		<div class="buttons">
+			<button>Watch</button>
+			<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+			<button on:click="{() => interaction_store.copy()}">Copy</button>
+		</div>
 	</div>
 </a-entity>
 
@@ -87,6 +98,14 @@
 	padding: 10px;
 
 }
+
+.buttons {
+    width: 4%;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
 
 .fl {
 	display: inline-flex;

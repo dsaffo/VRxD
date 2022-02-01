@@ -1,10 +1,11 @@
 <script>
-	import { Col, Container, Row, Tooltip} from 'sveltestrap';
+	import { Container, Row } from 'sveltestrap';
 	import { stats_store, interaction_store } from '../stores.js';
 	import ParallelCoords2D from './ParallelCoords2D.svelte';
 	import CoordButton from "./CoordButton.svelte";
 	import OrderList from "./OrderList.svelte";
-	import PlayerInfo from './PlayerInfo.svelte';
+	import VirtualEnvEmbed from '../VR/VirtualEnvEmbed.svelte';
+	import PitcherReport from './PitcherReport.svelte';
 
 	export let interactions;
 	
@@ -31,13 +32,18 @@
 
 {#if data.length > 0}
 
+
+
+{#if vrView}
+<VirtualEnvEmbed></VirtualEnvEmbed>
+{/if}
+
+{#if report}
+<PitcherReport></PitcherReport>
+{/if}
+
 <Container id="capture" fluid style="height: 100%; margin: 5px;">
-	<Row style="height: 10%;">
-		<div class="section">
-			<PlayerInfo data={data} interactions={interactions}></PlayerInfo>
-		</div>
-	</Row>
-	<Row style="height: 50%;">
+	<Row style="height: 65%;">
 		<ParallelCoords2D data={data} interactions={interactions}></ParallelCoords2D>
 	</Row>
 	<Row  style="height: 15%;">
@@ -46,10 +52,22 @@
 		</div>
 	</Row>
 	<Row  style="height: 15%;">
-		<div class="section fl">
+		<div class="section">
+		<div class="fl" style="width: 90%;">
 		{#each $stats_store["columns"].slice(3) as d}
 				<CoordButton name={d} value={d}></CoordButton>
 		{/each}
+		</div>
+		<div class="buttons">
+			<button on:click="{() => interaction_store.updateLocalColor("absolute")}">Color Absolute</button>
+			<button on:click="{() => interaction_store.updateLocalColor("relative")}">Color Relative</button>
+		</div>
+		<div class="buttons">
+			<button on:click={vrViewToggle}>Watch</button>
+			<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+			<button on:click="{() => interaction_store.copy()}">Copy</button>
+			<button on:click={reportToggle}>Report</button>
+		</div>
 	</div>
 	</Row>
 </Container>
@@ -65,6 +83,14 @@
 		padding: 10px;
 
 	}
+
+
+  .buttons {
+    width: 4%;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
 
 	.fl {
 		display: inline-flex;

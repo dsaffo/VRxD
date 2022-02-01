@@ -180,7 +180,7 @@ function interactionStore (){
     }
 }
 
-export const peerInteraction = readable({filter_store: ['4-Seam Fastball', 'called_strike', '95-105'], color_store: "type", hover_store: null}, function start(set) {
+export const peerInteraction = readable({filter_store: ['Games','Hits','Runs'], color_store: "absolute", hover_store: null}, function start(set) {
 
     const unsub = peer.subscribe(peerDoc, function(value) {
         set(JSON.parse(JSON.stringify(value)));

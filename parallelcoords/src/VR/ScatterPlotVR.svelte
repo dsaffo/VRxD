@@ -27,7 +27,7 @@
     .range([-(width/2) + padding.left, (width/2) - padding.right]);
 
   let radius = function(id) {
-    if (interactions.hover_store == id){
+    if (interactions.hover_store == id || $peerInteraction.hover_store == id){
       return "0.04"
     } 
     return "0.02"
@@ -45,7 +45,7 @@
   }
 
   let stroke = function(id) {
-    if (interactions.hover_store == id){
+    if (interactions.hover_store == id || $peerInteraction.hover_store == id){
       return "10"
     }  else if (interactions.hover_store == null){
       return "3"
@@ -129,7 +129,7 @@
     <a-entity 
       class="collidable"
       chartpoint="id: {i};
-                  color: {colorScaleVR(interactions.color_store,firstDimension.data, dimension.data, nextDimension.data, i)};
+                  color: {'white'};
                   opacity: {opacity(dimension.ids[i])};
                   radius: {radius(dimension.ids[i])};"
       position="{xScale(i)} {dimension.yScale(d)} 0.001"

@@ -37,7 +37,7 @@ export function colorScaleVR(scale, data0, data1, data2, index){
         return speedColorScale(cScale(data0[index]));
     } else if (scale === "relative"){
         let relVal = [];
-        for (let i = 0; i < coord1.length; i++){
+        for (let i = 0; i < data1.length; i++){
             relVal.push(data1[i] - data2[i]);
         }
         let cScale = scaleLinear().domain(extent(relVal)).range([1,0]);

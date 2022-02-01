@@ -2,15 +2,23 @@
 export let interactions;
 export let data;
 
+let m = { x: 0, y: 0 };
+
+function handleMousemove(event) {
+  m.x = event.clientX;
+  m.y = event.clientY;
+}
+
 $: index = data.findIndex(object => {
   return object.player_id == interactions.hover_store;
 });
 
 $: player = data[index];
 
+
 </script>
 
-<div class="flex">
+<div class="flex" on:mousemove={handleMousemove} style="transform: translate3d({m.x}px, {m.y}px, 0px);">
   {#if index === -1}
     <div>Player Name: Hover line to display stats</div>
   {:else}
@@ -24,8 +32,9 @@ $: player = data[index];
 
 <style>
   .flex {
-    height: 100%;
-    width: 100%;
+    position: absolute;
+    height: 200px;
+    width: 200px;
     display: flex;
     flex-direction: column; 
     flex-wrap:wrap;
