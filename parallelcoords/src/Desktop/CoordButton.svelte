@@ -4,13 +4,17 @@
 
     export let name = "undefined";
     export let value = "undefined";
-    export let vrMode = false;
+    export let emb = false;
+    export let vrMode;
 
 </script>
 
 <div class="lengend-header">
-    <button id={value} class:selected="{$interaction_store.filter_store.includes(value)}" on:click="{() => interaction_store.updateLocalFilter(value)}" disabled={vrMode}>{name}</button>
-    <Tooltip target={value}>{$definitions[value]}</Tooltip>
+    <button id={value} class:selected="{$interaction_store.filter_store.includes(value)}" on:click="{() => interaction_store.updateLocalFilter(value)}" disabled={emb}>{name}</button>
+    {#if vrMode === "false"}
+        <Tooltip target={value}>{$definitions[value]}</Tooltip>
+    {/if}
+    
 </div>
 
 

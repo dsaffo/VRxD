@@ -12,11 +12,14 @@
 	import CoordButton from "../Desktop/CoordButton.svelte";
 	import OrderList from "../Desktop/OrderList.svelte";
 	import { stats_store, interaction_store } from '../stores';
+	import { windowSize, chartRecord, formRecord, controlRecord} from '../viewStore';
+	import PitcherReport from "../Desktop/PitcherReport.svelte";
 
 	export let interactions;
 
-	let data
+	let formH = 0;
 
+	let data
 	const stats_unsub = stats_store.subscribe(value => {
 		data = value;
 	});
@@ -57,12 +60,13 @@
 	</a-assets>
 
 <!-- Basic movement and teleportation   -->
-<Avatar>			
+<Avatar>		
 </Avatar>
 
 <a-entity position="0 1.5 0">
 	<ParallelCoords3D data={data} interactions={interactions}></ParallelCoords3D>
 </a-entity>
+
 <a-entity class="collidable" htmlembed rotation="0 0 0" position="0 0 0" >
 	<div class="section">
 		<div class="fl" style="width: 90%;">
@@ -80,11 +84,39 @@
 			<button on:click="{() => interaction_store.copy()}">Copy</button>
 		</div>
 	</div>
-</a-entity>
+</a-entity>	
 
-<!--<a-entity class="collidable" htmlembed rotation="0 0 0" position="0 2 0" >
-	<OrderList interactions={interactions}></OrderList>
-</a-entity>-->
+<a-entity class="collidable" htmlembed rotation="0 180 0" position="0 0 0" >
+	<div class="section">
+		<div class="fl" style="width: 90%;">
+		{#each $stats_store["columns"].slice(3) as d}
+				<CoordButton vrMode={"true"} name={d} value={d}></CoordButton>
+		{/each}
+		</div>
+		<div class="buttons">
+			<button on:click="{() => interaction_store.updateLocalColor("absolute")}">Colorize Absolute</button>
+			<button on:click="{() => interaction_store.updateLocalColor("relative")}">Colorize Relative</button>
+		</div>
+		<div class="buttons">
+			<button>Watch</button>
+			<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+			<button on:click="{() => interaction_store.copy()}">Copy</button>
+		</div>
+	</div>
+</a-entity>	
+
+	<!--Report Form-->
+	<a-entity  form-reader class="collidable"  move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" geometry="primitive: box; width: 2; height: 2.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="3.5 1.5 2.5" rotation="0 -90.000 0">
+		<a-entity htmlembed position="0 {formH} 0">
+			<div style="width: 500px; height:100%">
+				<PitcherReport vr={true}></PitcherReport>
+			</div>
+		</a-entity>
+		<a-triangle class="collidable" position="1.4 0.6 0" scale=".5 .5 .5" on:mousedown="{() => {formH += 0.1}}"></a-triangle>
+		<a-triangle class="collidable" position="1.4 0 0" rotation="0 0 180"  scale=".5 .5 .5" on:mousedown="{() => {formH -= 0.1}}"></a-triangle>
+	</a-entity>
+
+	<a-video id="watch" class="collidable" move dynamic-body="angularDamping: 1; linearDamping: 1;" grabbable="startButtons: gripdown, gripclose, mousedown; endButtons: gripup, gripopen, mouseup;" height="{$windowSize.height}" width="{$windowSize.width}" position="-3.5 1.5 3" rotation="0 90 0" scale="0.001 0.001 0.001" src="#videovr"></a-video>
 
 </a-scene>
 
@@ -93,8 +125,8 @@
 
 <style>
 .section {
-	width: 100%;
-	height: 100%;
+	width: 1500px;
+	height: 120px;
 	padding: 10px;
 
 }

@@ -17,9 +17,6 @@
 
   $: minMax = extent(dimension.data);
 
-  $: xTicks = range(dimension.data.length);
-  $: yTicks = ticks(minMax[0],minMax[1]);
-
   const padding = { top: 0.08, right: 0.08, bottom: 0.08, left: 0.08};
 
   $: xScale = scaleLinear()

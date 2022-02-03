@@ -55,7 +55,7 @@
 		<div class="section">
 		<div class="fl" style="width: 90%;">
 		{#each $stats_store["columns"].slice(3) as d}
-				<CoordButton name={d} value={d}></CoordButton>
+				<CoordButton vrMode={"false"} name={d} value={d}></CoordButton>
 		{/each}
 		</div>
 		<div class="buttons">
