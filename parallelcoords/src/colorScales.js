@@ -31,17 +31,18 @@ export function colorScale(scale, data, index, n){
     return 'black';
 }
 
-export function colorScaleVR(scale, data0, data1, data2, index){
+export function colorScaleVR(scale, data0, data1, data2, id){
     if (scale === "absolute"){
-        let cScale = scaleLinear().domain(extent(data0)).range([1,0]);
-        return speedColorScale(cScale(data0[index]));
+        let cScale = scaleLinear().domain(extent(data0.data)).range([1,0]);
+        return speedColorScale(cScale(data0.data[data0.ids.indexOf(id)]));
     } else if (scale === "relative"){
         let relVal = [];
-        for (let i = 0; i < data1.length; i++){
-            relVal.push(data1[i] - data2[i]);
+        for (let i = 0; i < data1.data.length; i++){
+            var currID = data1.ids[i]; 
+            relVal.push(data1.data[i] - data2.data[data2.ids.indexOf(currID)]);
         }
         let cScale = scaleLinear().domain(extent(relVal)).range([1,0]);
-        return percentileColorScale(cScale(relVal[index]));
+        return percentileColorScale(cScale(relVal[data1.ids.indexOf(id)]));
     }
 
     return 'black'

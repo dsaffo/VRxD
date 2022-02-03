@@ -1,6 +1,6 @@
 <script>
   import {ticks, range, extent, min} from "d3";
-  import { scaleLinear } from "d3-scale";
+  import { scaleLinear, scaleBand } from "d3-scale";
   import { interaction_store, peerInteraction} from "../stores";
   import { colorScaleVR } from "../colorScales";
   import "aframe-meshline-component";
@@ -18,10 +18,6 @@
   $: minMax = extent(dimension.data);
 
   const padding = { top: 0.08, right: 0.08, bottom: 0.08, left: 0.08};
-
-  $: xScale = scaleLinear()
-    .domain([-1, dimension.data.length])
-    .range([-(width/2) + padding.left, (width/2) - padding.right]);
 
   let radius = function(id) {
     if (interactions.hover_store == id || $peerInteraction.hover_store == id){
@@ -77,6 +73,8 @@
       interaction_store.setFilterStore(store);
     }
   }
+
+  console.log(dimension.data,dimension.ids);
 </script>
 
 <a-plane color="white" rotation="0 90 0" position="{pos} 0 0" height={height} width={width} material="opacity: 0.2; transparent: true; side: double; depthTest:false">
@@ -129,7 +127,7 @@
                   color: {'white'};
                   opacity: {opacity(dimension.ids[i])};
                   radius: {radius(dimension.ids[i])};"
-      position="{xScale(i)} {dimension.yScale(d)} 0.001"
+      position="{dimension.xScale(dimension.ids[i])} {dimension.yScale(d)} 0.001"
       on:mouseenter={() => mouseOver(dimension.ids[i])}
       on:mouseleave={() => mouseOut()}>
     </a-entity>
@@ -146,7 +144,7 @@
 {#if nextDimension != 'none'}
 {#each dimension.data as d, i}
     <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-    <a-entity class="collidable" meshline="lineWidth: {stroke(dimension.ids[i])}; path:{xScale(i)} {dimension.yScale(d)} {pos},{xScale(i)} {nextDimension.yScale(nextDimension.data[i])} {pos2}; color:{colorScaleVR(interactions.color_store, firstDimension.data, dimension.data, nextDimension.data, i)}" 
+    <a-entity class="collidable" meshline="lineWidth: {stroke(dimension.ids[i])}; path:{dimension.xScale(dimension.ids[i])} {dimension.yScale(d)} {pos},{nextDimension.xScale(dimension.ids[i])} {nextDimension.yScale(nextDimension.data[nextDimension.ids.indexOf(dimension.ids[i])])} {pos2}; color:{colorScaleVR(interactions.color_store, firstDimension, dimension, nextDimension, dimension.ids[i])}" 
     rotation="0 90 0"
     on:mouseenter={() => mouseOver(dimension.ids[i])}
     on:mouseleave={() => mouseOut()}

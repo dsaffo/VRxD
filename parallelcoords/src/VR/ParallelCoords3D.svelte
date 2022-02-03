@@ -1,7 +1,7 @@
 <script>
   import "aframe";
   import { range , extent, ticks } from "d3";
-  import { scaleLinear } from "d3-scale";
+  import { scaleBand, scaleLinear } from "d3-scale";
 import { each } from "svelte/internal";
   import { interaction_store, peerInteraction} from "../stores";
   import ScatterPlotVR from "./ScatterPlotVR.svelte";
@@ -32,15 +32,23 @@ import { each } from "svelte/internal";
 
     data.forEach(function(obj){
       cData.push(obj[dimension]);
-      ids.push(obj['player_id']);
+      ids.push([obj['player_id'],obj[dimension]]);
       coord['yScale'] = scaleLinear()
       .domain([minMax[0],minMax[1]]).nice()
       .range([-(height/2) + padding.bottom, (height/2) - padding.top]);
       coord['yTicks'] = scaleLinear().domain([minMax[0],minMax[1]]).nice().ticks(10);
       coord['name'] = dimension;
-      coord['data'] = cData;
-      coord['ids'] = ids;
-    })
+      coord['data'] = cData.slice().sort((a,b) => a - b);
+      ids = ids.sort((a, b) => coord['data'].indexOf(a[1]) - coord['data'].indexOf(b[1]));
+      let flatids = [];
+      ids.forEach(function(i){
+        flatids.push(i[0]);
+      });
+      coord['ids'] = flatids;
+      coord['xScale'] = scaleBand()
+      .domain(coord['ids'])
+      .range([-(1/2) + padding.left, (1/2) - padding.right]);
+    });
 
     coords[i] = coord;
   }
