@@ -74,7 +74,7 @@
     }
   }
 
-  console.log(dimension.data,dimension.ids);
+  //console.log(dimension.data,dimension.ids);
 </script>
 
 <a-plane color="white" rotation="0 90 0" position="{pos} 0 0" height={height} width={width} material="opacity: 0.2; transparent: true; side: double; depthTest:false">

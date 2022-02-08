@@ -50,7 +50,7 @@
 
     let open = false;
 
-    /*
+    
     AFRAME.registerComponent('watch', {
         init: function() {
             let el = document.getElementById("watch");
@@ -68,7 +68,7 @@
             });
         }
     });
-    */
+    
 
     AFRAME.registerComponent('move', {
 		init: function() {
@@ -159,6 +159,7 @@ rotation="0 0 0">
             colliderEventProperty: els;
             colliderEndEvent:raycaster-intersection-cleared;
             colliderEndEventProperty: clearedEls;">
+               <slot></slot>
     </a-entity>
  -->
     
@@ -175,10 +176,10 @@ rotation="0 0 0">
       body="type: static; 
           shape: sphere; 
           sphereRadius: 0.001;">
-     
+        <slot></slot>
     </a-entity>
    
-    <slot></slot>
+   
     <a-entity id="rhand" mixin="controllers-right point" peekncopy></a-entity>
     <a-entity id="lhand" mixin="controllers-left point" watch></a-entity>s
 

@@ -2,7 +2,7 @@ import { writable, readable } from 'svelte/store';
 import * as d3 from "d3";
 import { client } from './deepstream.js';
 
-export let page = writable(0);
+
 const urlParams = new URLSearchParams(window.location.search);
 const isVR = urlParams.has('vr');
 let doc;
@@ -195,6 +195,7 @@ export const peerInteraction = readable({filter_store: ['Games','Hits','Runs'], 
 
 let tempLocalInteractionStore = {filter_store: [], color_store: "type", hover_store: null};
 
+export const tooltip_store = writable("hi");
 export const stats_store = statsStore();
 export const interaction_store = interactionStore();
 

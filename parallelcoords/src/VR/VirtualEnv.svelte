@@ -11,7 +11,7 @@
 	import ParallelCoords3D from "./ParallelCoords3D.svelte";
 	import CoordButton from "../Desktop/CoordButton.svelte";
 	import OrderList from "../Desktop/OrderList.svelte";
-	import { stats_store, interaction_store } from '../stores';
+	import { stats_store, interaction_store, tooltip_store } from '../stores';
 	import { windowSize, chartRecord, formRecord, controlRecord} from '../viewStore';
 	import PitcherReport from "../Desktop/PitcherReport.svelte";
 
@@ -48,6 +48,14 @@
 																height: formH});
 		}
 		});
+
+	$: index = data.findIndex(object => {
+  	return object.player_id == interactions.hover_store;
+	});
+	$: player = data[index];
+	$: visible = (index === -1) ? false : true;
+	$: console.log(index, player, visible);
+
 </script>
 
 
@@ -60,18 +68,42 @@
 	</a-assets>
 
 <!-- Basic movement and teleportation   -->
-<Avatar>		
+<Avatar>	
+	{#if visible}
+<a-entity htmlembed position="1 0 -1.5">
+<div class="flex">
+	{#if index === -1}
+		<div>Player Name: Hover line to display stats</div>
+	{:else}
+	<div style="margin-bottom: 5px; display:flex; flex-flow: row wrap; width: 100%;">
+		<div style="font-size: medium; font-weight: bold;">{player.first_name} {player.last_name}</div>
+	</div>
+	{#each interactions.filter_store as coord}    
+	<div style="margin-bottom: 2px; display:flex; flex-flow: row; width: 100%;">
+		<div style="width: 50%;">{coord}:</div>
+		<div style="width: 50%;  text-align:right;">{player[coord]}</div>
+		</div>
+	{/each}
+	{/if}
+</div>
+</a-entity>
+{/if}	
 </Avatar>
+
+
 
 <a-entity position="0 1.5 0">
 	<ParallelCoords3D data={data} interactions={interactions}></ParallelCoords3D>
 </a-entity>
 
+<a-entity text="value: {$tooltip_store}; color: white; align: center;" rotation="0 0 0" position="0 0.35 0" scale="1.8 1.8 1.8"></a-entity>
+<a-entity text="value: {$tooltip_store}; color: white; align: center;" rotation="0 180 0" position="0 0.35 0" scale="1.8 1.8 1.8"></a-entity>
+
 <a-entity class="collidable" htmlembed rotation="0 0 0" position="0 0 0" >
 	<div class="section">
 		<div class="fl" style="width: 90%;">
 		{#each $stats_store["columns"].slice(3) as d}
-				<CoordButton name={d} value={d}></CoordButton>
+				<CoordButton vrMode={"true"} name={d} value={d}></CoordButton>
 		{/each}
 		</div>
 		<div class="buttons">
@@ -145,4 +177,16 @@
 	flex-wrap: wrap;
 	justify-content: center;
 }
+
+.flex {
+    border: 2px solid white;
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.80);
+    padding: 10px;
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-direction: column; 
+    flex-wrap:wrap;
+  }
 </style>

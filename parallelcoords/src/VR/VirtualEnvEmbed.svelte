@@ -43,62 +43,110 @@
   position="{$cameraPos.x} {$cameraPos.y} {$cameraPos.z}" 
   rotation="0 -180 0"
   >
+	</a-entity>
     
-  <a-entity id="head" camera="active: true" position="0 1.6 0" rotation="{$cameraRot.x} {$cameraRot.y} {$cameraRot.z}"></a-entity>
-          
-
-<a-entity position="0 1.5 0">
-	<ParallelCoords3D data={data} interactions={interactions}></ParallelCoords3D>
-</a-entity>
-<a-entity class="collidable" htmlembed rotation="0 0 0" position="0 0 0" >
-	<div class="section">
-		<div class="fl" style="width: 90%;">
-		{#each $stats_store["columns"].slice(3) as d}
-				<CoordButton name={d} value={d}></CoordButton>
-		{/each}
+  <a-entity id="head" camera="active: true" position="0 1.6 0" rotation="{$cameraRot.x} {$cameraRot.y} {$cameraRot.z}">
+		{#if visible}
+		<a-entity htmlembed position="1 0 -1.5">
+		<div class="flex">
+			{#if index === -1}
+				<div>Player Name: Hover line to display stats</div>
+			{:else}
+			<div style="margin-bottom: 5px; display:flex; flex-flow: row wrap; width: 100%;">
+				<div style="font-size: medium; font-weight: bold;">{player.first_name} {player.last_name}</div>
+			</div>
+			{#each interactions.filter_store as coord}    
+			<div style="margin-bottom: 2px; display:flex; flex-flow: row; width: 100%;">
+				<div style="width: 50%;">{coord}:</div>
+				<div style="width: 50%;  text-align:right;">{player[coord]}</div>
+				</div>
+			{/each}
+			{/if}
 		</div>
-		<div class="buttons">
-			<button on:click="{() => interaction_store.updateLocalColor("absolute")}">Colorize Absolute</button>
-			<button on:click="{() => interaction_store.updateLocalColor("relative")}">Colorize Relative</button>
+		</a-entity>
+		{/if}	
+	</a-entity>
+	
+	<a-entity position="0 1.5 0">
+		<ParallelCoords3D data={data} interactions={interactions}></ParallelCoords3D>
+	</a-entity>
+	
+	<a-entity text="value: {$tooltip_store}; color: white; align: center;" rotation="0 0 0" position="0 0.35 0" scale="1.8 1.8 1.8"></a-entity>
+	<a-entity text="value: {$tooltip_store}; color: white; align: center;" rotation="0 180 0" position="0 0.35 0" scale="1.8 1.8 1.8"></a-entity>
+	
+	<a-entity class="collidable" htmlembed rotation="0 0 0" position="0 0 0" >
+		<div class="section">
+			<div class="fl" style="width: 90%;">
+			{#each $stats_store["columns"].slice(3) as d}
+					<CoordButton vrMode={"true"} name={d} value={d}></CoordButton>
+			{/each}
+			</div>
+			<div class="buttons">
+				<button on:click="{() => interaction_store.updateLocalColor("absolute")}">Colorize Absolute</button>
+				<button on:click="{() => interaction_store.updateLocalColor("relative")}">Colorize Relative</button>
+			</div>
+			<div class="buttons">
+				<button>Watch</button>
+				<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+				<button on:click="{() => interaction_store.copy()}">Copy</button>
+			</div>
 		</div>
-		<div class="buttons">
-			<button>Watch</button>
-			<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
-			<button on:click="{() => interaction_store.copy()}">Copy</button>
+	</a-entity>	
+	
+	<a-entity class="collidable" htmlembed rotation="0 180 0" position="0 0 0" >
+		<div class="section">
+			<div class="fl" style="width: 90%;">
+			{#each $stats_store["columns"].slice(3) as d}
+					<CoordButton vrMode={"true"} name={d} value={d}></CoordButton>
+			{/each}
+			</div>
+			<div class="buttons">
+				<button on:click="{() => interaction_store.updateLocalColor("absolute")}">Colorize Absolute</button>
+				<button on:click="{() => interaction_store.updateLocalColor("relative")}">Colorize Relative</button>
+			</div>
+			<div class="buttons">
+				<button>Watch</button>
+				<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+				<button on:click="{() => interaction_store.copy()}">Copy</button>
+			</div>
 		</div>
-	</div>
-</a-entity>
-</a-scene>
-{/if}
+	</a-entity>	
+	</a-scene>
+	{/if}
 </div>
 
-<style>
-
-.resizable {
-  resize: both;
-  overflow: auto;
-  border: 1px solid black;
-}
-
-.section {
-	width: 100%;
-	height: 100%;
-	padding: 10px;
-
-}
-
-.buttons {
-    width: 4%;
-    display: inline-flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-  }
-
-
-.fl {
-	display: inline-flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	justify-content: center;
-}
-</style>
+	<style>
+	.section {
+		width: 1500px;
+		height: 120px;
+		padding: 10px;
+	
+	}
+	
+	.buttons {
+			width: 4%;
+			display: inline-flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+		}
+	
+	
+	.fl {
+		display: inline-flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.flex {
+			border: 2px solid white;
+			border-radius: 5px;
+			background: rgba(0, 0, 0, 0.80);
+			padding: 10px;
+			height: fit-content;
+			width: fit-content;
+			display: flex;
+			flex-direction: column; 
+			flex-wrap:wrap;
+		}
+	</style>

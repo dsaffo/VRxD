@@ -1,5 +1,5 @@
 <script>
-    import { interaction_store, definitions} from "../stores";
+    import { interaction_store, definitions, tooltip_store} from "../stores";
     import { Tooltip } from 'sveltestrap';
 
     export let name = "undefined";
@@ -10,10 +10,19 @@
 </script>
 
 <div class="lengend-header">
-    <button id={value} class:selected="{$interaction_store.filter_store.includes(value)}" on:click="{() => interaction_store.updateLocalFilter(value)}" disabled={emb}>{name}</button>
     {#if vrMode === "false"}
+        <button id={value} class:selected="{$interaction_store.filter_store.includes(value)}" on:click="{() => interaction_store.updateLocalFilter(value)}" disabled={emb}>{name}</button>
         <Tooltip target={value}>{$definitions[value]}</Tooltip>
+    {:else}
+        <!-- svelte-ignore a11y-mouse-events-have-key-events -->
+        <button id={value} 
+                class:selected="{$interaction_store.filter_store.includes(value)}" 
+                on:click="{() => interaction_store.updateLocalFilter(value)}" 
+                on:mouseover="{() => tooltip_store.set(name + ": " + $definitions[value])}"
+                on:mouseout="{() => tooltip_store.set(" ")}"
+                disabled={emb}>{name}</button>
     {/if}
+
     
 </div>
 
