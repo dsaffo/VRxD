@@ -11,7 +11,7 @@
 	import ParallelCoords3D from "./ParallelCoords3D.svelte";
 	import CoordButton from "../Desktop/CoordButton.svelte";
 	import OrderList from "../Desktop/OrderList.svelte";
-	import { stats_store, interaction_store, peerInteraction } from '../stores';
+	import { stats_store, interaction_store, peerInteraction, tooltip_store } from '../stores';
   import { cameraPos, cameraRot, controlRecs, formRecs, chartRecs } from '../viewStore';
   import { draggable } from 'svelte-drag';
 
@@ -46,25 +46,6 @@
 	</a-entity>
     
   <a-entity id="head" camera="active: true" position="0 1.6 0" rotation="{$cameraRot.x} {$cameraRot.y} {$cameraRot.z}">
-		{#if visible}
-		<a-entity htmlembed position="1 0 -1.5">
-		<div class="flex">
-			{#if index === -1}
-				<div>Player Name: Hover line to display stats</div>
-			{:else}
-			<div style="margin-bottom: 5px; display:flex; flex-flow: row wrap; width: 100%;">
-				<div style="font-size: medium; font-weight: bold;">{player.first_name} {player.last_name}</div>
-			</div>
-			{#each interactions.filter_store as coord}    
-			<div style="margin-bottom: 2px; display:flex; flex-flow: row; width: 100%;">
-				<div style="width: 50%;">{coord}:</div>
-				<div style="width: 50%;  text-align:right;">{player[coord]}</div>
-				</div>
-			{/each}
-			{/if}
-		</div>
-		</a-entity>
-		{/if}	
 	</a-entity>
 	
 	<a-entity position="0 1.5 0">

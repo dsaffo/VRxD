@@ -26,15 +26,21 @@
     return "0.02"
   }
 
-  let opacity = function(id) {
+  let visible = function(id) {
     if (interactions.hover_store == id){
-      return "1"
+      return "true"
     } 
     else if (interactions.hover_store == null){
-      return "0.8"
+      return "true"
     }
+    return "false"
+  }
 
-    return "0.1"
+  let opacity = function(id) {
+    if ($peerInteraction.hover_store == id){
+      return "1"
+    } 
+    return "0.5"
   }
 
   let stroke = function(id) {
@@ -54,7 +60,7 @@
     interaction_store.updateLocalHover(null);
   }
 
-  function changeOrderUp(name){
+ function changeOrderUp(name){
     let store = interactions.filter_store.slice(0);
     let index = store.indexOf(name);
     if (index != interactions.filter_store.length + 1){
@@ -73,8 +79,6 @@
       interaction_store.setFilterStore(store);
     }
   }
-
-  //console.log(dimension.data,dimension.ids);
 </script>
 
 <a-plane color="white" rotation="0 90 0" position="{pos} 0 0" height={height} width={width} material="opacity: 0.2; transparent: true; side: double; depthTest:false">
@@ -122,32 +126,24 @@
   {#each dimension.data as d, i}
     <!-- svelte-ignore a11y-mouse-events-have-key-events -->
     <a-entity 
+      visible="{visible(dimension.ids[i])}"
       class="collidable"
-      chartpoint="id: {i};
-                  color: {'white'};
+      chartpoint="id: {dimension.ids[i]};
+                  color: white;
                   opacity: {opacity(dimension.ids[i])};
-                  radius: {radius(dimension.ids[i])};"
-      position="{dimension.xScale(dimension.ids[i])} {dimension.yScale(d)} 0.001"
-      on:mouseenter={() => mouseOver(dimension.ids[i])}
-      on:mouseleave={() => mouseOut()}>
+                  radius: 0.03;"
+      position="{dimension.xScale(dimension.ids[i])} {dimension.yScale(d)} 0.001">
     </a-entity>
     {/each}
 </a-plane>
 
-<a-entity position="{pos} {-height/1.5} 0">
-  <a-entity text="value: {dimension.name}; color: white; align: center;" scale="1.5 1.5 1.5"></a-entity>
-  <a-entity text="value: {dimension.name}; color: white; align: center;" scale="1.5 1.5 1.5" rotation="0 180 0"></a-entity>
-  <a-triangle class="collidable" color="white" material="side: double;" scale="0.1 0.1 0.1" rotation="0 0 90" position="-0.1 -0.1 0" on:click="{() => changeOrderDown(dimension.name)}"></a-triangle>
-  <a-triangle class="collidable" color="white" material="side: double;"  scale="0.1 0.1 0.1" rotation="0 0 -90" position="0.1 -0.1 0" on:click="{() => changeOrderUp(dimension.name)}"></a-triangle>
-</a-entity>
-
 {#if nextDimension != 'none'}
+<a-entity>
 {#each dimension.data as d, i}
     <!-- svelte-ignore a11y-mouse-events-have-key-events -->
-    <a-entity class="collidable" meshline="lineWidth: {stroke(dimension.ids[i])}; path:{dimension.xScale(dimension.ids[i])} {dimension.yScale(d)} {pos},{nextDimension.xScale(dimension.ids[i])} {nextDimension.yScale(nextDimension.data[nextDimension.ids.indexOf(dimension.ids[i])])} {pos2}; color:{colorScaleVR(interactions.color_store, firstDimension, dimension, nextDimension, dimension.ids[i])}" 
-    rotation="0 90 0"
-    on:mouseenter={() => mouseOver(dimension.ids[i])}
-    on:mouseleave={() => mouseOut()}
-    ></a-entity>
+    <a-entity  visible="{visible(dimension.ids[i])}" class="collidable" meshline="lineWidth: 1; path:{dimension.xScale(dimension.ids[i])} {dimension.yScale(d)} {pos},{nextDimension.xScale(dimension.ids[i])} {nextDimension.yScale(nextDimension.data[nextDimension.ids.indexOf(dimension.ids[i])])} {pos2}; color:{colorScaleVR(interactions.color_store, firstDimension, dimension, nextDimension, dimension.ids[i])}" 
+    rotation="0 90 0"></a-entity>
 {/each}
+</a-entity>
 {/if}
+

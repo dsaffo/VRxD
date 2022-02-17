@@ -2,8 +2,6 @@ export function pitch_trajectory(x,y,z,vx,vy,vz,ax,ay,az,spin,dt) {
 
     let trajectory = [];
 
-
-
      trajectory.push( {
             t: 0,
             x: x,
@@ -14,7 +12,6 @@ export function pitch_trajectory(x,y,z,vx,vy,vz,ax,ay,az,spin,dt) {
             vz: vz,
         }
      );
-
 
     //spin component calculations 
     let constant = 0.005368

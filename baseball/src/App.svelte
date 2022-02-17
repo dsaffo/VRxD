@@ -105,8 +105,6 @@
 
 	{/if}
 
-
-
 	{#if isVR}
 		<VirtualEnv></VirtualEnv>
 	{/if}

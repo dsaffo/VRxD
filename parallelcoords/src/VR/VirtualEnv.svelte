@@ -49,12 +49,13 @@
 		}
 		});
 
+		
 	$: index = data.findIndex(object => {
   	return object.player_id == interactions.hover_store;
 	});
 	$: player = data[index];
 	$: visible = (index === -1) ? false : true;
-	$: console.log(index, player, visible);
+	//$: console.log(index, player, visible);
 
 </script>
 
@@ -69,28 +70,22 @@
 
 <!-- Basic movement and teleportation   -->
 <Avatar>	
-	{#if visible}
-<a-entity htmlembed position="1 0 -1.5">
-<div class="flex">
-	{#if index === -1}
-		<div>Player Name: Hover line to display stats</div>
-	{:else}
-	<div style="margin-bottom: 5px; display:flex; flex-flow: row wrap; width: 100%;">
-		<div style="font-size: medium; font-weight: bold;">{player.first_name} {player.last_name}</div>
-	</div>
-	{#each interactions.filter_store as coord}    
-	<div style="margin-bottom: 2px; display:flex; flex-flow: row; width: 100%;">
-		<div style="width: 50%;">{coord}:</div>
-		<div style="width: 50%;  text-align:right;">{player[coord]}</div>
+	<a-entity visible="{visible}" htmlembed position="0 0.5 -1.5" rotation="10 0 0">
+		<div class="flex">
+			{#if index != -1}
+			<div style="margin-bottom: 5px; display:flex; flex-flow: row wrap; width: 100%;">
+				<div style="font-size: medium; font-weight: bold;">{player.first_name} {player.last_name}</div>
+			</div>
+			{#each interactions.filter_store as coord}    
+			<div style="margin-bottom: 2px; display:flex; flex-flow: row; width: 100%;">
+				<div style="width: 50%;">{coord}:</div>
+				<div style="width: 50%;  text-align:right;">{player[coord]}</div>
+				</div>
+			{/each}
+			{/if}
 		</div>
-	{/each}
-	{/if}
-</div>
-</a-entity>
-{/if}	
+		</a-entity>
 </Avatar>
-
-
 
 <a-entity position="0 1.5 0">
 	<ParallelCoords3D data={data} interactions={interactions}></ParallelCoords3D>
@@ -183,8 +178,8 @@
     border-radius: 5px;
     background: rgba(0, 0, 0, 0.80);
     padding: 10px;
-    height: fit-content;
-    width: fit-content;
+    height: min-content;
+    width: 150px;
     display: flex;
     flex-direction: column; 
     flex-wrap:wrap;

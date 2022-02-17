@@ -1,3 +1,13 @@
+import {interaction_store} from "../stores";
+
+/*
+let interactions; 
+
+const unsub = interaction_store.subscribe(value => {
+    interactions = value;
+});
+*/
+
 AFRAME.registerComponent('chartpoint', {
     schema: {
         id: {type: 'string', default: "0"},
@@ -42,11 +52,22 @@ AFRAME.registerComponent('chartpoint', {
     },
 
     events: {
-        click: function (evt) {
-        console.log('clicked', 'animatePitch' + this.data.id)
-        document.dispatchEvent(new CustomEvent('animatePitch' + this.data.id));
+        mousedown: function(evt) {
+            interaction_store.updateLocalHover(this.data.id);
         },
-      },
+        mouseup: function(evt) {
+            interaction_store.updateLocalHover(null);
+        },
+        mouseenter: function(evt) {
+            this.el.getObject3D('mesh').material.color = new THREE.Color('red');
+        },
+        mouseleave: function(evt) {
+            this.el.getObject3D('mesh').material.color = new THREE.Color(this.data.color);
+        },
+
+
+
+    },
 
     remove: function () {
         this.el.removeObject3D('mesh');

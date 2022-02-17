@@ -16,17 +16,9 @@
           this.el.sceneEl.addEventListener('loaded', () => {
             this.el.sceneEl.canvas.addEventListener('mousedown', this.eventRepeater)
             this.el.sceneEl.canvas.addEventListener('mouseup', this.eventRepeater)
-            this.el.sceneEl.canvas.addEventListener('touchstart', this.eventRepeater)
-            this.el.sceneEl.canvas.addEventListener('touchmove', this.eventRepeater)
-            this.el.sceneEl.canvas.addEventListener('touchend', this.eventRepeater)
           }, {once: true})
         },
         eventRepeater: function (evt) {
-          if (evt.type.startsWith('touch')) {
-            evt.preventDefault()
-            // avoid repeating touchmove because it interferes with look-controls
-            if (evt.type === 'touchmove') { return }
-          }
           this.el.emit(evt.type, evt.detail)
         }
       })
@@ -108,14 +100,12 @@
 		 	cameraRotRecord.set("0", {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57});
 		}
 		});
-
-  
 </script>
 
 
 
 <a-assets>
-    <a-mixin id="controllers-right" laser-controls vive-controls="hand: right"
+    <a-mixin id="controllers-right" vive-controls="hand: right"
     oculus-touch-controls="hand: right"
     windows-motion-controls="hand: right"
     gearvr-controls daydream-controls
@@ -143,26 +133,23 @@ movement-controls="constrainToNavMesh: false;"
 navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" 
 position="0 0 2" 
 rotation="0 0 0">
-<!--
+
 	<a-entity 
         roation-reader 
-        id="head" 
+        id="head"  
         camera="active: true" 
-        look-controls 
-        wasd-controls 
-        position="0 1.6 0" 
-	      raycaster="objects: .collidable;"
+        capture-mouse
+        position="0 0 0" 
         body="type: static; 
               shape: sphere; 
-              sphereRadius: 0.001;"
-        super-hands="colliderEvent: raycaster-intersection;
-            colliderEventProperty: els;
-            colliderEndEvent:raycaster-intersection-cleared;
-            colliderEndEventProperty: clearedEls;">
+              sphereRadius: 0.001;">
                <slot></slot>
     </a-entity>
- -->
-    
+ 
+    <a-entity id="rhand" mixin="controllers-right point" peekncopy></a-entity>
+    <a-entity id="lhand" mixin="controllers-left point" watch></a-entity>
+      
+ <!--
     <a-entity 
       roation-reader 
       id="head" 
@@ -175,13 +162,16 @@ rotation="0 0 0">
       cursor="rayOrigin: mouse; fuseTimeout: 0"   
       body="type: static; 
           shape: sphere; 
-          sphereRadius: 0.001;">
+          sphereRadius: 0.001;"
+          super-hands="colliderEvent: raycaster-intersection;
+                             colliderEventProperty: els;
+                             colliderEndEvent:raycaster-intersection-cleared;
+                             colliderEndEventProperty: clearedEls;">
         <slot></slot>
     </a-entity>
-   
-   
-    <a-entity id="rhand" mixin="controllers-right point" peekncopy></a-entity>
-    <a-entity id="lhand" mixin="controllers-left point" watch></a-entity>s
+   -->
+
+  
 
     
 
