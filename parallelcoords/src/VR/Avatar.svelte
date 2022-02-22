@@ -105,7 +105,7 @@
 
 
 <a-assets>
-    <a-mixin id="controllers-right" vive-controls="hand: right"
+    <a-mixin id="controllers-right" laser-controls vive-controls="hand: right"
     oculus-touch-controls="hand: right"
     windows-motion-controls="hand: right"
     gearvr-controls daydream-controls

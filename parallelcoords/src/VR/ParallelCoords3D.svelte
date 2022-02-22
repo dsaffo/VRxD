@@ -180,16 +180,16 @@
   <a-entity position="{xScale(i)} {-height/1.5} 0">
     <a-entity text="value: {coords.name}; color: white; align: center;" scale="1.5 1.5 1.5"></a-entity>
     <a-entity text="value: {coords.name}; color: white; align: center;" scale="1.5 1.5 1.5" rotation="0 180 0"></a-entity>
-    <a-triangle  class="collidable" color="white" material="side: double;" scale="0.2 0.2 0.2" rotation="0 0 90" position="-0.2 -0.13 0" on:triggerdown={() => changeOrderDown(coords.name)} ></a-triangle>
-    <a-triangle  class="collidable" color="white" material="side: double;"  scale="0.2 0.2 0.2" rotation="0 0 -90" position="0.2 -0.13 0"  on:triggerdown={() => changeOrderUp(coords.name)}></a-triangle>
+    <a-triangle  class="collidable" color="white" material="side: double;" scale="0.2 0.2 0.2" rotation="0 0 90" position="-0.2 -0.13 0" on:click={() => changeOrderDown(coords.name)} ></a-triangle>
+    <a-triangle  class="collidable" color="white" material="side: double;"  scale="0.2 0.2 0.2" rotation="0 0 -90" position="0.2 -0.13 0"  on:click={() => changeOrderUp(coords.name)}></a-triangle>
   </a-entity>
   {:else}
   <ScatterPlotVR interactions={interactions} dimension={coords} firstDimension={filtered_coords[0]} nextDimension={"none"} pos={xScale(i)}></ScatterPlotVR>
   <a-entity position="{xScale(i)} {-height/1.5} 0">
     <a-entity text="value: {coords.name}; color: white; align: center;" scale="1.5 1.5 1.5"></a-entity>
     <a-entity text="value: {coords.name}; color: white; align: center;" scale="1.5 1.5 1.5" rotation="0 180 0"></a-entity>
-    <a-triangle  class="collidable" color="white" material="side: double;" scale="0.2 0.2 0.2" rotation="0 0 90" position="-0.2 -0.13 0" on:triggerdown={() => changeOrderDown(coords.name)}></a-triangle>
-    <a-triangle  class="collidable" color="white" material="side: double;"  scale="0.2 0.2 0.2" rotation="0 0 -90" position="0.2 -0.13 0" on:triggerdown={() => changeOrderUp(coords.name)}></a-triangle>
+    <a-triangle  class="collidable" color="white" material="side: double;" scale="0.2 0.2 0.2" rotation="0 0 90" position="-0.2 -0.13 0" on:click={() => changeOrderDown(coords.name)}></a-triangle>
+    <a-triangle  class="collidable" color="white" material="side: double;"  scale="0.2 0.2 0.2" rotation="0 0 -90" position="0.2 -0.13 0" on:click={() => changeOrderUp(coords.name)}></a-triangle>
   </a-entity>
   {/if}
 {/each}
