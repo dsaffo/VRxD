@@ -6,16 +6,10 @@ const formRecord = client.record.getRecord("form");
 
 function formStore() {
 
-    const {subscribe, set, update} = writable({name: " ", 
-                                                age: " ", 
-                                                throws: " ", 
-                                                stats: " ", 
-                                                fastball: " ", 
-                                                curveball: " ", 
-                                                cutter: " ",
-                                                slider: " ",
-                                                split: " ",
-                                                misc: " ",
+    const {subscribe, set, update} = writable({groups: " ", 
+                                                xba: " ", 
+                                                top: " ", 
+                                                bottom: " ", 
                                                 summary: " "});
 
     return {

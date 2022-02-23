@@ -20,7 +20,7 @@ const changeEvent = (e) => {
 </script>
 
 {#if !vr}
-<div class="resizable" style="width: 1000px; height: 800px; position:absolute; z-index: 500;" use:draggable={{ handle: '.handle', defaultPosition:  { x: (windowW - width)/2, y:  -windowH + (height/2)/2}}}>
+<div class="resizable" style="width: 1000px; height: 600px; position:absolute; z-index: 500;" use:draggable={{ handle: '.handle', defaultPosition:  { x: (windowW - width)/2, y:  -windowH + (height/2)/2}}}>
 <Container fluid style="background: #333; border: solid grey; width: 100%; height: 100%; overflow:auto">
 
   <Row>
@@ -29,91 +29,48 @@ const changeEvent = (e) => {
     </Col>
   </Row>
 
-  <h5>Pitcher Information</h5>
+
   <Row>
     <Col>
       <FormGroup>
-        <Label>Pitcher Name:</Label>
-        <Input style="background: white; color: grey" plaintext bind:value={value.name} on:keyup={changeEvent} on:change={changeEvent}/>
-      </FormGroup>
-    </Col>
-    
-    <Col>
-      <FormGroup>
-      <Label>Pitcher Age</Label>
-      <Input style="background: white; color: grey" plaintext bind:value={value.age} on:keyup={changeEvent}  on:change={changeEvent}/>
-      </FormGroup>
-    </Col>
-
-    <Col>
-      <FormGroup>
-      <Label >Pitcher Throws</Label>
-      <Input style="background: white; color: grey" plaintext bind:value={value.throws} on:keyup={changeEvent}  on:change={changeEvent}/>
+        <Label>Are there any disticint groups or clusters? If yes, what defines these groups.</Label>
+        <Input type="textarea" name="text" id="exampleText"  bind:value={value.groups} on:keyup={changeEvent}  on:change={changeEvent}/>
       </FormGroup>
     </Col>
   </Row>
 
-  <h5>Pitcher Stats and Percentiles</h5>
   <Row>
     <Col>
       <FormGroup>
-        <Label>What do the stats and percentiles tell us about this pitchers; strengths, weaknesses, and overall abilities</Label>
-        <Input type="textarea" name="text" id="exampleText"  bind:value={value.stats} on:keyup={changeEvent}  on:change={changeEvent}/>
+        <Label>What data points correlate with expected batting average (xba)?</Label>
+        <Input type="textarea" name="text" id="exampleText"  bind:value={value.xba} on:keyup={changeEvent}  on:change={changeEvent}/>
       </FormGroup>
     </Col>
   </Row>
 
-  <h5>Pitcher Pitching Arsenal</h5>
-  <Label>Detail the characteristics of each pitch (i.e. movement, break, frequency, speed, outcome, etc.). What makes that pitch effective?</Label>
   <Row>
     <Col>
       <FormGroup>
-        <Label>4-Seam Fast Ball</Label>
-        <Input type="textarea" name="text" id="exampleText" bind:value={value.fastball} on:keyup={changeEvent}  on:change={changeEvent}/>
-      </FormGroup>
-    </Col>
-    <Col>
-      <FormGroup>
-        <Label>Curve Ball</Label>
-        <Input type="textarea" name="text" id="exampleText" bind:value={value.curveball} on:keyup={changeEvent}  on:change={changeEvent}/>
-      </FormGroup>
-    </Col>
-  </Row>
-  <Row>
-    <Col>
-      <FormGroup>
-        <Label>Cutter</Label>
-        <Input type="textarea" name="text" id="exampleText" bind:value={value.cutter} on:keyup={changeEvent}  on:change={changeEvent}/>
-      </FormGroup>
-    </Col>
-    <Col>
-      <FormGroup>
-        <Label>Slider</Label>
-        <Input type="textarea" name="text" id="exampleText" bind:value={value.slider} on:keyup={changeEvent}  on:change={changeEvent}/>
-      </FormGroup>
-    </Col>
-  </Row>
-  <Row>
-    <Col>
-      <FormGroup>
-        <Label for="exampleText">Split-Finger</Label>
-        <Input type="textarea" name="text" id="exampleText" bind:value={value.split} on:keyup={changeEvent}  on:change={changeEvent}/>
-      </FormGroup>
-    </Col>
-    <Col>
-      <FormGroup>
-        <Label for="exampleText">Misc. Observations</Label>
-        <Input type="textarea" name="text" id="exampleText" bind:value={value.misc} on:keyup={changeEvent}  on:change={changeEvent}/>
+        <Label>Who is the top performing pitcher and why?</Label>
+        <Input type="textarea" name="text" id="exampleText"  bind:value={value.top} on:keyup={changeEvent}  on:change={changeEvent}/>
       </FormGroup>
     </Col>
   </Row>
 
-  <h5>Summary</h5>
+  <Row>
+    <Col>
+      <FormGroup>
+        <Label>Who is the bottom performing pitcher and why?</Label>
+        <Input type="textarea" name="text" id="exampleText"  bind:value={value.bottom} on:keyup={changeEvent}  on:change={changeEvent}/>
+      </FormGroup>
+    </Col>
+  </Row>
+
   <Row>
     <Col>
       <FormGroup>
         <Label>Summerize and conclude your findings.</Label>
-        <Input type="textarea" name="text" id="exampleText" bind:value={value.summary} on:keyup={changeEvent}  on:change={changeEvent}/>
+        <Input type="textarea" name="text" id="exampleText"  bind:value={value.summary} on:keyup={changeEvent}  on:change={changeEvent}/>
       </FormGroup>
     </Col>
   </Row>
@@ -130,86 +87,42 @@ const changeEvent = (e) => {
     </Col>
   </Row>
 
-  <h5>Pitcher Information</h5>
   <Row>
     <Col>
       <FormGroup>
-        <Label>Pitcher Name:</Label>
-        <div id="input" contenteditable>{$form_store.name}</div>
-      </FormGroup>
-    </Col>
-    
-    <Col>
-      <FormGroup>
-      <Label>Pitcher Age</Label>
-      <div id="input" contenteditable>{$form_store.age}</div>
-      </FormGroup>
-    </Col>
-
-    <Col>
-      <FormGroup>
-      <Label >Pitcher Throws</Label>
-      <div id="input" contenteditable>{$form_store.throws}</div>
+        <Label>Are there any disticint groups or clusters? If yes, what defines these groups.</Label>
+        <div id="input" contenteditable>{$form_store.groups}</div>
       </FormGroup>
     </Col>
   </Row>
 
-  <h5>Pitcher Stats and Percentiles</h5>
   <Row>
     <Col>
       <FormGroup>
-        <Label>What do the stats and percentiles tell us about this pitchers; strengths, weaknesses, and overall abilities</Label>
-        <div id="textarea" contenteditable>{$form_store.stats}</div>
+        <Label>What data points correlate with expected batting average (xba)?</Label>
+        <div id="textarea" contenteditable>{$form_store.xba}</div>
       </FormGroup>
     </Col>
   </Row>
 
-  <h5>Pitcher Pitching Arsenal</h5>
-  <Label>Detail the characteristics of each pitch (i.e. movement, break, frequency, speed, outcome, etc.). What makes that pitch effective?</Label>
   <Row>
     <Col>
       <FormGroup>
-        <Label>4-Seam Fast Ball</Label>
-        <div id="textarea" contenteditable>{$form_store.fastball}</div>
-      </FormGroup>
-    </Col>
-    <Col>
-      <FormGroup>
-        <Label>Curve Ball</Label>
-        <div id="textarea" contenteditable>{$form_store.curveball}</div>
-      </FormGroup>
-    </Col>
-  </Row>
-  <Row>
-    <Col>
-      <FormGroup>
-        <Label>Cutter</Label>
-        <div id="textarea" contenteditable>{$form_store.cutter}</div>
-      </FormGroup>
-    </Col>
-    <Col>
-      <FormGroup>
-        <Label>Slider</Label>
-        <div id="textarea" contenteditable>{$form_store.slider}</div>
-      </FormGroup>
-    </Col>
-  </Row>
-  <Row>
-    <Col>
-      <FormGroup>
-        <Label for="exampleText">Split-Finger</Label>
-        <div id="textarea" contenteditable>{$form_store.split}</div>
-      </FormGroup>
-    </Col>
-    <Col>
-      <FormGroup>
-        <Label for="exampleText">Misc. Observations</Label>
-        <div id="textarea" contenteditable>{$form_store.misc}</div>
+        <Label>Who is the top performing pitcher and why?</Label>
+        <div id="textarea" contenteditable>{$form_store.top}</div>
       </FormGroup>
     </Col>
   </Row>
 
-  <h5>Summary</h5>
+  <Row>
+    <Col>
+      <FormGroup>
+        <Label>Who is the bottom performing pitcher and why?</Label>
+        <div id="textarea" contenteditable>{$form_store.bottom}</div>
+      </FormGroup>
+    </Col>
+  </Row>
+
   <Row>
     <Col>
       <FormGroup>
