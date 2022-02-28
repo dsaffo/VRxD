@@ -195,7 +195,7 @@ export const peerInteraction = readable({filter_store: ['Games','Hits','Runs'], 
 
 let tempLocalInteractionStore = {filter_store: [], color_store: "type", hover_store: null};
 
-export const tooltip_store = writable("hi");
+export const tooltip_store = writable(" ");
 export const stats_store = statsStore();
 export const interaction_store = interactionStore();
 

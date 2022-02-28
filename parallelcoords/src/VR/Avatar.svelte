@@ -84,22 +84,33 @@
 		}
 	});
 
-
-  
 	AFRAME.registerComponent('position-reader', {
-		tick: function (time, timeDelta) {
-      //console.log(this.el.object3D.position);
-			cameraPosRecord.set("0", {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z});
+    init: function() {
+      this.counter = 0;
+    },
 
-		}
-		});
-
-		AFRAME.registerComponent('roation-reader', {
 		tick: function (time, timeDelta) {
-      //console.log(this.el.object3D.rotation);
-		 	cameraRotRecord.set("0", {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57});
+      this.counter = this.counter + timeDelta;
+      if(this.counter >= 50){
+        cameraPosRecord.set("0", {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z});
+        this.counter = 0;
+      }
 		}
-		});
+	});
+
+  AFRAME.registerComponent('roation-reader', {
+    init: function() {
+      this.counter = 0;
+    },
+
+    tick: function (time, timeDelta) {
+      this.counter = this.counter + timeDelta;
+      if(this.counter >= 50){
+        cameraRotRecord.set("0", {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57});  
+        this.counter = 0;
+      }
+    }
+  });
 </script>
 
 
@@ -138,8 +149,12 @@ rotation="0 0 0">
         roation-reader 
         id="head"  
         camera="active: true" 
+        look-controls 
+        wasd-controls
         capture-mouse
-        position="0 0 0" 
+        position="0 1.6 0" 
+        raycaster="objects: .collidable;"
+        cursor="rayOrigin: mouse; fuseTimeout: 0"  
         body="type: static; 
               shape: sphere; 
               sphereRadius: 0.001;">

@@ -1,19 +1,13 @@
 <script>
 	import "aframe";
 	import "aframe-htmlembed-component";
-	import "aframe-teleport-controls";
-	import "aframe-thumb-controls-component";
 	import "aframe-extras";
-	import "aframe-auto-detect-controllers-component";
-	import "super-hands";
 	import "aframe-physics-system";
-	import Avatar from './Avatar.svelte';
 	import ParallelCoords3D from "./ParallelCoords3D.svelte";
 	import CoordButton from "../Desktop/CoordButton.svelte";
-	import OrderList from "../Desktop/OrderList.svelte";
 	import { stats_store, interaction_store, peerInteraction, tooltip_store } from '../stores';
-  import { cameraPos, cameraRot, controlRecs, formRecs, chartRecs } from '../viewStore';
-  import { draggable } from 'svelte-drag';
+	import { cameraPos, cameraRot } from '../viewStore';
+	import { draggable } from 'svelte-drag';
 
   let interactions;
 
@@ -31,6 +25,7 @@
 	const stats_unsub = stats_store.subscribe(value => {
 		data = value;
 	});
+
 </script>
 
 <div class="resizable" style="width: 1400px; height: 800px; position:absolute; z-index: 501;" use:draggable={{ handle:'.handle'}}>
@@ -45,7 +40,7 @@
   >
 	</a-entity>
     
-  <a-entity id="head" camera="active: true" position="0 1.6 0" rotation="{$cameraRot.x} {$cameraRot.y} {$cameraRot.z}">
+  <a-entity id="head" camera="active: true" position="{$cameraPos.x} 1.2 {$cameraPos.z}"  rotation="{$cameraRot.x} {$cameraRot.y} {$cameraRot.z}">
 	</a-entity>
 	
 	<a-entity position="0 1.5 0">

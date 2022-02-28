@@ -166,7 +166,7 @@ function mouseOut(){
   </svg>
 
   {#if visible}
-  <div class="flex" style="transform: translate3d({m.x}px, {m.y - height}px, 0px);" out:fade>
+  <div class="flex" style="transform: translate3d({m.x}px, {m.y - height}px, 0px); overflow: hidden;" out:fade>
     {#if index === -1}
       <div>Player Name: Hover line to display stats</div>
     {:else}
@@ -202,6 +202,7 @@ function mouseOut(){
   .chart {
     width: 100%;
     height: 100%;
+    overflow: visible;
   }
 
   svg {

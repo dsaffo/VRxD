@@ -42,7 +42,7 @@
 <PitcherReport></PitcherReport>
 {/if}
 
-<Container id="capture" fluid style="height: 100%; margin: 5px;">
+<Container id="capture" fluid style="height: 100%; margin: 5px; overflow:hidden;">
 	<Row style="height: 65%;">
 		<ParallelCoords2D data={data} interactions={interactions}></ParallelCoords2D>
 	</Row>
