@@ -87,7 +87,7 @@
 					<button on:click={vrViewToggle} disabled={vrMode}>Watch</button>
 				</Row>
 				<Row>
-					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" disabled={vrMode}>Peek</button>
+					<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" on:mouseleave="{() => interaction_store.peekEnd()}" disabled={vrMode}>Peek</button>
 				</Row>
 				<Row>
 					<button on:click="{() => interaction_store.copy()}" disabled={vrMode}>Copy</button>

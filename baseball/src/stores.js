@@ -21,6 +21,8 @@ if (!isVR){
 
 const peer = client.record.getRecord("interactions");
 
+
+
 function makeid(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -32,7 +34,11 @@ function makeid(length) {
    return result;
 }
 
+const p2p = client.record.getRecord("p2pID");
 export let clientId = makeid(10);
+p2p.set(doc, clientId);
+
+
 
 function statsStore() {
 
@@ -204,6 +210,7 @@ function interactionStore (){
 
         setFilterStore: (filters) => update(store => {
             store.filter_store = filters;
+            updatePeer(store);
             return store;
         }),
 
@@ -236,7 +243,9 @@ function interactionStore (){
         }),
 
         copy: () => {
-            set(JSON.parse(JSON.stringify(peer_store)));
+            let store = JSON.parse(JSON.stringify(peer_store))
+            set(store);
+            updatePeer(store);
         },
     }
 }
@@ -245,6 +254,17 @@ export const peerInteraction = readable({pitcher_store: "pitcher1", filter_store
 
     const unsub = peer.subscribe(peerDoc, function(value) {
         set(JSON.parse(JSON.stringify(value)));
+    });
+
+    return function stop() {
+        unsub();
+    }
+});
+
+export const peerID = readable("notset", function start(set) {
+
+    const unsub = p2p.subscribe(peerDoc, function(value) {
+        set(value);
     });
 
     return function stop() {

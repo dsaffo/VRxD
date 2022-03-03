@@ -64,7 +64,7 @@
 		</div>
 		<div class="buttons">
 			<button on:click={vrViewToggle}>Watch</button>
-			<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
+			<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}" on:mouseleave="{() => interaction_store.peekEnd()}">Peek</button>
 			<button on:click="{() => interaction_store.copy()}">Copy</button>
 			<button on:click={reportToggle}>Report</button>
 		</div>

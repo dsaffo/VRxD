@@ -15,7 +15,23 @@ if (!isVR){
     peerDoc = "desktop";
 }
 
+
+function makeid(length) {
+    var result           = '';
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * 
+ charactersLength));
+   }
+   return result;
+}
+
 const peer = client.record.getRecord("interactions");
+const p2p = client.record.getRecord("p2pID");
+export let clientId = makeid(10);
+
+
 
 export let definitions = writable({
                last_name: "Players last name.",
@@ -176,7 +192,9 @@ function interactionStore (){
         }),
 
         copy: () => {
-            set(JSON.parse(JSON.stringify(peer_store)));
+            let store = JSON.parse(JSON.stringify(peer_store))
+            set(store);
+            updatePeer(store);
         },
     }
 }
@@ -191,6 +209,20 @@ export const peerInteraction = readable({filter_store: ['Games','Hits','Runs'], 
         unsub();
     }
 });
+
+export const peerID = readable("notset", function start(set) {
+
+    const unsub = p2p.subscribe(peerDoc, function(value) {
+        console.log(value);
+        set(value);
+    });
+
+    return function stop() {
+        unsub();
+    }
+});
+
+p2p.set(doc, clientId);
 
 
 

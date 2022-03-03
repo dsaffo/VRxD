@@ -1,45 +1,18 @@
 import Peer from "peerjs";
 
-
-export function peerConenction(clientID, peerID){
-  
-  const peer = new Peer(clientID)
-
-  peer.on('open', function(id) {
-    console.log('My peer ID is: ' + id);
-
-    peer.on('connection', function(conn) { 
-      console.log("connection made", conn.peer);
-    });
-
-    console.log("connecting to" + peerID);
-    const conn = peer.connect(peerID);
-
-    conn.on('open', function() {
-      // Receive messages
-      conn.on('data', function(data) {
-        console.log('Received', data);
-      });
-    
-      // Send messages
-      conn.send('Hello!');
-    });
-
-    
-  })
-}
+const VRID = "vrxdBBVR";
+const DTID = "vrxdBBDT";
 
 
 export let desktopStream = null; 
 
 export function desktopConnection(stream){
 
-
-  let peer = new Peer('vrxd1');
+  let peer = new Peer(DTID);
 
   function connect() {
-    const conn = peer.call('vrxd2', stream);
-  
+    const conn = peer.call(VRID, stream);
+
     conn.on('open', function() {
       console.log('connection open')
     });
@@ -60,7 +33,7 @@ export function desktopConnection(stream){
 
 export function vrConnection(){
 
-  const peer = new Peer('vrxd2');
+  const peer = new Peer(VRID);
 
   peer.on('call', function(call) { 
     call.answer();
@@ -73,7 +46,4 @@ export function vrConnection(){
       desktopStream = stream;
     });
   });
-
-  
-
 } 

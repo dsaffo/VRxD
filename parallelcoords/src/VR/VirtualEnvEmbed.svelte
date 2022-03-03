@@ -54,17 +54,8 @@
 		<div class="section">
 			<div class="fl" style="width: 90%;">
 			{#each $stats_store["columns"].slice(3) as d}
-					<CoordButton vrMode={"true"} name={d} value={d}></CoordButton>
+					<CoordButton vrMode={"true"} name={d} value={d} emb={"true"}></CoordButton>
 			{/each}
-			</div>
-			<div class="buttons">
-				<button on:click="{() => interaction_store.updateLocalColor("absolute")}">Colorize Absolute</button>
-				<button on:click="{() => interaction_store.updateLocalColor("relative")}">Colorize Relative</button>
-			</div>
-			<div class="buttons">
-				<button>Watch</button>
-				<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
-				<button on:click="{() => interaction_store.copy()}">Copy</button>
 			</div>
 		</div>
 	</a-entity>	
@@ -75,15 +66,6 @@
 			{#each $stats_store["columns"].slice(3) as d}
 					<CoordButton vrMode={"true"} name={d} value={d}></CoordButton>
 			{/each}
-			</div>
-			<div class="buttons">
-				<button on:click="{() => interaction_store.updateLocalColor("absolute")}">Colorize Absolute</button>
-				<button on:click="{() => interaction_store.updateLocalColor("relative")}">Colorize Relative</button>
-			</div>
-			<div class="buttons">
-				<button>Watch</button>
-				<button on:mousedown="{() => interaction_store.peekStart()}" on:mouseup="{() => interaction_store.peekEnd()}">Peek</button>
-				<button on:click="{() => interaction_store.copy()}">Copy</button>
 			</div>
 		</div>
 	</a-entity>	
