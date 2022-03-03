@@ -181,7 +181,7 @@ rotation="0 -180 0">
     </a-entity>
 
     <a-entity id="rhand" mixin="controllers-right point" peekncopy></a-entity>
-    <a-entity id="lhand" mixin="controllers-left point" watch></a-entity>
+    <a-entity id="lhand" mixin="controllers-left point"></a-entity>
 
     <slot></slot>
 

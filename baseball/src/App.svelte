@@ -21,6 +21,7 @@
 			sharing = true;
 			window.stream = stream; // make stream available to browser console
 			video.srcObject = stream;
+			console.log('dekstop connecting start');
 			desktopConnection(stream);
 		}
 

@@ -149,6 +149,7 @@ function interactionStore (){
 
         setFilterStore: (filters) => update(store => {
             store.filter_store = filters;
+            updatePeer(store);
             return store;
         }),
 

@@ -52,6 +52,7 @@ export function desktopConnection(stream){
 
 
   peer.on('open', function(id) {
+    console.log("trying to connect");
     connect();
   });
 
