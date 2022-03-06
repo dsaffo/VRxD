@@ -72,27 +72,48 @@
 
 
 	AFRAME.registerComponent('chart-reader', {
+		init: function() {
+      		this.counter = 0;
+    	},
+
 		tick: function (time, timeDelta) {
-      //console.log("roation",this.el.object3D.rotation);
-			chartRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
+	  		this.counter = this.counter + timeDelta;
+			if(this.counter >= 50){
+				chartRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
 																rot: {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57}});
+			this.counter = 0;
+      		}
 		}
 		});
 
 		AFRAME.registerComponent('control-reader', {
+		init: function() {
+      		this.counter = 0;
+    	},
+
 		tick: function (time, timeDelta) {
-      //console.log(this.el.object3D.position);
-			controlRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
+	 		this.counter = this.counter + timeDelta;
+			if(this.counter >= 50){
+				controlRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
 																rot: {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57}});
+				this.counter = 0;
+      		}
 		}
 		});
 
 		AFRAME.registerComponent('form-reader', {
+		init: function() {
+      		this.counter = 0;
+    	},	
+
 		tick: function (time, timeDelta) {
-      //console.log(this.el.object3D.position);
-			formRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
+	  		this.counter = this.counter + timeDelta;
+			if(this.counter >= 50){
+				formRecord.set("0", {pos: {x: this.el.object3D.position.x, y: this.el.object3D.position.y, z: this.el.object3D.position.z},
 																rot: {x: this.el.object3D.rotation.x * 57, y: this.el.object3D.rotation.y * 57, z: this.el.object3D.rotation.z * 57},
 																height: formH});
+				this.counter = 0;
+      		}
 		}
 		});
 

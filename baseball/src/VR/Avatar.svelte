@@ -146,7 +146,7 @@
 
     <a-mixin id="point" raycaster="showLine: true; objects: .collidable;"
     collision-filter="collisionForces: false"
-    static-body="shape: sphere; sphereRadius: 0.001"
+    static-body="shape: sphere; sphereRadius: 0"
     super-hands="colliderEvent: raycaster-intersection;
                              colliderEventProperty: els;
                              colliderEndEvent:raycaster-intersection-cleared;
@@ -173,11 +173,7 @@ rotation="0 -180 0">
         cursor="rayOrigin: mouse;"   
         body="type: static; 
               shape: sphere; 
-              sphereRadius: 0.001;"
-	    super-hands="colliderEvent: raycaster-intersection;
-					 colliderEventProperty: els;
-					 colliderEndEvent:raycaster-intersection-cleared;
-					 colliderEndEventProperty: clearedEls;">
+              sphereRadius: 0.00001;">
     </a-entity>
 
     <a-entity id="rhand" mixin="controllers-right point" peekncopy></a-entity>

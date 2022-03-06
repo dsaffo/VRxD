@@ -82,14 +82,14 @@
 
 <!-- Basic movement and teleportation   -->
 {#if data.length != 0}	
+
+
 <a-entity id="cameraRig" 
 navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" 
 position="{$cameraPos.x} {$cameraPos.y} {$cameraPos.z}" 
-rotation="0 -180 0"
->
-	
-<a-entity id="head" camera="active: true" position="0 1.6 0" rotation="{$cameraRot.x} {$cameraRot.y} {$cameraRot.z}"></a-entity>
-				
+rotation="0 -180 0">
+	<a-entity id="head" camera="active: true" position="0 1.6 0" rotation="{$cameraRot.x} {$cameraRot.y} {$cameraRot.z}"></a-entity>
+
 
 
 <a-entity geometry="primitive: box; width: 2.5s; height: 1.3; depth: 0.5" material="opacity: 0; transparent: true; depthTest: false;" position="{$controlRecs.pos.x} {$controlRecs.pos.y} {$controlRecs.pos.z}" rotation="{$controlRecs.rot.x} {$controlRecs.rot.y} {$controlRecs.rot.z}">
@@ -137,8 +137,8 @@ rotation="0 -180 0"
 		<PitchSpeedFreqVR pitches={data} interactions={interactions} filtered={filtered_pitches}></PitchSpeedFreqVR>
 	</a-entity>	
 </a-entity>	
-
 </a-entity>
+
 
 
 <Field></Field>  
