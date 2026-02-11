@@ -1,6 +1,6 @@
 # VrxD Code and Data Repo
 
-Documentation WIP
+This repo contains the prototype code for the research aperatus used in the paper [Through Their Eyes and In Their Shoes: Providing Group Awareness During Collaboration Across Virtual Reality and Desktop Platforms (CHI 23)](https://dl.acm.org/doi/10.1145/3544548.3581093)
 
 ```
 template
